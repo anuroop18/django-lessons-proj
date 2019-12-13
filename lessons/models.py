@@ -47,3 +47,6 @@ class Lesson(models.Model):
     published = models.BooleanField(default=False)
     # publish_date
     publish_date = models.DateField()
+
+    def __str__(self):
+        return f"#{self.order} {self.title}"
