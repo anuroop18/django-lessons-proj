@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'lessons',
+    'taggit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -99,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MDODEL = 'lessons.models.User'
+AUTH_USER_MODEL = 'lessons.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

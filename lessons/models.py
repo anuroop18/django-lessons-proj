@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 from django.contrib.auth.models import AbstractUser
 
 
@@ -7,6 +8,7 @@ class User(AbstractUser):
 
 
 class Lesson(models.Model):
+
     # Lesson #5 (in this case field holds an integer value of 5)
     order = models.IntegerField()
 
@@ -38,10 +40,10 @@ class Lesson(models.Model):
         default='free'
     )
 
+    tags = TaggableManager()
+
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     published = models.BooleanField(default=False)
     # publish_date
     publish_date = models.DateField()
-
-
