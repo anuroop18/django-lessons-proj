@@ -1,4 +1,6 @@
 {% extends 'lessons/base.html' %}
 {% block content %}
-    Lesson 1
+    {% for lesson in lessons %}
+        {{ lesson.order }} {{ lesson.title }}
+    {% endfor %}
 {% endblock %}
