@@ -14,120 +14,33 @@
 <!-- Favicon -->
 <link rel="shortcut icon" href="images/favicon.ico" />
 
-<!-- font -->
-<link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,500i,600,700,800,900|Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800">
-
 <link rel="stylesheet" type="text/css" href="{% static 'lessons/vendor/bootstrap/css/bootstrap.min.css' %}" />
 
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Django Lessons</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Subscribe</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Feedback</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+  {% include 'lessons/_nav.html' %}
   <!-- Page Content -->
   <div class="container">
     <div class="row">
       <!-- Post Content Column -->
       <div class="col-lg-9">
-
+        {% block content %}
+        {% endblock %}
       </div>
-
-      <!-- Sidebar Widgets Column -->
-      <div class="col-md-3">
-
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Categories Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Categories</h5>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-12">
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">Django Models</a>
-                  </li>
-                  <li>
-                    <a href="#">PostgreSQL</a>
-                  </li>
-                  <li>
-                    <a href="#">Nginx</a>
-                  </li>
-                  <li>
-                    <a href="#">Django Views</a>
-                  </li>
-                  <li>
-                    <a href="#">Static Assets</a>
-                  </li>
-                  <li>
-                    <a href="#">Authentication</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Side Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Side Widget</h5>
-          <div class="card-body">
-            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-          </div>
-        </div>
-
-      </div>
-
+      {% include 'lessons/_sidebar.html' %}
     </div>
     <!-- /.row -->
 
   </div>
-  <!-- /.container -->
-{% block content %}
-{% endblock %}
-<!--=================================
+    <!-- /.container -->
+
+  <!--=================================
  footer -->
 
-  <footer class="py-5 bg-dark">
+  <footer class="py-5">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Django Lessons 2019</p>
+      <p class="m-0 text-center">Copyright &copy; Django Lessons 2019</p>
     </div>
     <!-- /.container -->
   </footer>
