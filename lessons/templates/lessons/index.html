@@ -1,6 +1,22 @@
 {% extends 'lessons/base.html' %}
 {% block content %}
     {% for lesson in lessons %}
-        {{ lesson.order }} {{ lesson.title }}
+    <div class="row lesson">
+        <div class="col-lg-4">
+            
+        </div>
+        <div class="col-lg-8">
+            <div class="header">
+                <ul>
+                    <li>Lesson #{{lesson.order}}</li>
+                    <li>{{lesson.updated_at}}</li>
+                </ul>
+            </div>
+            <h3>{{ lesson.title }}</h3>
+            <div class="description">
+                {{lesson.description}}
+            </div>
+        </div>
+    </div>
     {% endfor %}
 {% endblock %}
