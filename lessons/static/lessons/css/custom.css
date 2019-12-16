@@ -6,11 +6,11 @@ h2, h3, h4, h5 {
     color: #0C3C26;    
 }
 
-ul.categories li > a {
+ul li > a {
     color: #20AA76;
 }
 
-ul.categories li > a:visited{
+ul li > a:visited{
     color: #156741;
 }
 

@@ -10,3 +10,11 @@ def index(request):
         'lessons/index.html',
         {'lessons': lessons}
     )
+
+
+def impressum(request):
+    return render(request, 'lessons/impressum.html')
+
+
+def privacy(request):
+    return render(request, 'lessons/privacy.html')
