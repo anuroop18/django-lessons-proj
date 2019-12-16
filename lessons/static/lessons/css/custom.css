@@ -13,3 +13,10 @@ ul.categories li > a {
 ul.categories li > a:visited{
     color: #156741;
 }
+
+.lesson-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
