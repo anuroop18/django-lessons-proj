@@ -18,3 +18,8 @@ def impressum(request):
 
 def privacy(request):
     return render(request, 'lessons/privacy.html')
+
+
+def about(request):
+    return render(request, 'lessons/about.html')
+
