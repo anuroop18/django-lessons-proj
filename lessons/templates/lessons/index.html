@@ -8,18 +8,20 @@
             <img src="{% static "lessons/images/thumb.png" %}" alt="">
         </div>
         <div class="col-lg-8">
-            <div class="header">
+            <div class="header text-muted">
                 <ul class="list-unstyled d-flex flex-row">
                     <li class="mx-1"><span class="font-weight-bold">Lesson #{{lesson.order}}</span></li>
                     <li>–</li>
                     <li class="mx-1">{{lesson.updated_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
-            <h3>{{ lesson.title }}</h3>
-            <div class="description">
+            <h5>{{ lesson.title }}</h5>
+            <p class="description mb-3">
                 {{lesson.description}}
-            </div>
-            <a href="#" class="btn btn-primary" role="button">Watch</a>
+            </p>
+            <p>
+                <a href="#" class="btn btn-success" role="button">Watch</a>
+            </p>
         </div>
     </div>
     {% endfor %}

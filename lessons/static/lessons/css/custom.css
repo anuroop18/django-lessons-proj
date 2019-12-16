@@ -1,0 +1,15 @@
+.bg-dark {
+    background-color: #0C4B33 !important;
+}
+
+h2, h3, h4, h5 {
+    color: #0C3C26;    
+}
+
+ul.categories li > a {
+    color: #20AA76;
+}
+
+ul.categories li > a:visited{
+    color: #156741;
+}
