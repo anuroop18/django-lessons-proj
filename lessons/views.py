@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from lessons.models import Lesson
+from django.views.generic import TemplateView
 
 
 def index(request):
@@ -12,14 +13,5 @@ def index(request):
     )
 
 
-def impressum(request):
-    return render(request, 'lessons/impressum.html')
-
-
-def privacy(request):
-    return render(request, 'lessons/privacy.html')
-
-
-def about(request):
-    return render(request, 'lessons/about.html')
-
+class PageView(TemplateView):
+    pass
