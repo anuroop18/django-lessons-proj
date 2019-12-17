@@ -7,7 +7,7 @@
 {% block sidebar_col_class %} {% endblock %}
 
 {% block central_content %}
-    <div class="row lesson border-bottom py-3">
+    <div class="row lesson py-3">
         <div class="col-lg-12">
             Lesson 
             <video width="800" height="600">
@@ -16,14 +16,19 @@
     </div>
     <div class="row">
         <div class="col-lg-9">
-           #{{lesson.order}} {{lesson.title}}
+           <span class="text-muted">#{{lesson.order}}</span> <span class="font-weight-bold">{{lesson.title}}</span>
         </div>
         <div class="col-lg-3">
         </div>
     </div>
     <div class="row">
         <div class="col-lg-9">
-            {{lesson.updated_at | date:"M d, Y"}}
+            <span class="text-muted"><small>{{lesson.updated_at | date:"M d, Y"}}</small></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{lesson.description}}
         </div>
     </div>
 {% endblock %}

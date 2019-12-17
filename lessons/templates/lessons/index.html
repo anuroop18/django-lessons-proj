@@ -17,12 +17,12 @@
                     <li class="mx-1">{{lesson.updated_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
-            <h5>{{ lesson.title }}</h5>
+            <h5><a href="{% url 'lesson' lesson.id %}">{{ lesson.title }}</a></h5>
             <p class="description mb-3">
                 {{lesson.description}}
             </p>
             <p>
-                <a href="#" class="btn btn-success" role="button">Watch</a>
+                <a href="{% url 'lesson' lesson.id %}" class="btn btn-success" role="button">Watch</a>
             </p>
         </div>
     </div>

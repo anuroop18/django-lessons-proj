@@ -14,6 +14,15 @@ ul li > a:visited{
     color: #156741;
 }
 
+h5 > a {
+    color: #0C3C26;
+}
+
+h5 > a:visited {
+    color: #156741;   
+}
+
+
 .lesson-thumb {
     display: flex;
     flex-direction: column;
