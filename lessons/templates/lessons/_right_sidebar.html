@@ -1,12 +1,12 @@
 <div class="card my-4">
-  <h5 class="card-header">Categories</h5>
+  <h5 class="card-header">Tags</h5>
   <div class="card-body">
     <div class="row">
       <div class="col-lg-12">
         <ul class="list-unstyled mb-0 categories">
           {% for tag in tags %}
           <li>
-            <a href="#">{{ tag.name }}</a>
+            <a href="{% url 'index' %}?tag_id={{tag.id}}">{{ tag.name }}</a>
           </li>
           {% endfor %}
         </ul>
