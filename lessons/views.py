@@ -1,7 +1,10 @@
 from django.http import Http404
 from django.shortcuts import render
-from lessons.models import Lesson
 from django.views.generic import TemplateView
+
+from taggit.models import Tag
+
+from lessons.models import Lesson
 
 
 def index(request):
@@ -13,10 +16,12 @@ def index(request):
         published=True
     ).order_by('-updated_at')
 
+    tags = Tag.objects.all().order_by('name')
+
     return render(
         request,
         'lessons/index.html',
-        {'lessons': lessons}
+        {'lessons': lessons, 'tags': tags}
     )
 
 

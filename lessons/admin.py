@@ -5,7 +5,11 @@ from lessons.models import (User, Lesson)
 
 
 class LessonAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'order',
+        'title',
+        'published'
+    )
 
 
 admin.site.register(User, UserAdmin)
