@@ -25,11 +25,15 @@
   <div class="container">
     <div class="row">
       <!-- Post Content Column -->
-      <div class="col-lg-9">
-        {% block content %}
+      <div class="{% block central_col_class %} col-lg-9 {% endblock %}">
+        {% block central_content %}
         {% endblock %}
       </div>
-      {% include 'lessons/_sidebar.html' %}
+      {% block right_sidebar %}
+        <div class="{% block sidebar_col_class %} col-md-3 {% endblock %}">
+          {% include 'lessons/_right_sidebar.html' %}
+        </div>
+      {% endblock %}
     </div>
     <!-- /.row -->
 
