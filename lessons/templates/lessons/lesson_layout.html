@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="keywords" content="HTML5 Template" />
+<meta name="description" content="Django Lessons for intermediate Django developer, but beginners and experts will get something out of it as well." />
+<meta name="author" content="Eugen Ciur <eugen@django-lessons.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Django Lessons</title>
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="images/favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'lessons/vendor/bootstrap/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'lessons/css/custom.css' %}" />
+
+</head>
+
+<body>
+  {% include 'lessons/_nav.html' %}
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Post Content Column -->
+      <div class="col-lg-12">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <!-- /.row -->
+
+  </div>
+    <!-- /.container -->
+
+  <!--=================================
+ footer -->
+
+  <footer class="py-5">
+    <div class="container">
+      <ul class="list-unstyled  d-flex flex-row">
+        <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019</p></li>
+        <li><a class="mx-2" href="{% url 'impressum' %}">Impressum</a></li>
+        <li><a class="mx-2" href="{% url 'privacy' %}">Privacy</a></li>
+      </ul>
+      
+    </div>
+    <!-- /.container -->
+  </footer>
+<!--=================================
+ footer -->
+
+</div>
+  <script src="{% static 'lessons/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'lessons/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
