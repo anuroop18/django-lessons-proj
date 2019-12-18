@@ -1,7 +1,6 @@
 include README.md
 include MANIFEST.in
 include manage.py
-include version.py
 include LICENSE
 include requirements.txt
 include requirements.freeze

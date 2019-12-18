@@ -7,8 +7,8 @@ pipeline {
             steps {
                 sh 'rm  -f dist/*.gz'
                 sh 'rm  -f dist/*.whl'
-                sh 'python3 setup.py -q bdist_wheel'
-                sh 'python3 setup.py -q sdist'
+                sh 'python3 setup_lessons.py -q bdist_wheel'
+                sh 'python3 setup_lessons.py -q sdist'
                 archiveArtifacts artifacts: 'dist/*.whl', fingerprint: true
                 archiveArtifacts artifacts: 'dist/*.tar.gz', fingerprint: true
             }
