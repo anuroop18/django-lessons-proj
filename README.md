@@ -8,3 +8,4 @@ to the point django related tutorials targeted for intermediate developers.
 In past I worked with RubyOnRails web framework and I was a huge fan of
 [Railscasts](http://railscasts.com). I want to create something similar for
 Django Community.
+
