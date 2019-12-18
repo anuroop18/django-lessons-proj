@@ -3,4 +3,5 @@ include MANIFEST.in
 include manage.py
 include LICENSE
 include requirements.txt
+include requirements.freeze
 recursive-include lessons/templates/ *
