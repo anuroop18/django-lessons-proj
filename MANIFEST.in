@@ -1,0 +1,6 @@
+include README.md
+include MANIFEST.in
+include manage.py
+include LICENSE
+include requirements.txt
+recursive-include lessons/templates/ *
