@@ -1,4 +1,5 @@
 {% extends 'lessons/base.html' %}
+{% load embed_video_tags %}
 
 {% block central_col_class %} col-lg-12 {% endblock %}
 
@@ -8,9 +9,7 @@
 {% block central_content %}
     <div class="row lesson py-3">
         <div class="col-lg-12">
-            Lesson 
-            <video width="800" height="600">
-            </video>
+            {% video lesson.video '800x600' %}
         </div>
     </div>
     <div class="row">

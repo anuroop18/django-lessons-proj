@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from embed_video.fields import EmbedVideoField
 from django.contrib.auth.models import AbstractUser
 
 
@@ -25,6 +26,11 @@ class Lesson(models.Model):
     image = models.ImageField(
         upload_to='uploads/',
         default='static/img/lesson.jpg'
+    )
+    video = EmbedVideoField(
+        max_length=600,
+        blank=True,
+        null=True
     )
 
     # owener
