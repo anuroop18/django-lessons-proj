@@ -6,7 +6,7 @@
     <div class="row lesson border-bottom py-3">
         <div class="col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
             <a href="{% url 'lesson' lesson.id %}">
-                <img src="/static/img/lesson_1_thumb.jpg"  width="280" alt="">
+                <img src="/static/img/lesson_{{lesson.order}}_thumb.jpg"  width="280" alt="">
             </a>
         </div>
         <div class="col-lg-8">
