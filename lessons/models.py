@@ -22,6 +22,11 @@ class Lesson(models.Model):
     # a longer description
     description = models.TextField()
 
+    image = models.ImageField(
+        upload_to='uploads/',
+        default='static/img/lesson.jpg'
+    )
+
     # owener
     user = models.ForeignKey(
         User,

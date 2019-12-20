@@ -3,6 +3,7 @@ backcall==0.1.0
 decorator==4.4.1
 Django==3.0
 django-taggit==1.2.0
+gunicorn==20.0.4
 ipdb==0.12.3
 ipython==7.10.1
 ipython-genutils==0.2.0
@@ -10,6 +11,7 @@ jedi==0.15.1
 parso==0.5.1
 pexpect==4.7.0
 pickleshare==0.7.5
+Pillow==6.2.1
 prompt-toolkit==3.0.2
 psycopg2==2.8.4
 ptyprocess==0.6.0
