@@ -22,7 +22,7 @@ class LessonsViewTests(TestCase):
             created_at=timezone.now(),
             updated_at=timezone.now(),
             publish_date=timezone.now(),
-            published=True,
+            public=True,
             user=self.user,
         )
         self.lesson_1.tags.add("django")
@@ -33,7 +33,7 @@ class LessonsViewTests(TestCase):
             created_at=timezone.now(),
             updated_at=timezone.now(),
             publish_date=timezone.now(),
-            published=True,
+            public=True,
             user=self.user,
         )
         self.lesson_2.tags.add("python")

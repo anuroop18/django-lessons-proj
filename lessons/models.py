@@ -8,6 +8,20 @@ class User(AbstractUser):
     pass
 
 
+class LessonQuerySet(models.QuerySet):
+
+    def published(self):
+        return self.filter(public=True)
+
+    def ordered(self):
+        return self.order_by('-updated_at')
+
+
+class PublishedLessons(models.Manager):
+    def get_queryset(self):
+        return LessonQuerySet(self.model, using=self._db)
+
+
 class Lesson(models.Model):
 
     # Lesson #5 (in this case field holds an integer value of 5)
@@ -55,9 +69,13 @@ class Lesson(models.Model):
 
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    published = models.BooleanField(default=False)
+    public = models.BooleanField(default=False)
     # publish_date
     publish_date = models.DateField()
+
+    # managers
+    objects = models.Manager()
+    published = PublishedLessons()
 
     def __str__(self):
         return f"#{self.order} {self.title}"

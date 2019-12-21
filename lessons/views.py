@@ -20,14 +20,11 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
-    lessons = Lesson.objects
+    lessons = Lesson.published.all()
+
     tag_id = request.GET.get('tag_id', None)
     if tag_id:
-        lessons = lessons.filter(tags__id__in=[tag_id])
-
-    lessons = lessons.filter(
-        published=True
-    ).order_by('-updated_at')
+        lessons = Lesson.published.filter(tags__id__in=[tag_id])
 
     tags = Tag.objects.all().order_by('name')
 

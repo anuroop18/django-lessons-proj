@@ -8,7 +8,7 @@ class LessonAdmin(admin.ModelAdmin):
     list_display = (
         'order',
         'title',
-        'published'
+        'public'
     )
 
 
