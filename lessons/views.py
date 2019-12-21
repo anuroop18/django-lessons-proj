@@ -1,5 +1,5 @@
 import logging
-from django.http import Http404
+from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
@@ -17,16 +17,13 @@ def index(request):
         ordered by update_at (DESC)
     """
 
-    # TODO: refactoring required
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     lessons = Lesson.objects
-    if request.method == 'GET':
-        tag_id = request.GET.get('tag_id', None)
-        if tag_id:
-            try:
-                tag = Tag.objects.get(id=tag_id)
-                lessons = lessons.filter(tags__name__in=[tag.name])
-            except Tag.DoesNotExist:
-                logger.info(f"tag_id={tag_id} not found")
+    tag_id = request.GET.get('tag_id', None)
+    if tag_id:
+        lessons = lessons.filter(tags__id__in=[tag_id])
 
     lessons = lessons.filter(
         published=True
