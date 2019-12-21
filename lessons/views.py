@@ -21,7 +21,7 @@ def index(request):
         return HttpResponseBadRequest()
 
     tag_id = request.GET.get('tag_id', None)
-    lessons = Lesson.lessons.published().tagged(tag_id)
+    lessons = Lesson.obj.published().tagged(tag_id)
     tags = Tag.objects.all().order_by('name')
 
     return render(

@@ -82,7 +82,7 @@ class Lesson(models.Model):
 
     # managers
     objects = models.Manager()
-    lessons = LessonsManager()
+    obj = LessonsManager()
     tags = TaggableManager()
 
     def __str__(self):
