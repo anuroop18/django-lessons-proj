@@ -11,15 +11,24 @@ class User(AbstractUser):
 class LessonQuerySet(models.QuerySet):
 
     def published(self):
-        return self.filter(public=True)
+        return self.filter(public=True).order_by('-updated_at')
 
-    def ordered(self):
-        return self.order_by('-updated_at')
+    def tagged(self, tag_id=None):
+        if tag_id:
+            return self.filter(tags__id__in=[tag_id])
+
+        return self.all()
 
 
-class PublishedLessons(models.Manager):
+class LessonsManager(models.Manager):
     def get_queryset(self):
         return LessonQuerySet(self.model, using=self._db)
+
+    def published(self):
+        return self.get_queryset().published()
+
+    def tagged(self, tag_id=None):
+        return self.get_queryset().tagged(tag_id)
 
 
 class Lesson(models.Model):
@@ -65,8 +74,6 @@ class Lesson(models.Model):
         default='free'
     )
 
-    tags = TaggableManager()
-
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     public = models.BooleanField(default=False)
@@ -75,7 +82,8 @@ class Lesson(models.Model):
 
     # managers
     objects = models.Manager()
-    published = PublishedLessons()
+    lessons = LessonsManager()
+    tags = TaggableManager()
 
     def __str__(self):
         return f"#{self.order} {self.title}"
