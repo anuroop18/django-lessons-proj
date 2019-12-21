@@ -33,7 +33,7 @@ class Lesson(models.Model):
         null=True
     )
 
-    # owener
+    # owner
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE
