@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from taggit.managers import TaggableManager
 from embed_video.fields import EmbedVideoField
 from django.contrib.auth.models import AbstractUser
@@ -42,6 +43,8 @@ class Lesson(models.Model):
         blank=False,
         null=False
     )
+
+    slug = models.SlugField(null=True)
 
     # a longer description
     description = models.TextField()
@@ -87,3 +90,8 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f"#{self.order} {self.title}"
+
+    def get_absolute_url(self):
+            return reverse(
+                'lesson', kwargs={'slug': self.slug}
+            )

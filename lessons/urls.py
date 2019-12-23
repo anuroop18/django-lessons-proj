@@ -5,7 +5,7 @@ from lessons.views import PageView
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('lesson/<int:id>', views.lesson, name='lesson')
+    path('lesson/<slug:slug>', views.lesson, name='lesson')
 ]
 
 pages = [

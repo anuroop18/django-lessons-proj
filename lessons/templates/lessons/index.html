@@ -5,7 +5,7 @@
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
         <div class="col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
-            <a href="{% url 'lesson' lesson.id %}">
+            <a href="{{ lesson.get_absolute_url }}">
                 <img src="/static/img/lesson_{{lesson.order}}_thumb.jpg"  width="280" alt="">
             </a>
         </div>
@@ -17,12 +17,12 @@
                     <li class="mx-1">{{lesson.updated_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
-            <h5><a href="{% url 'lesson' lesson.id %}">{{ lesson.title }}</a></h5>
+            <h5><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
             <p class="description mb-3">
                 {{lesson.description}}
             </p>
             <p>
-                <a href="{% url 'lesson' lesson.id %}" class="btn btn-success" role="button">Watch</a>
+                <a href="{{ lesson.get_absolute_url }}" class="btn btn-success" role="button">Watch</a>
             </p>
         </div>
     </div>

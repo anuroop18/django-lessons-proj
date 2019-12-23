@@ -16,6 +16,7 @@ def index(request):
         Landing page will list published lessons
         ordered by update_at (DESC)
     """
+    logger.info(f"I am lessons APP:INFO: index view accessed")
 
     if request.method != 'GET':
         return HttpResponseBadRequest()
@@ -31,11 +32,11 @@ def index(request):
     )
 
 
-def lesson(request, id):
-
+def lesson(request, slug):
     try:
-        lesson = Lesson.objects.get(id=id)
+        lesson = Lesson.objects.get(slug=slug)
     except Lesson.DoesNotExist:
+        logger.warning(f"Lesson {slug} not found")
         raise Http404("Lesson not found")
 
     return render(
