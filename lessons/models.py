@@ -93,5 +93,8 @@ class Lesson(models.Model):
 
     def get_absolute_url(self):
             return reverse(
-                'lesson', kwargs={'slug': self.slug}
+                'lesson', kwargs={
+                    'order': self.order,
+                    'slug': self.slug
+                }
             )

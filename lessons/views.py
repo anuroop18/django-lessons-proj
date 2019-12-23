@@ -32,11 +32,11 @@ def index(request):
     )
 
 
-def lesson(request, slug):
+def lesson(request, order, slug):
     try:
-        lesson = Lesson.objects.get(slug=slug)
+        lesson = Lesson.objects.get(order=order)
     except Lesson.DoesNotExist:
-        logger.warning(f"Lesson {slug} not found")
+        logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
     return render(
