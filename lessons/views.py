@@ -16,8 +16,6 @@ def index(request):
         Landing page will list published lessons
         ordered by update_at (DESC)
     """
-    logger.info(f"I am lessons APP:INFO: index view accessed")
-
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
