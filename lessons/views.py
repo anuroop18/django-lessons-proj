@@ -44,5 +44,9 @@ def lesson(request, order, slug):
     )
 
 
+class SubscribeView(TemplateView):
+    template_name = 'lessons/subscribe.html'
+
+
 class PageView(TemplateView):
     pass

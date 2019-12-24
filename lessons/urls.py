@@ -1,11 +1,20 @@
 from django.urls import path
 
 from lessons import views
-from lessons.views import PageView
+from lessons.views import (PageView, SubscribeView)
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('lesson/lesson-<int:order>-<slug:slug>', views.lesson, name='lesson')
+    path(
+        'lesson/lesson-<int:order>-<slug:slug>',
+        views.lesson,
+        name='lesson'
+    ),
+    path(
+        'subscribe',
+        SubscribeView.as_view(),
+        name='subscribe'
+    )
 ]
 
 pages = [
