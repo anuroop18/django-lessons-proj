@@ -54,6 +54,8 @@ def subscribe(request):
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
+            subscribe = Subscribtion(email=form.cleaned_data['email'])
+            subscribe.save()
             return render(request, 'lessons/thankyou.html')
     else:
         form = SubscribeForm()
