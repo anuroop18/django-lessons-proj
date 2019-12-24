@@ -51,17 +51,21 @@ class PageView(TemplateView):
 
 def subscribe(request):
 
+    context = {}
+    context['active'] = 'subscribe'
+
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
             subscribe = Subscribtion(email=form.cleaned_data['email'])
             subscribe.save()
-            return render(request, 'lessons/thankyou.html')
+            return render(request, 'lessons/thankyou.html', context)
     else:
         form = SubscribeForm()
+        context['form'] = form
 
     return render(
         request,
         'lessons/subscribe.html',
-        {'form': form}
+        context
     )

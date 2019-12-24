@@ -6,10 +6,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item {% nav_item_active %}">
+      <li class="nav-item {% item_active_on 'subscribe' %}">
         <a class="nav-link " href="{% url 'subscribe' %}">Subscribe</a>
       </li>
-      <li class="nav-item {% nav_item_active %}">
+      <li class="nav-item {% item_active_on 'about' %}">
         <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
     </ul>
