@@ -20,7 +20,8 @@ urlpatterns = [
 pages = [
     'privacy',
     'impressum',
-    'about'
+    'about',
+    'cookies'
 ]
 
 for page in pages:
