@@ -5,7 +5,8 @@ from django.views.generic import TemplateView
 
 from taggit.models import Tag
 
-from lessons.models import Lesson
+from lessons.models import (Lesson, Subscribtion)
+from lessons.forms import SubscribeForm
 
 
 logger = logging.getLogger(__name__)
@@ -44,9 +45,21 @@ def lesson(request, order, slug):
     )
 
 
-class SubscribeView(TemplateView):
-    template_name = 'lessons/subscribe.html'
-
-
 class PageView(TemplateView):
     pass
+
+
+def subscribe(request):
+
+    if request.method == 'POST':
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            return render(request, 'lessons/thankyou.html')
+    else:
+        form = SubscribeForm()
+
+    return render(
+        request,
+        'lessons/subscribe.html',
+        {'form': form}
+    )

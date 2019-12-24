@@ -98,3 +98,7 @@ class Lesson(models.Model):
                     'slug': self.slug
                 }
             )
+
+
+class Subscribtion(models.Model):
+    email = models.EmailField(blank=False)

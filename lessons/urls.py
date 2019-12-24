@@ -1,7 +1,7 @@
 from django.urls import path
 
 from lessons import views
-from lessons.views import (PageView, SubscribeView)
+from lessons.views import PageView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     path(
         'subscribe',
-        SubscribeView.as_view(),
+        views.subscribe,
         name='subscribe'
     )
 ]
