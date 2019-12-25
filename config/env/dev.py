@@ -12,6 +12,7 @@ from .base import *
 ALLOWED_HOSTS = [
     'django-lessons.test', '*'
 ]
+INTERNAL_IPS = ('127.0.0.1',)
 
 DATABASES = {
     'default': {
