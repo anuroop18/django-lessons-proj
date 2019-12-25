@@ -10,7 +10,7 @@
 <title>Django Lessons</title>
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="images/favicon.ico" />
+<link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
 
 <link rel="stylesheet" type="text/css" href="{{ STATIC_CSS_URL }}" />
 
@@ -19,7 +19,9 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'index' %}">Django Lessons</a>
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img class="navbar-logo" src="/static/img/logo.svg" width="100">Django Lessons
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
