@@ -5,6 +5,8 @@ from lessons.models import (User, Lesson, Subscribtion)
 
 
 class LessonAdmin(admin.ModelAdmin):
+    save_on_top = True
+
     list_display = (
         'order',
         'title',
