@@ -71,7 +71,7 @@ class Lesson(models.Model):
     # owner
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
 
     # free or pro lesson
@@ -86,8 +86,10 @@ class Lesson(models.Model):
         default='free'
     )
 
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    # important note: using auto_now_add renders the field
+    # un-editable in the admin
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     public = models.BooleanField(default=False)
     # publish_date
     publish_date = models.DateField()
