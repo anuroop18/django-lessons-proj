@@ -12,6 +12,16 @@ class LessonAdmin(admin.ModelAdmin):
         'title',
         'public'
     )
+    exclude = ('order', 'user')
+
+    def save_model(self, request, obj, form, change):
+        admin_user = User.objects.get(is_superuser=True)
+        obj.user = admin_user
+        obj.order = Lesson.next_order()
+        super().save_model(request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        super().delete_model(request, obj)
 
 
 class SubscribtionAdmin(admin.ModelAdmin):

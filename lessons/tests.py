@@ -19,8 +19,6 @@ class LessonsViewTests(TestCase):
             title="Lesson1 ",
             order=1,
             description="Very interesting information about Django 3.0",
-            created_at=timezone.now(),
-            updated_at=timezone.now(),
             publish_date=timezone.now(),
             public=True,
             user=self.user,
@@ -28,10 +26,8 @@ class LessonsViewTests(TestCase):
         self.lesson_1.tags.add("django")
         self.lesson_2 = Lesson.objects.create(
             title="Lesson2 ",
-            order=1,
+            order=2,
             description="Very interesting information about python3.8",
-            created_at=timezone.now(),
-            updated_at=timezone.now(),
             publish_date=timezone.now(),
             public=True,
             user=self.user,
@@ -66,6 +62,12 @@ class LessonsViewTests(TestCase):
         self.assertEqual(
             resp.context['lessons'].count(),
             1
+        )
+
+    def test_next_order(self):
+        # lessons with order 1 and 2 were created in setup method
+        self.assertEqual(
+            3, Lesson.next_order()
         )
 
 

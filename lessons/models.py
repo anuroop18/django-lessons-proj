@@ -44,13 +44,12 @@ class LessonsManager(models.Manager):
 class Lesson(models.Model):
 
     # Lesson #5 (in this case field holds an integer value of 5)
-    order = models.IntegerField()
+    order = models.IntegerField(blank=True)
 
     # e.g. Starting a New Django Project - Right Way
     title = models.CharField(
         max_length=200,
         blank=False,
-        null=False
     )
 
     slug = models.SlugField(null=True)
@@ -65,13 +64,13 @@ class Lesson(models.Model):
     video = EmbedVideoField(
         max_length=600,
         blank=True,
-        null=True
     )
 
     # owner
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        blank=True,
     )
 
     # free or pro lesson
@@ -109,6 +108,17 @@ class Lesson(models.Model):
                     'slug': self.slug
                 }
             )
+
+    def next_order():
+        lessons = [
+            obj.order for obj in Lesson.objects.all()
+        ]
+        max_lessons = max(lessons)
+
+        if not max_lessons:
+            return 1
+        else:
+            return max(lessons) + 1
 
 
 class Subscribtion(models.Model):
