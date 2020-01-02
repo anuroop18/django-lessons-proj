@@ -7,28 +7,18 @@
 {% block sidebar_col_class %} {% endblock %}
 
 {% block central_content %}
-    <div class="row lesson py-3">
-        <div class="col-lg-12">
-            {% video lesson.video '800x600' %}
-        </div>
-    </div>
-    <div class="row">
+    <div class="row py-3">
         <div class="col-lg-9">
-           <h4>
+           <h3>
                 <span class="text-muted">
                     #{{lesson.order}}
                 </span>
                 <span class="font-weight-bold">
                 {{lesson.title}}
                 </span>
-            </h4>
+            </h3>
         </div>
         <div class="col-lg-3">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-9">
-            <span class="text-muted"><small>{{lesson.updated_at | date:"M d, Y"}}</small></span>
         </div>
     </div>
     <div class="row">
@@ -36,6 +26,18 @@
             {{lesson.description}}
         </div>
     </div>
+    <div class="row lesson py-3">
+        <div class="col-lg-12">
+            {% video lesson.video '800x600' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9">
+            <span class="text-muted"><small>{{lesson.updated_at | date:"M d, Y"}}</small></span>
+        </div>
+    </div>
+
     {% if lesson.references %}
         <div class="row">
             <div class="col-lg-12">
