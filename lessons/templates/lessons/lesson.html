@@ -14,7 +14,14 @@
     </div>
     <div class="row">
         <div class="col-lg-9">
-           <span class="text-muted">#{{lesson.order}}</span> <span class="font-weight-bold">{{lesson.title}}</span>
+           <h4>
+                <span class="text-muted">
+                    #{{lesson.order}}
+                </span>
+                <span class="font-weight-bold">
+                {{lesson.title}}
+                </span>
+            </h4>
         </div>
         <div class="col-lg-3">
         </div>
@@ -29,4 +36,12 @@
             {{lesson.description}}
         </div>
     </div>
+    {% if lesson.references %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h5>References</h5>
+                {{lesson.references | safe}}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

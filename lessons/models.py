@@ -57,6 +57,9 @@ class Lesson(models.Model):
     # a longer description
     description = models.TextField()
 
+    # urls to further reading
+    references = models.TextField(null=True, blank=True)
+
     image = models.ImageField(
         upload_to='uploads/',
         default='static/img/lesson.jpg'
