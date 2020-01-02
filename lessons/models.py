@@ -20,6 +20,12 @@ class LessonQuerySet(models.QuerySet):
 
         return self.all()
 
+    def search(self, title):
+        if title:
+            return self.filter(title__icontains=title)
+
+        return self.all()
+
 
 class LessonsManager(models.Manager):
     def get_queryset(self):
@@ -30,6 +36,9 @@ class LessonsManager(models.Manager):
 
     def tagged(self, tag_id=None):
         return self.get_queryset().tagged(tag_id)
+
+    def search(self, title):
+        return self.get_queryset().search(title)
 
 
 class Lesson(models.Model):
