@@ -86,10 +86,10 @@ class Lesson(models.Model):
         default='free'
     )
 
-    # important note: using auto_now_add renders the field
-    # un-editable in the admin
+    # will be automatically updated only during creation
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    # will be automatically updated by django on every save
+    updated_at = models.DateTimeField(auto_now=True)
     public = models.BooleanField(default=False)
     # publish_date
     publish_date = models.DateField()
