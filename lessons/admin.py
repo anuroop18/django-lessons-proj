@@ -12,12 +12,13 @@ class LessonAdmin(admin.ModelAdmin):
         'title',
         'public'
     )
-    exclude = ('order', 'user')
+    exclude = ('user')
 
     def save_model(self, request, obj, form, change):
         admin_user = User.objects.get(is_superuser=True)
         obj.user = admin_user
-        obj.order = Lesson.next_order()
+        if not change:
+            obj.order = Lesson.next_order()
         super().save_model(request, obj, form, change)
 
     def delete_model(self, request, obj):
