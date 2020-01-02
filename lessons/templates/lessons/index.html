@@ -14,7 +14,7 @@
                 <ul class="list-unstyled d-flex flex-row">
                     <li class="mx-1"><span class="font-weight-bold">Lesson #{{lesson.order}}</span></li>
                     <li>–</li>
-                    <li class="mx-1">{{lesson.updated_at | date:"M d, Y"}}</li>
+                    <li class="mx-1">{{lesson.created_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
             <h5><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
