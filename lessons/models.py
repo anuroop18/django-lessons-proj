@@ -113,12 +113,11 @@ class Lesson(models.Model):
         lessons = [
             obj.order for obj in Lesson.objects.all()
         ]
-        max_lessons = max(lessons)
 
-        if not max_lessons:
+        if len(lessons) == 0:
             return 1
-        else:
-            return max(lessons) + 1
+
+        return max(lessons) + 1
 
 
 class Subscribtion(models.Model):

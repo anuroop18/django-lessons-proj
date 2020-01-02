@@ -8,6 +8,15 @@ from taggit.models import Tag
 from lessons.models import (Lesson, User)
 
 
+class LessonsOrderTests(TestCase):
+    def test_initial_order(self):
+        # if no other lesson is found in DB, initial
+        # lesson order will be = 1
+        self.assertEqual(
+            1, Lesson.next_order()
+        )
+
+
 class LessonsViewTests(TestCase):
 
     def setUp(self):
