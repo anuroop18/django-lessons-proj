@@ -1,12 +1,12 @@
 {% extends 'lessons/base.html' %}
-{% load static %}
+{% load static thumbnail %}
 
 {% block central_content %}
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
         <div class="col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
             <a href="{{ lesson.get_absolute_url }}">
-                <img src="{{lesson.image.url}}"  width="280" alt="">
+                <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
             </a>
         </div>
         <div class="col-lg-8">

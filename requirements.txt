@@ -4,4 +4,5 @@ django-taggit
 Pillow
 django-embed-video
 django-storages
+easy-thumbnails
 boto3

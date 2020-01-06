@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'taggit',
     'storages',
     'embed_video',
+    'easy_thumbnails',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
