@@ -12,7 +12,7 @@ class User(AbstractUser):
 class LessonQuerySet(models.QuerySet):
 
     def published(self):
-        return self.filter(public=True).order_by('-updated_at')
+        return self.filter(public=True).order_by('-created_at')
 
     def tagged(self, tag_id=None):
         if tag_id:
