@@ -27,6 +27,7 @@ DATABASES = {
 
 DEBUG = True
 
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/home/eugen/projects/Django-Lessons.js/static/',
