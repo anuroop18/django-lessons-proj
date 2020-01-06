@@ -12,7 +12,7 @@ class LessonAdmin(admin.ModelAdmin):
         'title',
         'public'
     )
-    exclude = ('user')
+    exclude = ('user', )
 
     def save_model(self, request, obj, form, change):
         admin_user = User.objects.get(is_superuser=True)

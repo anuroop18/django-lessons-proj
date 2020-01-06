@@ -21,6 +21,7 @@ STATIC_ASSETS_VER = "0.0.1"
 INSTALLED_APPS = [
     'lessons',
     'taggit',
+    'storages',
     'embed_video',
     'django.contrib.admin',
     'django.contrib.auth',

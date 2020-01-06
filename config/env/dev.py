@@ -25,46 +25,10 @@ DATABASES = {
     }
 }
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/eugen/var/'
-
 DEBUG = True
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'django_all': {
-            'class': 'logging.FileHandler',
-            'filename': '/home/eugen/var/logging/django.log',
-        },
-        'lessons_all': {
-            'class': 'logging.FileHandler',
-            'filename': '/home/eugen/var/logging/lessons.log',
-        },
-    },
-    'loggers': {
-        # Logs only in development server (runserver command)
-        # Works only with settings.DEBUG = True
-        'django.server': {
-            'handlers': ['django_all'],
-            'level': 'DEBUG',
-        },
-        # Logs only 5xy and 4xx errors
-        # settings.DEBUG does not change its behaviour
-        'django.request': {
-            'handlers': ['django_all'],
-            'level': 'INFO',
-        },
-        # Logs database queries. Requires DEBUG level.
-        # Works only with settings.DEBUG = True
-        'django.db.backends': {
-            'handlers': ['django_all'],
-            'level': 'DEBUG',
-        },
-        'lessons': {
-            'handlers': ['lessons_all'],
-            'level': 'INFO',
-        },
-    },
-}
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/home/eugen/projects/Django-Lessons.js/static/',
+]
+
