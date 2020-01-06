@@ -46,6 +46,10 @@ def lesson(request, order, slug):
     )
 
 
+def handler500(request):
+    return render(request, "lessons/500.html")
+
+
 class PageView(TemplateView):
     pass
 
