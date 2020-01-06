@@ -13,8 +13,12 @@ def static_bundle_url(request):
         static_css = "/static/css/bundle.css"
     else:
         static_ver = settings.STATIC_ASSETS_VER
-        static_js = f"/static/js/bundle.{static_ver}.js"
-        static_css = f"/static/css/bundle.{static_ver}.css"
+        if not static_ver:
+            static_js = f"/static/js/bundle.js"
+            static_css = f"/static/css/bundle.css"
+        else:
+            static_js = f"/static/js/bundle.{static_ver}.js"
+            static_css = f"/static/css/bundle.{static_ver}.css"
     return {
         'STATIC_JS_URL': static_js,
         'STATIC_CSS_URL': static_css,

@@ -2,7 +2,6 @@ from django.urls import path
 
 from lessons import views
 from lessons.views import PageView
-from django.conf.urls import handler500
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -18,8 +17,6 @@ urlpatterns = [
     ),
     path('500', views.handler500, name='handler500')
 ]
-
-handler500 = views.handler500
 
 pages = [
     'privacy',

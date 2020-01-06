@@ -14,7 +14,7 @@ SECRET_KEY = '@8=$y!gnmw16e6vbk#i%s=oqis4zii5xzr&uv9=u#-kt%7je0a'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-STATIC_ASSETS_VER = "0.0.1"
+STATIC_ASSETS_VER = None
 
 # Application definition
 

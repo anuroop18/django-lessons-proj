@@ -25,6 +25,8 @@ def index(request):
     lessons = Lesson.obj.published().tagged(tag_id).search(title=q)
     tags = Tag.objects.all().order_by('name')
 
+    raise Exception("XXX")
+
     return render(
         request,
         'lessons/index.html',
