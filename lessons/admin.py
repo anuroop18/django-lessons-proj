@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.admin import UserAdmin
@@ -7,8 +8,18 @@ from lessons.models import (User, Lesson, Subscribtion)
 
 
 def notify_new_lesson(modeladmin, request, queryset):
-    text_msg = ""
-    html_msg = ""
+    context = {
+        'lessons': queryset
+    }
+
+    text_msg = render_to_string(
+        "lessons/notify_subscribers/email.txt",
+        context
+    )
+    html_msg = render_to_string(
+        "lessons/notify_subscribers/email.html",
+        context
+    )
 
     subscribers_email_list = [
         obj.email for obj in Subscribtion.objects.all()
