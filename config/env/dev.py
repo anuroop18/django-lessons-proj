@@ -25,7 +25,7 @@ DATABASES = {
     }
 }
 
-DEBUG = False
+DEBUG = True
 
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
 AWS_S3_REGION_NAME = os.environ['AWS_S3_REGION_NAME']
@@ -40,3 +40,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/home/eugen/projects/Django-Lessons.js/static/',
 ]
+
+EMAIL_FROM = 'eugen@django-lessons.com'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/home/eugen/django_emails/'
