@@ -1,7 +1,35 @@
 from django.contrib import admin
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.admin import UserAdmin
 from lessons.models import (User, Lesson, Subscribtion)
+
+
+def notify_new_lesson(modeladmin, request, queryset):
+    text_msg = ""
+    html_msg = ""
+
+    subscribers_email_list = [
+        obj.email for obj in Subscribtion.objects.all()
+    ]
+
+    if queryset.count() > 2:
+        title = "New Lessons available"
+    elif queryset.count() == 1:
+        lesson = queryset.first()
+        title = f"New Lesson Released - {lesson.order} {lesson.title}"
+    msg = EmailMultiAlternatives(
+        title,
+        text_msg,
+        settings.EMAIL_FROM,
+        subscribers_email_list
+    )
+    msg.attach_alternative(html_msg, "text/html")
+    msg.send()
+
+
+notify_new_lesson.short_description = "Notify subscribers about sel. lessons"
 
 
 class LessonAdmin(admin.ModelAdmin):
@@ -13,6 +41,7 @@ class LessonAdmin(admin.ModelAdmin):
         'public'
     )
     exclude = ('user', )
+    actions = [notify_new_lesson]
 
     def save_model(self, request, obj, form, change):
         admin_user = User.objects.get(is_superuser=True)
