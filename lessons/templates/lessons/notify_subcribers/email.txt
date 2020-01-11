@@ -1,0 +1,15 @@
+Hi!
+
+I just wanted to let you know that new {% if just_one_lesson %} lesson was {% else %} lessons were {% endif %} released:
+
+{% for lesson in lessons %}
+
+    #{{ lesson.order }} - {{ lesson.title }}
+
+    {{ lesson.description }}
+
+{% endfor %}
+
+Keep on learning!
+Regards,
+Eugen / www.django-lessons.com
