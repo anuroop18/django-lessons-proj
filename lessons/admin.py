@@ -8,8 +8,15 @@ from lessons.models import (User, Lesson, Subscribtion)
 
 
 def notify_new_lesson(modeladmin, request, queryset):
+
+    if queryset.count() == 1:
+        just_one_lesson = True
+    else:
+        just_one_lesson = False
+
     context = {
-        'lessons': queryset
+        'lessons': queryset,
+        'just_one_lesson': just_one_lesson
     }
 
     text_msg = render_to_string(
