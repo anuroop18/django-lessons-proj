@@ -3,7 +3,7 @@ from lessons.models import Lesson
 
 
 class LatestLessonsFeed(Feed):
-    title = "Latest Lessons"
+    title = "Django Lessons"
     link = "/latest/"
     description = "Keep track of latest Lessons."
 
