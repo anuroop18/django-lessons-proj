@@ -6,3 +6,4 @@ django-embed-video
 django-storages
 easy-thumbnails
 boto3
+django-extensions

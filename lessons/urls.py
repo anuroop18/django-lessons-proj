@@ -1,5 +1,6 @@
 from django.urls import path
 
+from lessons.feed import LatestLessonsFeed
 from lessons import views
 from lessons.views import PageView
 
@@ -15,6 +16,7 @@ urlpatterns = [
         views.subscribe,
         name='subscribe'
     ),
+    path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
 ]
 
