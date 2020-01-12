@@ -32,7 +32,7 @@ def notify_new_lesson(modeladmin, request, queryset):
         obj.email for obj in Subscribtion.objects.all()
     ]
 
-    if queryset.count() > 2:
+    if queryset.count() > 1:
         title = "New Lessons available"
     elif queryset.count() == 1:
         lesson = queryset.first()

@@ -1,17 +1,20 @@
-<p>
+
 Hi!
-</p>
+<br/>
 
 <p>
 I just wanted to let you know that new {% if just_one_lesson %} lesson was {% else %} lessons were {% endif %} released:
 </p>
 {% for lesson in lessons %}
     <p>
-        #{{ lesson.order }} - {{ lesson.title }}
+        <a href="https://django-lessons.com{{ lesson.get_absolute_url }}">
+        Lesson #{{ lesson.order }}-{{ lesson.title }}
+        </a>
     </p>
     <p>
         {{ lesson.description }}
     </p>
+
 {% endfor %}
 <br />
 Keep on learning!<br/>
