@@ -4,7 +4,7 @@
 {% block central_content %}
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
-        <div class="col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
+        <div class="picture col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
             <a href="{{ lesson.get_absolute_url }}">
                 <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
             </a>
@@ -17,7 +17,7 @@
                     <li class="mx-1">{{lesson.created_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
-            <h5><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
+            <h5 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
             <p class="description mb-3">
                 {{lesson.description | truncatewords:32 }}
             </p>
