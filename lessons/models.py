@@ -57,6 +57,11 @@ class Lesson(models.Model):
     # a longer description
     description = models.TextField()
 
+    article = models.TextField(
+        null=True,
+        blank=True,
+    )
+
     # urls to further reading
     references = models.TextField(null=True, blank=True)
 
