@@ -15,6 +15,16 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_CSS_URL }}" />
 <link rel="alternate" type="application/rss+xml" title="Django Lessons" href="https://www.django-lessons.com{% url 'feed' %}" />
 
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+       hljs.initHighlightingOnLoad();
+    });
+    </script>
+
 </head>
 
 <body>
