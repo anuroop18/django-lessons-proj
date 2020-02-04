@@ -5,12 +5,6 @@ from lessons import views
 from lessons.views import PageView
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path(
-        'lesson/lesson-<int:order>-<slug:slug>',
-        views.lesson,
-        name='lesson'
-    ),
     path(
         'subscribe',
         views.subscribe,
