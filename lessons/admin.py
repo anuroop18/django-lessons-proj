@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.admin import UserAdmin
-from lessons.models import (User, Subscribtion)
+from lessons.models import Subscribtion
 
 
 def notify_new_lesson(modeladmin, request, queryset):
@@ -54,6 +54,6 @@ class SubscribtionAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(User, UserAdmin)
+#admin.site.register(User, UserAdmin)
 admin.site.register(Subscribtion, SubscribtionAdmin)
 

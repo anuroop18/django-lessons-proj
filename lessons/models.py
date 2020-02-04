@@ -1,7 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from taggit.managers import TaggableManager
-from django.contrib.auth.models import AbstractUser
 
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
@@ -11,10 +9,6 @@ from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel
-
-
-class User(AbstractUser):
-    pass
 
 
 class Lesson(Page):
@@ -31,12 +25,9 @@ class Lesson(Page):
     ], blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body'),
+        FieldPanel('short_description'),
         StreamFieldPanel('content'),
     ]
-    # managers
-    objects = models.Manager()
-    tags = TaggableManager()
 
     def __str__(self):
         return f"#{self.order} {self.title}"
