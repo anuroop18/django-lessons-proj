@@ -11,7 +11,14 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel
 
 
+class LessonsIndex(Page):
+    """ Lessons index """
+    pass
+
+
 class Lesson(Page):
+
+    order = models.IntegerField(blank=True, default=0)
 
     short_description = RichTextField()
 
@@ -26,11 +33,18 @@ class Lesson(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('short_description'),
+        FieldPanel('order'),
         StreamFieldPanel('content'),
     ]
 
     def __str__(self):
         return f"#{self.order} {self.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.order:
+            self.order = Lesson.next_order()
+
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def get_absolute_url(self):
             return reverse(
@@ -39,6 +53,16 @@ class Lesson(Page):
                     'slug': self.slug
                 }
             )
+
+    def next_order():
+        lessons = [
+            obj.order for obj in Lesson.objects.all()
+        ]
+
+        if len(lessons) == 0:
+            return 1
+
+        return max(lessons) + 1
 
 
 class Subscribtion(models.Model):

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+    'wagtail.contrib.modeladmin',
     'taggit',
     'storages',
     'easy_thumbnails',
