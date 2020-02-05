@@ -1,6 +1,11 @@
 from django.db import models
 from django.urls import reverse
 
+# tag related
+from modelcluster.fields import ParentalKey
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.core import blocks
@@ -34,6 +39,27 @@ class CodeBlock(blocks.StructBlock):
         icon = 'cup'
 
 
+class LessonTagIndex(Page):
+    def get_context(self, request):
+
+        # Filter by tag
+        tag = request.GET.get('tag')
+        lessons = Lesson.objects.filter(tags__name=tag)
+
+        # Update template context
+        context = super().get_context(request)
+        context['lessons'] = lessons
+        return context
+
+
+class LessonTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'Lesson',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+
 class Lesson(Page):
 
     order = models.IntegerField(blank=True, default=0)
@@ -43,6 +69,11 @@ class Lesson(Page):
     image = models.ImageField(
         upload_to='uploads/',
         default='static/img/lesson.jpg'
+    )
+
+    tags = ClusterTaggableManager(
+        through=LessonTag,
+        blank=True
     )
 
     content = StreamField([
@@ -61,6 +92,7 @@ class Lesson(Page):
         FieldPanel('first_published_at'),
         FieldPanel('image'),
         FieldPanel('short_description'),
+        FieldPanel('tags'),
         StreamFieldPanel('content'),
     ]
 
