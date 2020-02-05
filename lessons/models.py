@@ -16,6 +16,24 @@ class LessonsIndex(Page):
     pass
 
 
+class CodeBlock(blocks.StructBlock):
+    code = blocks.TextBlock()
+    lang = blocks.ChoiceBlock(
+        choices=(
+            ('python', 'Python'),
+            ('bash', 'Bash'),
+            ('javascript', 'Javascript'),
+            ('json', 'JSON'),
+        ),
+        required=False,
+        default='',
+    )
+
+    class Meta:
+        template = 'lessons/blocks/code.html'
+        icon = 'cup'
+
+
 class Lesson(Page):
 
     order = models.IntegerField(blank=True, default=0)
@@ -29,6 +47,8 @@ class Lesson(Page):
         ('pro_image', ImageChooserBlock()),
         ('embed', EmbedBlock()),
         ('pro_embed', EmbedBlock()),
+        ('code', CodeBlock()),
+        ('pro_code', CodeBlock()),
     ], blank=True)
 
     content_panels = Page.content_panels + [
