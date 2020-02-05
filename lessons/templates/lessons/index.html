@@ -19,7 +19,7 @@
                         <li class="mx-1 tags">
                             {% for tag in lesson.tags.all %}
                                 <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                    <spanc class="badge badge-success">{{ tag }}</span>
+                                    <spanc class="badge badge-info">{{ tag }}</span>
                                 </a>
                             {% endfor %}
                         </li>
