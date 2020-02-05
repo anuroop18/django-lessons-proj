@@ -23,7 +23,7 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
-    lessons = Lesson.objects.all()
+    lessons = Lesson.objects.all().order_by('-first_published_at')
 
     return render(
         request,

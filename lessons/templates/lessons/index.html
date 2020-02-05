@@ -14,12 +14,12 @@
                 <ul class="list-unstyled d-flex flex-row">
                     <li class="mx-1"><span class="font-weight-bold">Lesson #{{lesson.order}}</span></li>
                     <li>–</li>
-                    <li class="mx-1">{{lesson.created_at | date:"M d, Y"}}</li>
+                    <li class="mx-1">{{lesson.first_published_at | date:"M d, Y"}}</li>
                 </ul>
             </div>
             <h5 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
             <p class="description mb-3">
-                {{lesson.description | truncatewords:32 }}
+                {{lesson.short_description | safe | truncatewords:32 }}
             </p>
             <p>
                 <a href="{{ lesson.get_absolute_url }}" class="btn btn-success" role="button">Watch</a>

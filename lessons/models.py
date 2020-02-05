@@ -40,6 +40,11 @@ class Lesson(Page):
 
     short_description = RichTextField()
 
+    image = models.ImageField(
+        upload_to='uploads/',
+        default='static/img/lesson.jpg'
+    )
+
     content = StreamField([
         ('paragraph', blocks.RichTextBlock()),
         ('pro_paragraph', blocks.RichTextBlock()),
@@ -52,8 +57,10 @@ class Lesson(Page):
     ], blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('short_description'),
         FieldPanel('order'),
+        FieldPanel('first_published_at'),
+        FieldPanel('image'),
+        FieldPanel('short_description'),
         StreamFieldPanel('content'),
     ]
 
