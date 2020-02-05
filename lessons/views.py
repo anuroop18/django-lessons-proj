@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from lessons.models import Subscribtion
 from lessons.forms import SubscribeForm
 from lessons.models import Lesson
+from taggit.models import Tag
 
 
 logger = logging.getLogger(__name__)
@@ -23,12 +24,13 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
+    tags = Tag.objects.all().order_by('name')
     lessons = Lesson.objects.all().order_by('-first_published_at')
 
     return render(
         request,
         'lessons/index.html',
-        {'lessons': lessons}
+        {'lessons': lessons, 'tags': tags}
     )
 
 

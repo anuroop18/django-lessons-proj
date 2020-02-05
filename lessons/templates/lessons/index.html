@@ -18,7 +18,9 @@
                     {% if lesson.tags.all.count %}
                         <li class="mx-1 tags">
                             {% for tag in lesson.tags.all %}
-                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}</a>
+                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                    <spanc class="badge badge-success">{{ tag }}</span>
+                                </a>
                             {% endfor %}
                         </li>
                     {% endif %}
