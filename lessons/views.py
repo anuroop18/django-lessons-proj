@@ -26,6 +26,10 @@ def index(request):
 
     tags = Tag.objects.all().order_by('name')
     lessons = Lesson.objects.all().order_by('-first_published_at')
+    q = request.GET.get('q', None)
+
+    if q:
+        lessons = lessons.filter(title__icontains=q)
 
     return render(
         request,

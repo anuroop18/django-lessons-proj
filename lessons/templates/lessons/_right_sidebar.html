@@ -1,3 +1,5 @@
+{% load wagtailcore_tags static %}
+
 <div class="card my-4">
   <h5 class="card-header">Tags</h5>
   <div class="card-body">
@@ -6,7 +8,7 @@
         <ul class="list-unstyled mb-0 categories">
           {% for tag in tags %}
           <li>
-            <a href="{% url 'index' %}?tag_id={{tag.id}}">{{ tag.name }}</a>
+            <a href="{% slugurl 'tags' %}?tag={{ tag.name }}">{{ tag.name }}</a>
           </li>
           {% endfor %}
         </ul>
