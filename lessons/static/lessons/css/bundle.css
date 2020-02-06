@@ -7763,16 +7763,16 @@ iframe {
   background-size: 100% 100%; }
 
 .social.github {
-  background-image: url(/static/img/github.svg); }
+  background-image: url(/static/lessons/img/github.svg); }
 
 .social.twitter {
-  background-image: url(/static/img/twitter.svg); }
+  background-image: url(/static/lessons/img/twitter.svg); }
 
 .social.youtube {
-  background-image: url(/static/img/youtube.svg); }
+  background-image: url(/static/lessons/img/youtube.svg); }
 
 .social.rss {
-  background-image: url(/static/img/rss.svg); }
+  background-image: url(/static/lessons/img/rss.svg); }
 
 @font-face {
   font-family: 'themify';
