@@ -1,113 +1,109 @@
 from django.db import models
 from django.urls import reverse
-from taggit.managers import TaggableManager
-from embed_video.fields import EmbedVideoField
-from django.contrib.auth.models import AbstractUser
+
+# tag related
+from modelcluster.fields import ParentalKey
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+
+from wagtail.core.fields import RichTextField
+from wagtail.core.models import Page
+from wagtail.core import blocks
+from wagtail.core.fields import StreamField
+from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.embeds.blocks import EmbedBlock
+from wagtail.admin.edit_handlers import FieldPanel
 
 
-class User(AbstractUser):
+class LessonsIndex(Page):
+    """ Lessons index """
     pass
 
 
-class LessonQuerySet(models.QuerySet):
-
-    def published(self):
-        return self.filter(public=True).order_by('-created_at')
-
-    def tagged(self, tag_id=None):
-        if tag_id:
-            return self.filter(tags__id__in=[tag_id])
-
-        return self.all()
-
-    def search(self, title):
-        if title:
-            return self.filter(title__icontains=title)
-
-        return self.all()
-
-
-class LessonsManager(models.Manager):
-    def get_queryset(self):
-        return LessonQuerySet(self.model, using=self._db)
-
-    def published(self):
-        return self.get_queryset().published()
-
-    def tagged(self, tag_id=None):
-        return self.get_queryset().tagged(tag_id)
-
-    def search(self, title):
-        return self.get_queryset().search(title)
-
-
-class Lesson(models.Model):
-
-    # Lesson #5 (in this case field holds an integer value of 5)
-    order = models.IntegerField(blank=True)
-
-    # e.g. Starting a New Django Project - Right Way
-    title = models.CharField(
-        max_length=200,
-        blank=False,
+class CodeBlock(blocks.StructBlock):
+    code = blocks.TextBlock()
+    lang = blocks.ChoiceBlock(
+        choices=(
+            ('python', 'Python'),
+            ('bash', 'Bash'),
+            ('javascript', 'Javascript'),
+            ('json', 'JSON'),
+        ),
+        required=False,
+        default='',
     )
 
-    slug = models.SlugField(null=True)
+    class Meta:
+        template = 'lessons/blocks/code.html'
+        icon = 'cup'
 
-    # a longer description
-    description = models.TextField()
 
-    article = models.TextField(
-        null=True,
-        blank=True,
+class LessonTagIndex(Page):
+    def get_context(self, request):
+
+        # Filter by tag
+        tag = request.GET.get('tag')
+        lessons = Lesson.objects.filter(tags__name=tag)
+
+        # Update template context
+        context = super().get_context(request)
+        context['lessons'] = lessons
+        return context
+
+
+class LessonTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'Lesson',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
     )
 
-    # urls to further reading
-    references = models.TextField(null=True, blank=True)
+
+class Lesson(Page):
+
+    order = models.IntegerField(blank=True, default=0)
+
+    short_description = RichTextField()
 
     image = models.ImageField(
         upload_to='uploads/',
         default='static/img/lesson.jpg'
     )
-    video = EmbedVideoField(
-        max_length=600,
-        blank=True,
+
+    tags = ClusterTaggableManager(
+        through=LessonTag,
+        blank=True
     )
 
-    # owner
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=True,
-    )
+    content = StreamField([
+        ('paragraph', blocks.RichTextBlock()),
+        ('pro_paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+        ('pro_image', ImageChooserBlock()),
+        ('embed', EmbedBlock()),
+        ('pro_embed', EmbedBlock()),
+        ('code', CodeBlock()),
+        ('pro_code', CodeBlock()),
+    ], blank=True)
 
-    # free or pro lesson
-    lesson_type = models.CharField(
-        max_length=16,
-        choices=[
-            # free for everybody
-            ('free', 'Free Lesson'),
-            # for paid accounts
-            ('pro', 'Pro Lesson'),
-        ],
-        default='free'
-    )
-
-    # will be automatically updated only during creation
-    created_at = models.DateTimeField(auto_now_add=True)
-    # will be automatically updated by django on every save
-    updated_at = models.DateTimeField(auto_now=True)
-    public = models.BooleanField(default=False)
-    # publish_date
-    publish_date = models.DateField()
-
-    # managers
-    objects = models.Manager()
-    obj = LessonsManager()
-    tags = TaggableManager()
+    content_panels = Page.content_panels + [
+        FieldPanel('order'),
+        FieldPanel('first_published_at'),
+        FieldPanel('image'),
+        FieldPanel('short_description'),
+        FieldPanel('tags'),
+        StreamFieldPanel('content'),
+    ]
 
     def __str__(self):
         return f"#{self.order} {self.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.order:
+            self.order = Lesson.next_order()
+
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def get_absolute_url(self):
             return reverse(

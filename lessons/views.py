@@ -3,13 +3,17 @@ from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from taggit.models import Tag
-
-from lessons.models import (Lesson, Subscribtion)
+from lessons.models import Subscribtion
 from lessons.forms import SubscribeForm
+from lessons.models import Lesson
+from taggit.models import Tag
 
 
 logger = logging.getLogger(__name__)
+
+
+def handler500(request):
+    return render(request, "lessons/500.html")
 
 
 def index(request):
@@ -20,10 +24,8 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
-    tag_id = request.GET.get('tag_id', None)
-    q = request.GET.get('q', None)
-    lessons = Lesson.obj.published().tagged(tag_id).search(title=q)
     tags = Tag.objects.all().order_by('name')
+    lessons = Lesson.objects.all().order_by('-first_published_at')
 
     return render(
         request,
@@ -42,12 +44,8 @@ def lesson(request, order, slug):
     return render(
         request,
         'lessons/lesson.html',
-        {'lesson': lesson}
+        {'page': lesson}
     )
-
-
-def handler500(request):
-    return render(request, "lessons/500.html")
 
 
 class PageView(TemplateView):

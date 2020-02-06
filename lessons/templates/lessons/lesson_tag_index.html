@@ -1,6 +1,7 @@
 {% extends 'lessons/base.html' %}
 {% load static thumbnail wagtailcore_tags %}
 
+
 {% block central_content %}
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
@@ -18,9 +19,7 @@
                     {% if lesson.tags.all.count %}
                         <li class="mx-1 tags">
                             {% for tag in lesson.tags.all %}
-                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                    <spanc class="badge badge-info">{{ tag }}</span>
-                                </a>
+                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}</a>
                             {% endfor %}
                         </li>
                     {% endif %}

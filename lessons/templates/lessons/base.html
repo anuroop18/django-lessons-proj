@@ -1,3 +1,4 @@
+{% load wagtailcore_tags static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +11,14 @@
 <title>Django Lessons</title>
 
 <!-- Favicon -->
-<link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+<link rel='shortcut icon' type='image/x-icon' href="{% static 'lessons/favicon.ico' %}" />
 
-<link rel="stylesheet" type="text/css" href="{{ STATIC_CSS_URL }}" />
+<link rel="stylesheet" type="text/css" href="{% static 'lessons/css/bundle.css' %}" />
 <link rel="alternate" type="application/rss+xml" title="Django Lessons" href="https://www.django-lessons.com{% url 'feed' %}" />
 
 <link rel="stylesheet"
-      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+      href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
 
     <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
@@ -32,14 +33,14 @@
   <!-- https://getbootstrap.com/docs/4.0/components/navbar/ -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
       <a class="navbar-brand" href="{% url 'index' %}">
-        <img class="navbar-logo" src="/static/img/logo.svg" width="100">Django Lessons
+        <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100">Django Lessons
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <form class="form-inline" action="{% url 'index' %}">
+        <form class="form-inline" action="{% slugurl 'lessons' %}">
             <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
               <span class="input-group-btn mx-2">
                 <button class="btn btn-secondary btn-light" type="button">Go</button>
@@ -101,7 +102,7 @@
   <footer class="py-5">
     <div class="container">
       <ul class="list-unstyled  d-flex flex-row">
-        <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019</p></li>
+        <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019-2020</p></li>
         <li><a class="mx-2" href="{% url 'impressum' %}">Imprint</a></li>
         <li><a class="mx-2" href="{% url 'privacy' %}">Privacy</a></li>
         <li><a class="mx-2" href="{% url 'cookies' %}">Cookies Policy</a></li>
@@ -114,7 +115,7 @@
  footer -->
 
 </div>
-  <script src="{{ STATIC_JS_URL }}"></script>
+  <script src="{% static 'lessons/js/bundle.js' %}"></script>
   {% if not debug %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154361971-2"></script>
