@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +11,9 @@
 <title>Django Lessons</title>
 
 <!-- Favicon -->
-<link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+<link rel='shortcut icon' type='image/x-icon' href="{% static 'lessons/favicon.ico' %}" />
 
-<link rel="stylesheet" type="text/css" href="{{ STATIC_CSS_URL }}" />
+<link rel="stylesheet" type="text/css" href="{% static 'lessons/css/bundle.css' %}" />
 <link rel="alternate" type="application/rss+xml" title="Django Lessons" href="https://www.django-lessons.com{% url 'feed' %}" />
 
 <link rel="stylesheet"
@@ -33,7 +33,7 @@
   <!-- https://getbootstrap.com/docs/4.0/components/navbar/ -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
       <a class="navbar-brand" href="{% url 'index' %}">
-        <img class="navbar-logo" src="/static/img/logo.svg" width="100">Django Lessons
+        <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100">Django Lessons
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -115,7 +115,7 @@
  footer -->
 
 </div>
-  <script src="{{ STATIC_JS_URL }}"></script>
+  <script src="{% static 'lessons/js/bundle.js' %}"></script>
   {% if not debug %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154361971-2"></script>
