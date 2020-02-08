@@ -1,0 +1,12 @@
+psycopg2
+Pillow
+wagtail
+django-storages
+easy-thumbnails
+boto3
+django-extensions
+gunicorn
+pygraphviz # for graph_models
+Werkzeug==0.16   # for runserver_plus
+ipython    # for shell_plus
+ipdb       #

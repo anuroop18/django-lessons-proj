@@ -124,7 +124,7 @@ class Lesson(Page):
         return max(lessons) + 1
 
 
-class Subscribtion(models.Model):
+class Subscription(models.Model):
     email = models.EmailField(blank=False)
 
     def __str__(self):

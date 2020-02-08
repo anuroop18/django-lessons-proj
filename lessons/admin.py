@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.admin import UserAdmin
-from lessons.models import Subscribtion
+from lessons.models import Subscription
 
 
 def notify_new_lesson(modeladmin, request, queryset):
@@ -29,7 +29,7 @@ def notify_new_lesson(modeladmin, request, queryset):
     )
 
     subscribers_email_list = [
-        obj.email for obj in Subscribtion.objects.all()
+        obj.email for obj in Subscription.objects.all()
     ]
 
     if queryset.count() > 1:
@@ -50,10 +50,10 @@ def notify_new_lesson(modeladmin, request, queryset):
 notify_new_lesson.short_description = "Notify subscribers about sel. lessons"
 
 
-class SubscribtionAdmin(admin.ModelAdmin):
+class SubscriptionAdmin(admin.ModelAdmin):
     pass
 
 
 #admin.site.register(User, UserAdmin)
-admin.site.register(Subscribtion, SubscribtionAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)
 

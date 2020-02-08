@@ -3,7 +3,7 @@ from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from lessons.models import Subscribtion
+from lessons.models import Subscription
 from lessons.forms import SubscribeForm
 from lessons.models import Lesson
 from taggit.models import Tag
@@ -61,7 +61,7 @@ def subscribe(request):
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
-            subscribe = Subscribtion(email=form.cleaned_data['email'])
+            subscribe = Subscription(email=form.cleaned_data['email'])
             subscribe.save()
             return render(request, 'lessons/thankyou.html')
     else:
