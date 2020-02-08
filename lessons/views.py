@@ -25,7 +25,7 @@ def index(request):
         return HttpResponseBadRequest()
 
     tags = Tag.objects.all().order_by('name')
-    lessons = Lesson.objects.all().order_by('-first_published_at')
+    lessons = Lesson.objects.filter(live=True).order_by('-first_published_at')
     q = request.GET.get('q', None)
 
     if q:
