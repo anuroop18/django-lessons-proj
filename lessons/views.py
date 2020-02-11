@@ -2,6 +2,7 @@ import logging
 from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.core.paginator import Paginator
 
 from lessons.models import Subscription
 from lessons.forms import SubscribeForm
@@ -31,10 +32,20 @@ def index(request):
     if q:
         lessons = lessons.filter(title__icontains=q)
 
+    paginator = Paginator(lessons, 12)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         'lessons/index.html',
-        {'lessons': lessons, 'tags': tags}
+        {
+            'lessons': page_obj.object_list,
+            'tags': tags,
+            'page_obj': page_obj,
+            'page_number': int(page_number),
+            'paginator': paginator
+        }
     )
 
 
