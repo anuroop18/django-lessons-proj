@@ -13,6 +13,9 @@ from taggit.models import Tag
 logger = logging.getLogger(__name__)
 
 
+ITEMS_PER_PAGE = 10
+
+
 def handler500(request):
     return render(request, "lessons/500.html")
 
@@ -32,7 +35,7 @@ def index(request):
     if q:
         lessons = lessons.filter(title__icontains=q)
 
-    paginator = Paginator(lessons, 12)
+    paginator = Paginator(lessons, ITEMS_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
