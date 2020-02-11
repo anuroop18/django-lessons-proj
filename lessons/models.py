@@ -78,6 +78,8 @@ class Lesson(Page):
         blank=True
     )
 
+    script = RichTextField(blank=True)
+
     content = StreamField([
         ('paragraph', blocks.RichTextBlock()),
         ('pro_paragraph', blocks.RichTextBlock()),
@@ -95,6 +97,7 @@ class Lesson(Page):
         FieldPanel('image'),
         FieldPanel('short_description'),
         FieldPanel('tags'),
+        FieldPanel('script'),
         StreamFieldPanel('content'),
     ]
 
