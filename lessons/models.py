@@ -49,6 +49,8 @@ class LessonTagIndex(Page):
         # Update template context
         context = super().get_context(request)
         context['lessons'] = lessons
+        context['tags'] = Lesson.tags.most_common()
+
         return context
 
 

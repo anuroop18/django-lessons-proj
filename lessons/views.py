@@ -3,6 +3,7 @@ from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 from lessons.models import Subscription
 from lessons.forms import SubscribeForm
@@ -28,7 +29,6 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
-    tags = Tag.objects.all().order_by('name')
     lessons = Lesson.objects.filter(live=True).order_by('-first_published_at')
     q = request.GET.get('q', None)
 
@@ -44,7 +44,7 @@ def index(request):
         'lessons/index.html',
         {
             'lessons': page_obj.object_list,
-            'tags': tags,
+            'tags': Lesson.tags.most_common(),
             'page_obj': page_obj,
             'page_number': int(page_number),
             'paginator': paginator
