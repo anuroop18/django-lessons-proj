@@ -29,6 +29,7 @@ class CodeBlock(blocks.StructBlock):
             ('bash', 'Bash'),
             ('javascript', 'Javascript'),
             ('json', 'JSON'),
+            ('jinja', 'Django/jinja'),
         ),
         required=False,
         default='',
