@@ -21,6 +21,23 @@ class LessonsIndex(Page):
     pass
 
 
+class NoteBlock(blocks.StructBlock):
+    text = blocks.TextBlock()
+    note_type = blocks.ChoiceBlock(
+        choices=(
+            ('info', 'Info'),
+            ('warning', 'Warning'),
+            ('danger', 'Danger'),
+            ('note', 'Note'),
+        ),
+        required=False,
+        default='info',
+    )
+
+    class Meta:
+        template = 'lessons/blocks/note.html'
+
+
 class CodeBlock(blocks.StructBlock):
     code = blocks.TextBlock()
     lang = blocks.ChoiceBlock(
@@ -90,6 +107,7 @@ class Lesson(Page):
         ('pro_embed', EmbedBlock()),
         ('code', CodeBlock()),
         ('pro_code', CodeBlock()),
+        ('note', NoteBlock())
     ], blank=True)
 
     content_panels = Page.content_panels + [

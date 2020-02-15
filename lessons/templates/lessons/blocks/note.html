@@ -1,0 +1,10 @@
+{% load wagtailimages_tags %}
+
+<div class="alert alert-primary" role="alert">
+  {{value.text}}
+</div>
+
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">{{ value.note_type }}</h4>
+  <p class="mb-0">{{value.text}}</p>
+</div>
