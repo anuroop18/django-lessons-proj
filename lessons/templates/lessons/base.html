@@ -99,15 +99,38 @@
   <!--=================================
  footer -->
 
-  <footer class="py-5">
+  <footer class="py-5 footer black-bg">
     <div class="container">
-      <ul class="list-unstyled  d-flex flex-row">
-        <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019-2020</p></li>
-        <li><a class="mx-2" href="{% url 'impressum' %}">Imprint</a></li>
-        <li><a class="mx-2" href="{% url 'privacy' %}">Privacy</a></li>
-        <li><a class="mx-2" href="{% url 'cookies' %}">Cookies Policy</a></li>
-      </ul>
-      
+      <div class="row">
+          <div class="col-lg-2 col-sm-6 sm-mb-30">
+          <div class="footer-useful-link footer-hedding">
+            <h6 class="text-white mb-30 mt-10 text-uppercase">Navigation</h6>
+            <ul>
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'index' %}">Mission</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-6 sm-mb-30">
+          <div class="footer-useful-link footer-hedding">
+            <h6 class="text-white mb-30 mt-10 text-uppercase">Useful Link</h6>
+            <ul>
+              <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+              <li><a href="{% url 'cookies' %}">Cookie Policy</a></li>
+              <li><a href="{% url 'impressum' %}">Imprint</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <ul class="list-unstyled  d-flex flex-row">
+            <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019-2020</p></li>
+          </ul>
+        </div>
+      </div>
     </div>
     <!-- /.container -->
   </footer>

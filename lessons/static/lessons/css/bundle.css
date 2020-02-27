@@ -7756,6 +7756,50 @@ iframe {
   .lesson .description {
     font-size: 1rem; } }
 
+.footer .black-bg {
+  background: #1a1a1a; }
+  .footer .black-bg p {
+    color: rgba(255, 255, 255, 0.5); }
+  .footer .black-bg .social-icons li a {
+    color: rgba(255, 255, 255, 0.5); }
+  .footer .black-bg .social-icons li a:hover {
+    color: white !important; }
+
+.footer p {
+  font-size: 14px; }
+
+.footer-logo img {
+  width: 65%; }
+
+.footer h6 {
+  font-size: 14px; }
+
+.addresss-info li {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.5);
+  list-style: none; }
+
+.addresss-info i {
+  color: rgba(255, 255, 255, 0.5);
+  padding-right: 5px;
+  float: left;
+  display: table-cell;
+  width: 30px;
+  line-height: 23px;
+  font-size: 14px; }
+
+.addresss-info p {
+  display: table;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0px; }
+
+.addresss-info li a {
+  color: rgba(255, 255, 255, 0.5); }
+
+.footer a {
+  font-size: 14px; }
+
 .social {
   width: 1.8rem;
   height: 1.8rem;
@@ -8850,3 +8894,34 @@ iframe {
 .ti-rss-alt:before {
   content: "\e75f"; }
 
+footer.black-bg {
+  background: #1a1a1a; }
+  footer.black-bg p {
+    color: rgba(255, 255, 255, 0.7); }
+  footer.black-bg ul {
+    padding: 0; }
+    footer.black-bg ul li a {
+      color: white; }
+    footer.black-bg ul li a:hover {
+      color: #2046f2; }
+  footer.black-bg .social-icons li a {
+    color: rgba(255, 255, 255, 0.5); }
+  footer.black-bg .social-icons li a:hover {
+    color: white !important; }
+  footer.black-bg .footer-useful-link ul li {
+    list-style: none;
+    margin-bottom: 12px; }
+  footer.black-bg .footer-useful-link ul a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    vertical-align: top;
+    display: block;
+    line-height: 26px; }
+  footer.black-bg .footer-useful-link ul li:last-child {
+    margin-bottom: 0; }
+  footer.black-bg .footer-useful-link ul li a:hover {
+    color: #84ba3f;
+    text-decoration: none; }
+
+
+/*# sourceMappingURL=bundle.css.map*/
