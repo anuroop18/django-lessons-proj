@@ -11898,7 +11898,7 @@ footer.black-bg {
             align-items: center;
     display: -webkit-box;
     display: flex; }
-  footer.black-bg p {
+  footer.black-bg h6, footer.black-bg p {
     color: rgba(255, 255, 255, 0.7); }
   footer.black-bg ul {
     padding: 0; }
