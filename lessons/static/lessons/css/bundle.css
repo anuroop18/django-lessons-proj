@@ -7779,9 +7779,9 @@ iframe {
   margin-left: 20px; }
 
 .button:hover, .button:focus {
-  background: #353535;
+  background: #66922d;
   color: #ffffff;
-  border-color: #353535; }
+  border-color: #66922d; }
 
 button {
   transition: all 0.5s ease-in-out;
@@ -12114,7 +12114,11 @@ section {
   padding: 3rem 0; }
 
 .mild-bg {
-  background-color: #01aa44; }
+  background-color: #006528; }
+
+form.newsletter input.form-control {
+  padding: 0.8rem;
+  height: 3rem; }
 
 footer.black-bg {
   background: #1a1a1a;
