@@ -8895,7 +8895,8 @@ iframe {
   content: "\e75f"; }
 
 footer.black-bg {
-  background: #1a1a1a; }
+  background: #1a1a1a;
+  padding: 5rem 0 0; }
   footer.black-bg p {
     color: rgba(255, 255, 255, 0.7); }
   footer.black-bg ul {
@@ -8922,6 +8923,9 @@ footer.black-bg {
   footer.black-bg .footer-useful-link ul li a:hover {
     color: #84ba3f;
     text-decoration: none; }
+  footer.black-bg .footer-widget {
+    padding: 20px 0;
+    border-top: 1px solid #262626; }
 
 
 /*# sourceMappingURL=bundle.css.map*/
