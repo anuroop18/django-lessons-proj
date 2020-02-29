@@ -25,6 +25,10 @@ pages = [
     'impressum',
     'about',
     'cookies',
+    'contact',
+    'services',
+    'prices',
+    'mission'
 ]
 
 for page in pages:

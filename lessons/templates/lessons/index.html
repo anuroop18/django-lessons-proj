@@ -1,6 +1,32 @@
 {% extends 'lessons/base.html' %}
 {% load static thumbnail wagtailcore_tags %}
 
+{% block news_letter_section %}
+  <section class="mild-bg page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 text-center">
+          <h2 class="mb-30 text-white">Subscribe to the newsletter</h2>
+          <p class="mb-30 text-white">Be always informed about latest news, lessons, courses. I will never send more than one email per week.</p>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 text-center">
+            <form class="newsletter">
+              <div class="form-group">
+                <input type="text" placeholder="Email Address" class="form-control" name="email">
+                <small id="emailHelp" class="form-text text-white">Your email won't be shared with anybody else.</small>
+              </div>
+               <button class="button btn-block" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock news_letter_section %}
+
 {% block central_content %}
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
