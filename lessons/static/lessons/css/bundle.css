@@ -7687,6 +7687,9 @@ a.text-dark:hover, a.text-dark:focus {
 .bg-dark {
   background-color: #454545 !important; }
 
+body p {
+  color: #333; }
+
 h2, h3, h4, h5 {
   color: #0C3C26; }
 
@@ -12115,6 +12118,12 @@ section {
 
 .mild-bg {
   background-color: #006528; }
+
+.mission-statement .mission {
+  background-color: #c9fbe6;
+  padding: 1.5rem; }
+  .mission-statement .mission p {
+    color: #222; }
 
 form.newsletter input.form-control {
   padding: 0.8rem;
