@@ -1,5 +1,7 @@
 {% extends 'lessons/base.html' %}
 
+{% load static %}
+
 {% block right_sidebar %} {% endblock %}
 {% block about %} active {% endblock %}
 
@@ -11,19 +13,22 @@
                 Django Lessons is a weekly screencast about <a href="https://www.djangoproject.com/">Django Web Framework</a>
                 and related ecosystem. The screencasts are short and focus on one technique so you can quickly move on to applying it to your own project. The topics target the intermediate Django developer, but beginners and experts will get something out of it as well.
             </p>
-            <h4>Author</h4>
-            <p>My name is Eugen. I graduated in 2007 Bachelor of Computer
-            Science. From 2007 to 2018 I worked for couple of IT companies in
-            C, Ruby and Python (and a hundreds of other tools and
-            technologies). 
-            </p>
-            <p>
-            In 2019, I finally had enough courage, experience
-            and capital to start something on my own. In december 2019 I
-            registered, here in Berlin, Germany, <i>one-man business</i>
-            (<i>Einzelunternehmen</i> in German).
-            </p>
-            <h4>Tools</h4>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 m-4 m-sm-0 pb-3">
+                    <img class="img-fluid" src="{% static 'lessons/img/eugen.png' %}" alt="Eugen Ciur" />
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-12">
+                    <p>
+                    My name is Eugen. I graduated in 2007 Bachelor of Computer Science. From 2007 to 2018 I worked for couple of IT companies in C, Ruby and Python (and a hundreds of other tools and technologies).
+                    </p>
+                    <p>
+                    In 2019, I finally had enough courage, experience and capital to start something on my own. In december 2019 I registered, here in Berlin, Germany, <i>one-man business</i>
+                    (<i>Einzelunternehmen</i> in German).
+                    </p>
+                </div>
+            </div>
+ 
+            <h4 class="mt-4">Tools</h4>
             <p>
                 <p>Software and Hardware I use:</p>
                 <ul>
