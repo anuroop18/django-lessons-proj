@@ -17,7 +17,7 @@ os.chdir(
 
 setup(
     name='django-lessons',
-    version='1.1.0',
+    version='1.2.0',
     packages=find_packages(),
     # This (include_package_data=True) tells setuptools to install any data
     # files it finds in your packages. The data files must be specified via
