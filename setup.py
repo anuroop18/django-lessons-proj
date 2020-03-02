@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 import os
 from setuptools import setup, find_packages
-# Don't look further there is a version.py file in current directory
-from version import get_version
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
@@ -19,7 +17,7 @@ os.chdir(
 
 setup(
     name='django-lessons',
-    version=get_version(),
+    version='1.1.0',
     packages=find_packages(),
     # This (include_package_data=True) tells setuptools to install any data
     # files it finds in your packages. The data files must be specified via
