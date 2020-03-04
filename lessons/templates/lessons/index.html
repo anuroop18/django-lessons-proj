@@ -32,29 +32,30 @@
 {% block central_content %}
     {% for lesson in lessons %}
     <div class="row lesson border-bottom py-3">
-        <div class="picture col-lg-4 d-lg-flex flex-column justify-content-center align-items-center">
+        <div class="picture col-lg-4 px-2 d-lg-flex flex-column justify-content-center align-items-center">
             <a href="{{ lesson.get_absolute_url }}">
                 <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
             </a>
         </div>
         <div class="col-lg-8">
+            <h4 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h4>
             <div class="header text-muted">
                 <ul class="list-unstyled d-flex flex-row">
-                    <li class="mx-1"><span class="font-weight-bold">Lesson #{{lesson.order}}</span></li>
+                    <li class="mx-1"><span class="font-weight-bold">#{{lesson.order}}</span></li>
                     <li>–</li>
                     <li class="mx-1">{{lesson.first_published_at | date:"M d, Y"}}</li>
                     {% if lesson.tags.all.count %}
                         <li class="mx-1 tags">
                             {% for tag in lesson.tags.all %}
                                 <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                    <spanc class="badge badge-info">{{ tag }}</span>
+                                    <span class="badge badge-info">{{ tag }}</span>
                                 </a>
                             {% endfor %}
                         </li>
                     {% endif %}
                 </ul>
             </div>
-            <h4 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h4>
+            
             <p class="description mb-3">
                 {{lesson.short_description | safe | truncatewords:32 }}
             </p>

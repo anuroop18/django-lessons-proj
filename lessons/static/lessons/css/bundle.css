@@ -7739,21 +7739,29 @@ iframe {
       width: 380px;
       height: 285px; } }
 
-@media (max-width: 767.98px) {
-  .lesson .picture a img {
-    max-width: 200px; } }
+.lesson .picture {
+  border: 1px solid #cecece; }
+  @media (max-width: 767.98px) {
+    .lesson .picture a img {
+      max-width: 200px; } }
+  @media (max-width: 575.98px) {
+    .lesson .picture a img {
+      max-width: 180px; } }
 
-@media (max-width: 575.98px) {
-  .lesson .picture a img {
-    max-width: 180px; } }
+.lesson .header {
+  font-size: 0.9rem; }
+  .lesson .header .badge {
+    font-size: 0.9rem; }
+  @media (max-width: 767.98px) {
+    .lesson .header {
+      font-size: 0.9rem; } }
 
-@media (max-width: 767.98px) {
-  .lesson .header {
-    font-size: 0.9rem; } }
-
-@media (max-width: 767.98px) {
-  .lesson .title {
-    font-size: 1.3rem; } }
+.lesson .title {
+  font-weight: bold;
+  color: #008304; }
+  @media (max-width: 767.98px) {
+    .lesson .title {
+      font-size: 1.3rem; } }
 
 @media (max-width: 767.98px) {
   .lesson .description {
@@ -12123,7 +12131,15 @@ section {
 
 /* change the link color */
 .navbar-custom .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.5); }
+  color: rgba(255, 255, 255, 0.7); }
+
+.navbar-custom .navbar-nav .nav-link.btn-outline-success {
+  color: #fefefe;
+  border-radius: 0; }
+
+.navbar-custom .navbar-nav .nav-link.btn-success {
+  color: #fefefe;
+  border-radius: 0; }
 
 /* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
@@ -12141,6 +12157,15 @@ section {
   padding: 1.5rem; }
   .mission-statement .mission p {
     color: #222; }
+
+form.form-inline input.form-control {
+  border-radius: 0;
+  background-color: #393939;
+  border-color: #1a1a1a;
+  color: #eee; }
+
+form.form-inline button {
+  border-radius: 0; }
 
 form.newsletter input.form-control {
   padding: 0.8rem;
