@@ -38,13 +38,20 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <form class="form-inline" action="{% url 'index' %}">
-            <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
-              <span class="input-group-btn mx-2">
-                <button class="btn btn-outline-success" type="button">Search</button>
-              </span>
-        </form>
+
         <ul class="navbar-nav ml-auto">
+          <li class="nav-item {% block home %}  {% endblock %}">
+            <a class="nav-link block" href="#">Home</a>
+          </li>
+          <li class="nav-item dropdown {% block courses %}  {% endblock %}">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Courses
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Django in Production from Zero to Hero</a>
+              <a class="dropdown-item" href="#">Wagtail</a>
+            </div>
+          </li>
           <li class="nav-item {% block prices %}  {% endblock %}">
             <a class="nav-link block" href="#">Prices</a>
           </li>
@@ -55,6 +62,13 @@
             <a class="nav-link" href="#">Sign Up</a>
           </li>
         </ul>
+
+        <form class="form-inline" action="{% url 'index' %}">
+            <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
+              <span class="input-group-btn mx-2">
+                <button class="btn btn-outline-success" type="button">Search</button>
+              </span>
+        </form>
       </div>
   </nav> <!-- end of bootstrap's navbar -->
 
