@@ -12113,6 +12113,23 @@ section {
 .ti-rss-alt:before {
   content: "\e75f"; }
 
+.navbar-custom {
+  background-color: #1a1a1a; }
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: rgba(255, 255, 255, 0.8); }
+
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.5); }
+
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+  color: #ffffff; }
+
 .page-section {
   padding: 3rem 0; }
 
@@ -12182,6 +12199,20 @@ footer.black-bg {
   footer.black-bg .footer-widget {
     padding: 20px 0;
     border-top: 1px solid #262626; }
+
+.page-item.active .page-link {
+  background-color: #006528;
+  border-color: #006528; }
+
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+.page-item:last-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
 
 
 /*# sourceMappingURL=bundle.css.map*/
