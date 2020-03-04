@@ -41,20 +41,31 @@
         <form class="form-inline" action="{% url 'index' %}">
             <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
               <span class="input-group-btn mx-2">
-                <button class="btn btn-secondary btn-light" type="button">Go</button>
+                <button class="btn btn-outline-success" type="button">Search</button>
               </span>
         </form>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item {% block subscribe %}  {% endblock %}">
-            <a class="nav-link block" href="{% url 'subscribe' %}">Subscribe</a>
+          <li class="nav-item {% block prices %}  {% endblock %}">
+            <a class="nav-link block" href="#">Prices</a>
           </li>
-          <li class="nav-item {% block about %}  {% endblock %}">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
+          <li class="nav-item {% block signin %}  {% endblock %}">
+            <a class="nav-link block" href="#">Log In</a>
+          </li>
+          <li class="nav-item {% block register %}  {% endblock %}">
+            <a class="nav-link" href="#">Sign Up</a>
           </li>
         </ul>
       </div>
   </nav> <!-- end of bootstrap's navbar -->
-  
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        
+      </div>
+    </div>
+  </div>
+
   <!-- Page Content -->
   <div class="container">
     <div class="row">
