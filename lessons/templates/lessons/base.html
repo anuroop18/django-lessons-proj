@@ -41,10 +41,10 @@
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item {% block home %}  {% endblock %}">
-            <a class="nav-link block" href="#">Home</a>
+            <a class="nav-link block" href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item {% block subscribe %}  {% endblock %}">
-            <a class="nav-link block" href="#">Subscribe</a>
+            <a class="nav-link block" href="{% url 'subscribe' %}">Subscribe</a>
           </li>
           <li class="nav-item dropdown {% block courses %}  {% endblock %}">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,7 +55,7 @@
               <a class="dropdown-item" href="#">Wagtail</a>
             </div>
           </li>
-          <li class="nav-item dropdown {% block More %}  {% endblock %}">
+          <li class="nav-item dropdown {% block more %}  {% endblock %}">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               More
             </a>
