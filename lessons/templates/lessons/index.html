@@ -52,13 +52,9 @@
                     {% endif %}
                 </ul>
             </div>
-            <h5 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h5>
+            <h4 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h4>
             <p class="description mb-3">
                 {{lesson.short_description | safe | truncatewords:32 }}
-            </p>
-
-            <p>
-                <a href="{{ lesson.get_absolute_url }}" class="btn btn-success" role="button">Watch</a>
             </p>
         </div>
     </div>
