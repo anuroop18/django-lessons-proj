@@ -62,7 +62,9 @@ class LessonTagIndex(Page):
 
         # Filter by tag
         tag = request.GET.get('tag')
-        lessons = Lesson.objects.filter(tags__name=tag)
+        lessons = Lesson.objects.filter(
+            tags__name=tag
+        ).order_by('-last_published_at')
 
         # Update template context
         context = super().get_context(request)
