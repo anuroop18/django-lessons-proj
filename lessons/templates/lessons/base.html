@@ -35,19 +35,9 @@
   <!-- Page Content -->
   <div class="main container">
     <div class="row pt-5 mt-5">
-      <!-- Post Content Column -->
-      <div class="{% block central_col_class %} col-lg-10  col-md-9 {% endblock %}">
         {% block central_content %}
         {% endblock %}
-      </div>
-      {% block right_sidebar %}
-        <div class="{% block sidebar_col_class %} col-lg-2 col-md-3 {% endblock %}">
-          {% include 'lessons/_right_sidebar.html' %}
-        </div>
-      {% endblock %}
-    <!-- /.row -->
     </div>
-
   </div>
     <!-- /.container -->
   {% block news_letter_section %}
