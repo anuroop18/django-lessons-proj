@@ -1,0 +1,83 @@
+{% load static %}    
+<div class="container">
+  <div class="row top">
+    <div class="col-lg-6 col-md-6 col-sm-4">
+      <img class="img-fluid" id="logo-footer" src="{% static 'lessons/img/logo.svg' %}" alt="" width="100">
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-8">
+      <div class="social text-left sm-mt-0 text-sm-right xs-mt-20">
+          <ul>
+              <li>
+                  <a href="{% url 'feed' %}"> <i class="fa fa-rss"></i> </a>
+              </li>
+              <li>
+                  <a href="https://www.youtube.com/channel/UC3YTUJaWjmCHll2O9w0CrJw"> <i class="fa fa-youtube"></i> </a>
+              </li>
+              <li>
+                  <a href="https://twitter.com/DjangoLessons"> <i class="fa fa-twitter"></i> </a>
+              </li>
+              <li>
+                  <a href="https://vimeo.com/user108512397"> <i class="fa fa-vimeo"></i> </a>
+              </li>
+              <li>
+                  <a href="#"> <i class="fa fa-pinterest"></i> </a>
+              </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+       <div class="divider mt-50 mb-50"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5 col-md-5 sm-mt-30">
+      <div class="about-content">
+          <h6 class="mb-20 text-uppercase">about</h6>
+          <p>
+            Django Lessons are weekly screencasts about Django Web
+            Framework and related topics like python, javascript,
+            linux servers, deployment. The videos are short and to the point. The
+            topics target the intermediate Django developer interested in Cloud/Web technologies.
+          </p>
+      </div>
+    </div>
+      <div class="col-lg-7 col-sm-7  sm-mt-30 sm-mb-30">
+        <h6 class="mb-20 text-uppercase">Useful Links</h6>
+        <div class="footer-useful-link">
+          <div class="row">
+            <div class="col-lg-4 col-sm-4">
+              <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'mission' %}">Mission</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+               <ul>
+                 <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                 <li><a href="{% url 'cookies' %}">Cookie Policy</a></li>
+                 <li><a href="{% url 'impressum' %}">Imprint</a></li>
+               </ul>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+               <ul>
+                 <li><a href="{% url 'prices' %}">Prices</a></li>
+                 <li><a href="{% url 'contact' %}">Contact Me</a></li>
+               </ul>
+            </div>
+        </div>
+      </div>
+  </div>
+  <div class="footer-widget mt-20">
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <ul class="list-unstyled  d-flex flex-row">
+          <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019-2020</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

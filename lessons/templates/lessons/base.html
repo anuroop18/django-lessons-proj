@@ -30,62 +30,8 @@
 
 <body>
   <nav class="navbar navbar-dark navbar-expand-lg navbar-custom py-1 fixed-top">
-      <a class="navbar-brand" href="{% url 'index' %}">
-        <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100" class="d-inline-block align-top">Django Lessons
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item {% block home %}  {% endblock %} d-none d-xs-block d-sm-block d-lg-none d-xl-block">
-            <a class="nav-link block" href="{% url 'index' %}">Home</a>
-          </li>
-          <li class="nav-item {% block subscribe %}  {% endblock %}">
-            <a class="nav-link block" href="{% url 'subscribe' %}">Subscribe</a>
-          </li>
-          <li class="nav-item dropdown {% block courses %}  {% endblock %}">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Courses
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Django in Production from Zero to Hero</a>
-              <a class="dropdown-item" href="#">Wagtail</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown {% block more %}  {% endblock %} d-none d-xs-block d-sm-block d-lg-none d-xl-block ">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              More
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'about' %}">About</a>
-              <a class="dropdown-item" href="{% url 'mission' %}">Mission</a>
-              <a class="dropdown-item" href="#">Contact Me</a>
-            </div>
-          </li>
-          <form class="form-inline d-flex flex-nowrap" action="{% url 'index' %}">
-              <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
-                <span class="input-group-btn mx-2">
-                  <button class="btn btn-outline-success" type="button">Search</button>
-                </span>
-          </form>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item {% block prices %}  {% endblock %}">
-            <a class="nav-link block" href="{% url 'prices' %}">Pricing</a>
-          </li>
-          <li class="nav-item mx-2 my-2 my-lg-0 {% block signin %}  {% endblock %}">
-            <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="#">Login</a>
-          </li>
-          <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
-            <a class="nav-link text-center btn-success block text-nowrap" href="#">Sign Up</a>
-          </li>
-        </ul>
-      </div>
-  </nav> <!-- end of bootstrap's navbar -->
-
+    {% include 'lessons/includes/_nav.html' %}
+  </nav>
   <!-- Page Content -->
   <div class="main container">
     <div class="row pt-5 mt-5">
@@ -110,89 +56,7 @@
  footer -->
 
   <footer class="footer black-bg">
-    <div class="container">
-      <div class="row top">
-        <div class="col-lg-6 col-md-6 col-sm-4">
-          <img class="img-fluid" id="logo-footer" src="{% static 'lessons/img/logo.svg' %}" alt="" width="100">
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-8">
-          <div class="social text-left sm-mt-0 text-sm-right xs-mt-20">
-              <ul>
-                  <li>
-                      <a href="{% url 'feed' %}"> <i class="fa fa-rss"></i> </a>
-                  </li>
-                  <li>
-                      <a href="https://www.youtube.com/channel/UC3YTUJaWjmCHll2O9w0CrJw"> <i class="fa fa-youtube"></i> </a>
-                  </li>
-                  <li>
-                      <a href="https://twitter.com/DjangoLessons"> <i class="fa fa-twitter"></i> </a>
-                  </li>
-                  <li>
-                      <a href="https://vimeo.com/user108512397"> <i class="fa fa-vimeo"></i> </a>
-                  </li>
-                  <li>
-                      <a href="#"> <i class="fa fa-pinterest"></i> </a>
-                  </li>
-              </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-           <div class="divider mt-50 mb-50"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-5 col-md-5 sm-mt-30">
-          <div class="about-content">
-              <h6 class="mb-20 text-uppercase">about</h6>
-              <p>
-                Django Lessons are weekly screencasts about Django Web
-                Framework and related topics like python, javascript,
-                linux servers, deployment. The videos are short and to the point. The
-                topics target the intermediate Django developer interested in Cloud/Web technologies.
-              </p>
-          </div>
-        </div>
-          <div class="col-lg-7 col-sm-7  sm-mt-30 sm-mb-30">
-            <h6 class="mb-20 text-uppercase">Useful Links</h6>
-            <div class="footer-useful-link">
-              <div class="row">
-                <div class="col-lg-4 col-sm-4">
-                  <ul>
-                    <li><a href="{% url 'index' %}">Home</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'mission' %}">Mission</a></li>
-                  </ul>
-                </div>
-                <div class="col-lg-4 col-sm-4">
-                   <ul>
-                     <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                     <li><a href="{% url 'cookies' %}">Cookie Policy</a></li>
-                     <li><a href="{% url 'impressum' %}">Imprint</a></li>
-                   </ul>
-                </div>
-                <div class="col-lg-4 col-sm-4">
-                   <ul>
-                     <li><a href="{% url 'prices' %}">Prices</a></li>
-                     <li><a href="{% url 'contact' %}">Contact Me</a></li>
-                   </ul>
-                </div>
-            </div>
-          </div>
-      </div>
-      <div class="footer-widget mt-20">
-        <div class="row">
-          <div class="col-lg-12 col-md-12">
-            <ul class="list-unstyled  d-flex flex-row">
-              <li><p class="m-0 text-center">Copyright &copy; Django Lessons 2019-2020</p></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.container -->
+    {% include 'lessons/includes/_footer.html' %}
   </footer>
 <!--=================================
  footer -->

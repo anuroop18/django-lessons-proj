@@ -1,0 +1,55 @@
+{% load static %}
+  <a class="navbar-brand" href="{% url 'index' %}">
+    <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100" class="d-inline-block align-top">Django Lessons
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item {% block home %}  {% endblock %} d-none d-xs-block d-sm-block d-lg-none d-xl-block">
+        <a class="nav-link block" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item {% block subscribe %}  {% endblock %}">
+        <a class="nav-link block" href="{% url 'subscribe' %}">Subscribe</a>
+      </li>
+      <li class="nav-item dropdown {% block courses %}  {% endblock %}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Courses
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Django in Production from Zero to Hero</a>
+          <a class="dropdown-item" href="#">Wagtail</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown {% block more %}  {% endblock %} d-none d-xs-block d-sm-block d-lg-none d-xl-block ">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'about' %}">About</a>
+          <a class="dropdown-item" href="{% url 'mission' %}">Mission</a>
+          <a class="dropdown-item" href="#">Contact Me</a>
+        </div>
+      </li>
+      <form class="form-inline d-flex flex-nowrap" action="{% url 'index' %}">
+          <input type="search" class="form-control" name="q" placeholder="Search or jump to lesson...">
+            <span class="input-group-btn mx-2">
+              <button class="btn btn-outline-success" type="button">Search</button>
+            </span>
+      </form>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item {% block prices %}  {% endblock %}">
+        <a class="nav-link block" href="{% url 'prices' %}">Pricing</a>
+      </li>
+      <li class="nav-item mx-2 my-2 my-lg-0 {% block signin %}  {% endblock %}">
+        <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="#">Login</a>
+      </li>
+      <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
+        <a class="nav-link text-center btn-success block text-nowrap" href="#">Sign Up</a>
+      </li>
+    </ul>
+  </div>
