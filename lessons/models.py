@@ -70,6 +70,7 @@ class LessonTagIndex(Page):
         context = super().get_context(request)
         context['lessons'] = lessons
         context['tags'] = Lesson.tags.most_common()
+        context['current_tag_name'] = tag
 
         return context
 
