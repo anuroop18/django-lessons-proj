@@ -12146,6 +12146,22 @@ section {
 .navbar-custom .nav-item:hover .nav-link {
   color: #ffffff; }
 
+.right-sidebar .card {
+  border-radius: 0;
+  border: 1px solid #e9ecef; }
+  .right-sidebar .card .card-body {
+    padding: 0; }
+    .right-sidebar .card .card-body li {
+      border-top: 1px solid #e9ecef;
+      text-align: left;
+      padding: 0.25rem 0.5rem 0.25rem 0.5rem; }
+      .right-sidebar .card .card-body li a {
+        color: #666; }
+    .right-sidebar .card .card-body li:hover {
+      background-color: #f5f9fb; }
+    .right-sidebar .card .card-body li.active {
+      background-color: #e3eef4; }
+
 .page-section {
   padding: 3rem 0; }
 

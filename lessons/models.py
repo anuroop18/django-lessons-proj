@@ -15,6 +15,8 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel
 
+from taggit.models import Tag
+
 
 class LessonsIndex(Page):
     """ Lessons index """
@@ -69,7 +71,7 @@ class LessonTagIndex(Page):
         # Update template context
         context = super().get_context(request)
         context['lessons'] = lessons
-        context['tags'] = Lesson.tags.most_common()
+        context['tags'] = Tag.objects.order_by('name')
         context['current_tag_name'] = tag
 
         return context
