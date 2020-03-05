@@ -44,7 +44,7 @@ def index(request):
         'lessons/index.html',
         {
             'lessons': page_obj.object_list,
-            'tags': Lesson.tags.most_common(),
+            'tags': Tag.objects.order_by('name'),
             'page_obj': page_obj,
             'page_number': int(page_number),
             'paginator': paginator

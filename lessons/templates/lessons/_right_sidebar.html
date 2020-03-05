@@ -28,7 +28,7 @@
           <ul class="list-unstyled mb-0 categories">
             {% for tag in tags %}
             <li>
-              <a href="{% slugurl 'tags' %}?tag={{ tag.name }}">{{ tag.name }}({{tag.num_times}})</a>
+              <a href="{% slugurl 'tags' %}?tag={{ tag.name }}">{{ tag.name }}</a>
             </li>
             {% endfor %}
           </ul>
