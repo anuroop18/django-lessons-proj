@@ -1,36 +1,38 @@
 {% load wagtailcore_tags static %}
 
-<div class="card my-4 d-none d-lg-block">
-  <h5 class="card-header">All Lessons</h5>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-lg-12">
-        <ul class="list-unstyled mb-0 categories">
-          <li>
-            <a href="#">Free Lessons</a>
-          </li>
-          <li>
-            <a href="#">Pro Lessons</a>
-          </li>
+<div class="right-sidebar"> 
+  <div class="card my-4 d-none d-lg-block">
+    <h5 class="card-header">All Lessons</h5>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="list-unstyled mb-0 categories">
+            <li>
+              <a href="#">Free Lessons</a>
+            </li>
+            <li>
+              <a href="#">Pro Lessons</a>
+            </li>
 
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card my-4 d-none d-lg-block">
-  <h5 class="card-header">Tags</h5>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-lg-12">
-        <ul class="list-unstyled mb-0 categories">
-          {% for tag in tags %}
-          <li>
-            <a href="{% slugurl 'tags' %}?tag={{ tag.name }}">{{ tag.name }}({{tag.num_times}})</a>
-          </li>
-          {% endfor %}
-        </ul>
+  <div class="card my-4 d-none d-lg-block">
+    <h5 class="card-header">Tags</h5>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="list-unstyled mb-0 categories">
+            {% for tag in tags %}
+            <li>
+              <a href="{% slugurl 'tags' %}?tag={{ tag.name }}">{{ tag.name }}({{tag.num_times}})</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
