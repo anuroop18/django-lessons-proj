@@ -11,6 +11,7 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
     path('pages/', include(wagtail_urls)),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
 ]
 
 handler500 = 'lessons.views.handler500'
