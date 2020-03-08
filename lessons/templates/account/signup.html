@@ -5,16 +5,47 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block central_content %}
-<h1>{% trans "Sign Up" %}</h1>
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
-
+    <div class="col-lg-12 col-md-12">
+      <div class="section-title text-center">
+          <h4 class="title-effect">Create Django Lessons Account</h2>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-6">
+          <div class="pb-10 clearfix">
+            <!-- FORM -->
+            <form class="login" method="POST" action="{% url 'account_signup' %}">
+              {% csrf_token %}
+                <div class="section-field mb-20">
+                 <label class="mb-10" for="id_login">User name* </label>
+                   <input id="id_login" class="web form-control" type="text" placeholder="User name" name="login" required>
+                </div>
+                <div class="section-field mb-20">
+                 <label class="mb-10" for="id_password1">Password* </label>
+                   <input id="id_password1" class="Password form-control" type="password" placeholder="Password" name="password1">
+                </div>
+                <div class="section-field mb-20">
+                 <label class="mb-10" for="id_password2">Password (again)* </label>
+                   <input id="id_password2" class="Password form-control" type="password" placeholder="Password (again)" name="password2">
+                </div>
+                {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <a href="#" class="button">
+                  <span>Create Account</span>
+                  <i class="fa fa-check"></i>
+               </a>
+            </form>
+            <!-- FORM -->
+          </div>
+          <div class="login-social text-center">
+              <h4 class="theme-color mb-30">Or</h4>
+              <ul>
+                  <li><a class="github" href="{% url 'github_login' %}?process=login"><i class="fa fa-github"></i> Login with Github</a></li>
+              </ul>
+          </div>
+        </div>
+      </div> <!-- ROW -->
+    </div>
 {% endblock %}
