@@ -43,3 +43,18 @@ STATICFILES_DIRS = [
 EMAIL_FROM = 'eugen@django-lessons.com'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/home/eugen/django_emails/'
+
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': os.environ['GITHUB_CLIENT_ID'],
+            'secret': os.environ['GITHUB_SECRET'],
+            'key': os.environ['GITHUB_KEY']
+        }
+    }
+}
