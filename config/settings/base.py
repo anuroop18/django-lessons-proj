@@ -143,3 +143,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 WAGTAIL_SITE_NAME = 'Django Lessons Site'
+SITE_ID = 1
