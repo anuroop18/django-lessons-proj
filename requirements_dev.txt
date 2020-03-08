@@ -5,6 +5,7 @@ django-storages
 easy-thumbnails
 boto3
 django-extensions
+django-allauth
 gunicorn
 pygraphviz # for graph_models
 Werkzeug==0.16   # for runserver_plus

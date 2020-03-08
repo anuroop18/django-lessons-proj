@@ -6,3 +6,4 @@ easy-thumbnails
 boto3
 django-extensions
 gunicorn
+django-allauth
