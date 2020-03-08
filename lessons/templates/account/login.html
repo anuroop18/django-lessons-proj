@@ -1,0 +1,96 @@
+{% extends "lessons/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block central_content %}
+<h1>{% trans "Sign In" %}</h1>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+  <div class="login-or">{% trans 'or' %}</div>
+
+</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+
+<!--=================================
+ login-->
+
+<section class="white-bg page-section-ptb">
+  <div class="container">
+    <div class="row">
+       <div class="col-lg-12 col-md-12">
+        <div class="section-title text-center">
+            <h6 class="">Log in with your id or social media</h6>
+            <h2 class="title-effect">Login to your Account</h2>
+          </div>
+      </div>
+    </div>
+     <div class="row justify-content-center">
+       <div class="col-lg-6">
+        <div class="pb-50 clearfix">
+
+          <form class="login" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+              <div class="section-field mb-20">
+               <label class="mb-10" for="id_login">User name* </label>
+                 <input id="id_login" class="web form-control" type="text" placeholder="User name" name="login" required>
+              </div>
+              <div class="section-field mb-20">
+               <label class="mb-10" for="id_password">Password* </label>
+                 <input id="id_password" class="Password form-control" type="password" placeholder="Password" name="password">
+              </div>
+              <div class="section-field">
+                <div class="custom-control custom-checkbox mb-30">
+                  <input type="checkbox" class="custom-control-input" id="id_remember" name="remember">
+                  <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+                </div>
+              </div>
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <a href="#" class="button">
+                <span>Log in</span>
+                <i class="fa fa-check"></i>
+             </a>
+            </form>
+             <p class="mt-20 mb-0">Don't have an account? <a href="{% url 'account_signup' %}"> Create one here</a></p>
+             <p class="mt-20 mb-0"><a href="{% url 'account_reset_password' %}"> Forgot password?</a></p>
+          </div>
+           <hr />
+          <div class="login-social mt-50 text-center clearfix">
+            <h4 class="theme-color mb-30">Login with Social media</h4>
+            <ul>
+                <li><a class="fb" href="#"><i class="fa fa-facebook"></i> Log in Facebook</a></li>
+                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i> Log in Twitter</a></li>
+                <li><a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i> Log in google+</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+<!--=================================
+ login-->
+
+{% endblock %}
