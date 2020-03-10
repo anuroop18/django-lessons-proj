@@ -59,6 +59,9 @@ class CodeBlock(blocks.StructBlock):
         icon = 'cup'
 
 
+
+
+
 class LessonTagIndex(Page):
     def get_context(self, request):
 
@@ -151,6 +154,47 @@ class Lesson(Page):
             return 1
 
         return max(lessons) + 1
+
+
+class Course(Page):
+    short_description = RichTextField()
+    image = models.ImageField(
+        upload_to='uploads/',
+        default='static/img/lesson.jpg'
+    )
+
+    lessons = models.ManyToManyField(Lesson, through='LessonGroup')
+
+    content_panels = Page.content_panels + [
+        FieldPanel('image'),
+        FieldPanel('short_description'),
+    ]
+
+    def __str__(self):
+        return self.title
+
+
+class LessonGroup(models.Model):
+
+    # within a course, title of the lesson will be different
+    title = models.CharField(max_length=128, default='')
+    short_description = RichTextField()
+    order = models.IntegerField(blank=True, default=0)
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        return self.title
 
 
 class Subscription(models.Model):
