@@ -59,9 +59,6 @@ class CodeBlock(blocks.StructBlock):
         icon = 'cup'
 
 
-
-
-
 class LessonTagIndex(Page):
     def get_context(self, request):
 

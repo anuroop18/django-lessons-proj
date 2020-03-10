@@ -1,0 +1,33 @@
+{% extends 'lessons/base.html' %}
+{% load wagtailcore_tags %}
+
+{% block central_col_class %} col-lg-12 {% endblock %}
+
+{% block right_sidebar %} {% endblock %}
+{% block sidebar_col_class %} {% endblock %}
+
+{% block central_content %}
+    <div class="page">
+        <div class="row py-3">
+            <div class="col-lg-12">
+               <h3 class="title">
+                    {{page.title}}
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 description">
+                {{page.short_description | richtext }}
+            </div>
+        </div>
+        <div class="row  py-3">
+            <div class="col-lg-12">
+                {% for block in page.content %}
+                    <section class="block-{{ block.block_type }}">
+                            {% include_block block %}
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
