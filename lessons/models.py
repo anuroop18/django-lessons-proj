@@ -170,6 +170,18 @@ class Course(Page):
     def __str__(self):
         return self.title
 
+    def get_context(self, request):
+
+        lesson_groups = LessonGroup.objects.filter(
+            course=self
+        ).order_by('order')
+
+        # Update template context
+        context = super().get_context(request)
+        context['lesson_groups'] = lesson_groups
+
+        return context
+
 
 class LessonGroup(models.Model):
 
