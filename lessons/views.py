@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 from lessons.models import Subscription
 from lessons.forms import SubscribeForm
-from lessons.models import Lesson
+from lessons.models import (Lesson, Course)
 from taggit.models import Tag
 
 
@@ -37,12 +37,16 @@ def index(request):
     paginator = Paginator(lessons, ITEMS_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
+    courses = Course.objects.order_by(
+        '-first_published_at'
+    )
 
     return render(
         request,
         'lessons/index.html',
         {
             'lessons': page_obj.object_list,
+            'courses': courses,
             'tags': Tag.objects.order_by('name'),
             'page_obj': page_obj,
             'page_number': int(page_number),

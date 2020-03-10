@@ -1,4 +1,4 @@
-{% load static %}
+{% load static wagtailcore_tags %}
   <a class="navbar-brand" href="{% url 'index' %}">
     <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100" class="d-inline-block align-top">Django Lessons
   </a>
@@ -20,8 +20,9 @@
           Courses
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Django in Production from Zero to Hero</a>
-          <a class="dropdown-item" href="#">Wagtail</a>
+          {% for course in courses %}
+            <a class="dropdown-item" href="{% slugurl course.slug %}">{{course.title}}</a>
+          {% endfor %}
         </div>
       </li>
       <li class="nav-item dropdown {% block more %}  {% endblock %} d-none d-xs-block d-sm-block d-lg-none d-xl-block ">
