@@ -62,10 +62,17 @@ def lesson(request, order, slug):
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
+    courses = Course.objects.order_by(
+        '-first_published_at'
+    )
+
     return render(
         request,
         'lessons/lesson.html',
-        {'page': lesson}
+        {
+            'page': lesson,
+            'courses': courses
+        }
     )
 
 
