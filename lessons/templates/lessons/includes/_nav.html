@@ -43,14 +43,26 @@
       </form>
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item {% block prices %}  {% endblock %}">
-        <a class="nav-link block" href="{% url 'prices' %}">Pricing</a>
-      </li>
-      <li class="nav-item mx-2 my-2 my-lg-0 {% block signin %}  {% endblock %}">
-        <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="{% url 'account_login' %}">Login</a>
-      </li>
-      <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
-        <a class="nav-link text-center btn-success block text-nowrap" href="{% url 'account_signup' %}">Sign Up</a>
-      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="usermenu-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user.username }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="usermenu-dropdown">
+            <a class="dropdown-item" href="{% url 'account_change_password' %}">Change Password</a>
+            <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+          </div>
+        </li>
+      {% else %}
+        <li class="nav-item {% block prices %}  {% endblock %}">
+          <a class="nav-link block" href="{% url 'prices' %}">Pricing</a>
+        </li>
+        <li class="nav-item mx-2 my-2 my-lg-0 {% block signin %}  {% endblock %}">
+          <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="{% url 'account_login' %}">Login</a>
+        </li>
+        <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
+          <a class="nav-link text-center btn-success block text-nowrap" href="{% url 'account_signup' %}">Sign Up</a>
+        </li>
+      {% endif %}
     </ul>
   </div>
