@@ -18,8 +18,12 @@
             <form class="login" method="POST" action="{% url 'account_signup' %}">
               {% csrf_token %}
                 <div class="section-field mb-20">
-                 <label class="mb-10" for="id_login">User name* </label>
-                   <input id="id_login" class="web form-control" type="text" placeholder="User name" name="login" required>
+                 <label class="mb-10" for="id_login">Username* </label>
+                   <input id="id_login" class="web form-control" type="text" placeholder="username..." name="login" required>
+                </div>
+                <div class="section-field mb-20">
+                 <label class="mb-10" for="id_login">Email* </label>
+                   <input id="id_email" class="web form-control" type="email" placeholder="email..." name="email" required>
                 </div>
                 <div class="section-field mb-20">
                  <label class="mb-10" for="id_password1">Password* </label>
@@ -36,6 +40,9 @@
                   <span>Create Account</span>
                   <i class="fa fa-check"></i>
                </a>
+               <p class="py-2 my-2">
+                By registering, you agree to the <a href="{% url 'privacy' %}">privacy policy</a> and <a href="{% url 'terms' %}">terms of service</a> and <a href="{% url 'cookies' %}"> cookies policy</a>.
+              </p>
             </form>
             <!-- FORM -->
           </div>

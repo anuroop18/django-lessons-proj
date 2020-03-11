@@ -28,7 +28,8 @@ pages = [
     'contact',
     'services',
     'prices',
-    'mission'
+    'mission',
+    'terms'
 ]
 
 for page in pages:
