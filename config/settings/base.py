@@ -146,6 +146,8 @@ WAGTAIL_SITE_NAME = 'Django Lessons Site'
 SITE_ID = 1
 
 
-# user needs to confirm his/her account by email
+# allauth
 ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = '/'
+# user needs to confirm his/her email before logging in
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
