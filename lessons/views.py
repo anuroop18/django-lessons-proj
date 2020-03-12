@@ -77,7 +77,16 @@ def lesson(request, order, slug):
 
 
 class PageView(TemplateView):
-    pass
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        courses = Course.objects.order_by(
+            '-first_published_at'
+        )
+        context['courses'] = courses
+
+        return context
 
 
 def subscribe(request):
