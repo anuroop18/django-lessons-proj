@@ -1,5 +1,8 @@
+from django.utils import timezone
+
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # tag related
 from modelcluster.fields import ParentalKey
@@ -16,6 +19,30 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel
 
 from taggit.models import Tag
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE
+    )
+
+    pro_enddate = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    def is_pro_user(self):
+        now = timezone.now()
+
+        # If pro_enddate is not defined, blank or null
+        # user is not a PRO
+        if not self.pro_enddate:
+            return False
+
+        # if PRO is set in future(user paid for PRO account)
+        # means he/she is a PRO
+        if now < self.pro_enddate:
+            return True
 
 
 class LessonsIndex(Page):
