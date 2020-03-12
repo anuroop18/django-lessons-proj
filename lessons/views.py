@@ -91,8 +91,15 @@ def subscribe(request):
     else:
         form = SubscribeForm()
 
+    courses = Course.objects.order_by(
+        '-first_published_at'
+    )
+
     return render(
         request,
         'lessons/subscribe.html',
-        {'form': form}
+        {
+            'form': form,
+            'courses': courses
+        }
     )
