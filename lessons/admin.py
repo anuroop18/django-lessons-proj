@@ -8,7 +8,8 @@ from lessons.models import (
     Subscription,
     Lesson,
     Course,
-    LessonGroup
+    LessonGroup,
+    Contact
 )
 
 
@@ -55,6 +56,10 @@ def notify_new_lesson(modeladmin, request, queryset):
 notify_new_lesson.short_description = "Notify subscribers about sel. lessons"
 
 
+class ContactAdmin(admin.ModelAdmin):
+    pass
+
+
 class SubscriptionAdmin(admin.ModelAdmin):
     pass
 
@@ -73,6 +78,7 @@ class LessonGroupAdmin(admin.ModelAdmin):
 
 #admin.site.register(User, UserAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
+admin.site.register(Contact, SubscriptionAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(LessonGroup, LessonGroupAdmin)
