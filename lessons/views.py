@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 
-from lessons.models import Subscription
-from lessons.forms import SubscribeForm
+from lessons.models import (Subscription, Contact)
+from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (Lesson, Course)
 from taggit.models import Tag
 
@@ -107,6 +107,31 @@ def subscribe(request):
     return render(
         request,
         'lessons/subscribe.html',
+        {
+            'form': form,
+            'courses': courses
+        }
+    )
+
+
+def contact(request):
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = Contact(email=form.cleaned_data['email'])
+            contact.save()
+            return render(request, 'lessons/contact_thankyou.html')
+    else:
+        form = ContactForm()
+
+    courses = Course.objects.order_by(
+        '-first_published_at'
+    )
+
+    return render(
+        request,
+        'lessons/contact.html',
         {
             'form': form,
             'courses': courses
