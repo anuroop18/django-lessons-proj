@@ -148,3 +148,4 @@ SITE_ID = 1
 
 # user needs to confirm his/her account by email
 ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = '/'
