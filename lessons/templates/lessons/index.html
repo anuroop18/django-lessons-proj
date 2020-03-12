@@ -14,9 +14,10 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8 text-center">
-            <form class="newsletter">
+            <form class="newsletter" action="{% url 'subscribe' %}" method="post">
+              {% csrf_token %}
               <div class="form-group">
-                <input type="text" placeholder="Email Address" class="form-control" name="email">
+                <input id="id_email" type="text" placeholder="Email Address" class="form-control" name="email">
                 <small id="emailHelp" class="form-text text-white">Your email won't be shared with anybody else.</small>
               </div>
                <button class="btn btn-outline-light" type="submit">Subscribe</button>
