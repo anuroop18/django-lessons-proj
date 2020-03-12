@@ -1,6 +1,8 @@
 {% load static wagtailcore_tags %}
   <a class="navbar-brand" href="{% url 'index' %}">
-    <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100" class="d-inline-block align-top">Django Lessons
+    <img class="navbar-logo" src="{% static 'lessons/img/logo.svg' %}" width="100" class="d-inline-block align-top">
+    <!-- Hide title on extra small screens -->
+    <span class="d-none d-sm-inline d-md-inline d-xl-inline">Django Lessons</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -61,7 +63,7 @@
           <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="{% url 'account_login' %}">Login</a>
         </li>
         <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
-          <a class="nav-link text-center btn-success block text-nowrap" href="{% url 'account_signup' %}">Sign Up</a>
+          <a class="nav-link text-center btn-success block text-nowrap" href="{% url 'account_signup' %}">Sign Out</a>
         </li>
       {% endif %}
     </ul>
