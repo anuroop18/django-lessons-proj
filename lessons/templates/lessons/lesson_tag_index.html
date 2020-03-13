@@ -3,7 +3,19 @@
 
 
 {% block central_content %}
+  <div class="{% block central_col_class %} col-lg-10  col-md-9 {% endblock %}">
     {% for lesson in lessons %}
         {% include 'lessons/includes/_lesson.html' with lesson=lesson %}
     {% endfor %}
+    <ul class="pagination my-4">
+        {% for i in paginator.page_range %}
+            <li class="page-item {% if i == page_number %} active {% endif %}">
+                <a class="page-link" href="?page={{ i }}">{{i}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+  </div>
+  <div class="{% block sidebar_col_class %} col-lg-2 col-md-3 {% endblock %}">
+    {% include 'lessons/_right_sidebar.html' %}
+  </div>
 {% endblock %}
