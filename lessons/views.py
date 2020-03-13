@@ -56,7 +56,8 @@ def index(request):
             'tags': Tag.objects.order_by('name'),
             'page_obj': page_obj,
             'page_number': int(page_number),
-            'paginator': paginator
+            'paginator': paginator,
+            'current_lesson_type': lesson_type
         }
     )
 

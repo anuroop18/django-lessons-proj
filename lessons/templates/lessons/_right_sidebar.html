@@ -7,10 +7,10 @@
       <div class="row">
         <div class="col-lg-12">
           <ul class="list-unstyled mb-0 categories">
-            <li>
+            <li class="{% if current_lesson_type == 'free' %} active {% endif %}">
               <a href="{% url 'index' %}?ltype=free">Free Lessons</a>
             </li>
-            <li>
+            <li  class="{% if current_lesson_type == 'pro' %} active {% endif %}">
               <a href="{% url 'index' %}?ltype=pro">Pro Lessons</a>
             </li>
 
