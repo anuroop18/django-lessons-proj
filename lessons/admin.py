@@ -57,7 +57,7 @@ notify_new_lesson.short_description = "Notify subscribers about sel. lessons"
 
 
 class ContactAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('email', 'subject')
 
 
 class SubscriptionAdmin(admin.ModelAdmin):
@@ -78,7 +78,7 @@ class LessonGroupAdmin(admin.ModelAdmin):
 
 #admin.site.register(User, UserAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
-admin.site.register(Contact, SubscriptionAdmin)
+admin.site.register(Contact, ContactAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(LessonGroup, LessonGroupAdmin)

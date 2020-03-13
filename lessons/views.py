@@ -98,7 +98,9 @@ def subscribe(request):
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
-            subscribe = Subscription(email=form.cleaned_data['email'])
+            subscribe = Subscription(
+                email=form.cleaned_data['email'],
+            )
             subscribe.save()
             return render(request, 'lessons/thankyou.html')
     else:
@@ -123,7 +125,11 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            contact = Contact(email=form.cleaned_data['email'])
+            contact = Contact(
+                email=form.cleaned_data['email'],
+                subject=form.cleaned_data['subject'],
+                text=form.cleaned_data['text']
+            )
             contact.save()
             return render(request, 'lessons/contact_thankyou.html')
     else:

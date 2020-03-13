@@ -16,6 +16,11 @@ urlpatterns = [
         views.subscribe,
         name='subscribe'
     ),
+    path(
+        'contact',
+        views.contact,
+        name='contact'
+    ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
 ]
@@ -25,7 +30,6 @@ pages = [
     'impressum',
     'about',
     'cookies',
-    'contact',
     'services',
     'prices',
     'mission',
