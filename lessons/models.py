@@ -122,6 +122,13 @@ class Lesson(Page):
 
     short_description = RichTextField()
 
+    lesson_type = models.CharField(
+        choices=[('free', 'Free'), ('pro', 'Pro')],
+        null=True,
+        default='free',
+        max_length=16,
+    )
+
     image = models.ImageField(
         upload_to='uploads/',
         default='static/img/lesson.jpg'
@@ -148,6 +155,7 @@ class Lesson(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('order'),
+        FieldPanel('lesson_type'),
         FieldPanel('first_published_at'),
         FieldPanel('image'),
         FieldPanel('short_description'),
@@ -162,6 +170,7 @@ class Lesson(Page):
         courses = Course.objects.order_by(
             '-first_published_at'
         )
+
         context = super().get_context(request)
         context['courses'] = courses
 

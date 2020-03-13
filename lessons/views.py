@@ -29,11 +29,16 @@ def index(request):
     if request.method != 'GET':
         return HttpResponseBadRequest()
 
+    lesson_type = request.GET.get('ltype', False)
+
     lessons = Lesson.objects.filter(live=True).order_by('-first_published_at')
     q = request.GET.get('q', None)
 
     if q:
         lessons = lessons.filter(title__icontains=q)
+
+    if lesson_type:
+        lessons = lessons.filter(lesson_type=lesson_type)
 
     paginator = Paginator(lessons, ITEMS_PER_PAGE)
     page_number = request.GET.get('page', 1)
