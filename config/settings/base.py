@@ -151,3 +151,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = '/'
 # user needs to confirm his/her email before logging in
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
+WEBSITE = "django-lessons.com"
+SERVICE_NAME = "Django Lessons"

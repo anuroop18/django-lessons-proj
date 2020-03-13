@@ -1,4 +1,5 @@
 import logging
+from django.conf import settings
 from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -85,6 +86,8 @@ class PageView(TemplateView):
             '-first_published_at'
         )
         context['courses'] = courses
+        context['website'] = settings.WEBSITE
+        context['service_name'] = settings.SERVICE_NAME
 
         return context
 
