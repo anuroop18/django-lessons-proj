@@ -155,3 +155,4 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 WEBSITE = "django-lessons.com"
 SERVICE_NAME = "Django Lessons"
+SERVICE_EMAIL = "eugen@django-lessons.com"

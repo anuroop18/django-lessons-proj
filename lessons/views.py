@@ -88,6 +88,7 @@ class PageView(TemplateView):
         context['courses'] = courses
         context['website'] = settings.WEBSITE
         context['service_name'] = settings.SERVICE_NAME
+        context['email'] = settings.SERVICE_EMAIL
 
         return context
 
