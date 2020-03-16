@@ -153,3 +153,7 @@ def contact(request):
             'courses': courses
         }
     )
+
+
+def upgrade(request):
+    return render(request, 'lessons/upgrade.html')

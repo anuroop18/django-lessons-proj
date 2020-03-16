@@ -21,6 +21,11 @@ urlpatterns = [
         views.contact,
         name='contact'
     ),
+    path(
+        'upgrade',
+        views.upgrade,
+        name='upgrade'  # i.e. checkout
+    ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
 ]
