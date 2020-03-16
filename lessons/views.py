@@ -160,5 +160,11 @@ def upgrade(request):
 
 
 def checkout(request):
-    return render(request, 'lessons/checkout/month.html')
+    return render(
+        request,
+        'lessons/checkout/month.html',
+        {
+            'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
+        }
+    )
 

@@ -26,6 +26,12 @@
     });
     </script>
 
+    {% block extra_js %}
+    {% endblock extra_js %}
+
+    {% block extra_css %}
+    {% endblock extra_css %}
+
 </head>
 
 <body>
@@ -53,7 +59,6 @@
 
 </div>
   <script src="{% static 'lessons/js/bundle.js' %}"></script>
-  <script src="https://js.stripe.com/v3/"></script>
   {% if not debug %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154361971-2"></script>
