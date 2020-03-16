@@ -157,3 +157,8 @@ def contact(request):
 
 def upgrade(request):
     return render(request, 'lessons/upgrade.html')
+
+
+def checkout(request):
+    return render(request, 'lessons/checkout/month.html')
+

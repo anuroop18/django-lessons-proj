@@ -24,7 +24,12 @@ urlpatterns = [
     path(
         'upgrade',
         views.upgrade,
-        name='upgrade'  # i.e. checkout
+        name='upgrade'
+    ),
+    path(
+        'checkout',
+        views.checkout,
+        name='checkout'
     ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
