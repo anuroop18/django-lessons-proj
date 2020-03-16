@@ -5,6 +5,15 @@
         <a href="{{ lesson.get_absolute_url }}">
             <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
         </a>
+        {% if lesson.tags.all.count %}
+            <div class="mx-1 tags">
+                {% for tag in lesson.tags.all %}
+                    <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                        <span class="badge badge-info">{{ tag }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
     <div class="col-lg-8">
         <h4 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h4>
@@ -13,15 +22,6 @@
                 <li class="mx-1"><span class="font-weight-bold">#{{lesson.order}}</span></li>
                 <li>–</li>
                 <li class="mx-1">{{lesson.first_published_at | date:"M d, Y"}}</li>
-                {% if lesson.tags.all.count %}
-                    <li class="mx-1 tags">
-                        {% for tag in lesson.tags.all %}
-                            <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                <span class="badge badge-info">{{ tag }}</span>
-                            </a>
-                        {% endfor %}
-                    </li>
-                {% endif %}
             </ul>
         </div>
         
