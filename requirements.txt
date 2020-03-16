@@ -1,3 +1,4 @@
+stripe
 psycopg2
 Pillow
 wagtail
