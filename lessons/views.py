@@ -198,3 +198,5 @@ def checkout(request):
         lesson_plan=lesson_plan,
         payment_method_id=request.POST.get('payment_method_id', False)
     )
+
+    return render(request, 'lessons/checkout/thank_you.html')

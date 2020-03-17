@@ -47,11 +47,13 @@ def create_payment_subscription(
     lesson_plan,  # = 'month' | 'year'
     payment_method_id
 ):
-
     customer = Customer.create(
         api_key=API_KEY,
         email=email,
         payment_method=payment_method_id,
+        invoice_settings={
+            'default_payment_method': payment_method_id,
+        },
     )
 
     subscription = Subscription.create(
