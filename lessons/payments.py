@@ -21,7 +21,7 @@ def create_payment_subscription(
         email=email,
     )
 
-    Subscription.create(
+    subscription = Subscription.create(
         api_key=API_KEY,
         customer=customer.id,
         items=[
@@ -31,3 +31,7 @@ def create_payment_subscription(
         ],
         expand=['latest_invoice.payment_intent'],
     )
+    import pdb; pdb.set_trace()
+    return subscription.status
+
+    
