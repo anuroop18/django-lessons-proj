@@ -18,37 +18,40 @@ PLAN_DICT = {
 class LessonsMonthPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
-        self.amount = 19.95
+        self.amount = 1995
         self.currency = "usd"
 
 
 class LessonsAnnualPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_ANNUAL_ID
-        self.amount = 199.50
+        self.amount = 19950
         self.currency = "usd"
 
 
 def create_payment_intent(
+    lesson_plan,
+    payment_method_type="card"
+):
     payment_intent = PaymentIntent.create(
         api_key=API_KEY,
-        amount=19.95,
-        currency="usd",
-        payment_method_types=["card"],
+        amount=lesson_plan.amount,
+        currency=lesson_plan.currency,
+        payment_method_types=[payment_method_type],
     )
-):
-    pass
+    return payment_intent.client_secret
 
 
 def create_payment_subscription(
     email,
-    plan_key  # = 'month' | 'year'
+    lesson_plan,  # = 'month' | 'year'
+    payment_method_id
 ):
-
 
     customer = Customer.create(
         api_key=API_KEY,
         email=email,
+        payment_method=payment_method_id,
     )
 
     subscription = Subscription.create(
@@ -56,12 +59,8 @@ def create_payment_subscription(
         customer=customer.id,
         items=[
             {
-                'plan': PLAN_DICT[plan_key],
+                'plan': lesson_plan.stripe_plan_id,
             },
         ],
-        expand=['latest_invoice.payment_intent'],
     )
-    import pdb; pdb.set_trace()
     return subscription.status
-
-    

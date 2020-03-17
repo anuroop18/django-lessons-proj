@@ -11,6 +11,9 @@ from lessons.models import (Subscription, Contact)
 from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (Lesson, Course)
 from lessons.payments import (
+    LessonsAnnualPlan,
+    LessonsMonthPlan,
+    create_payment_intent,
     create_payment_subscription,
     MONTH,
     YEAR
@@ -170,13 +173,18 @@ def upgrade(request):
 @login_required
 def checkout(request):
     # accepts only GET and POST
-
+    lesson_plan = LessonsMonthPlan()
     # GET
     if request.method == 'GET':
+        secret_key = create_payment_intent(
+            lesson_plan=lesson_plan
+        )
         return render(
             request,
             'lessons/checkout/month.html',
             {
+                'secret_key': secret_key,
+                'customer_email': request.user.email,
                 'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
             }
         )
@@ -187,5 +195,6 @@ def checkout(request):
     # POST
     create_payment_subscription(
         email=request.user.email,
-        plan_key=MONTH
+        lesson_plan=lesson_plan,
+        payment_method_id=request.POST.get('payment_method_id', False)
     )
