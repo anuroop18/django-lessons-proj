@@ -6,7 +6,7 @@ from stripe import (
 
 API_KEY = settings.STRIPE_PUBLISHABLE_KEY
 PLAN_DICT = {
-    'month': settings.STRIPE_PLAN_MONTHTLY_ID,
+    'month': settings.STRIPE_PLAN_MONTHLY_ID,
     'annual': settings.STRIPE_PLAN_ANNUAL_ID
 }
 
