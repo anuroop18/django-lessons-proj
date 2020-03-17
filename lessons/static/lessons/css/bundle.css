@@ -7687,6 +7687,60 @@ a.text-dark:hover, a.text-dark:focus {
 .bg-dark {
   background-color: #454545 !important; }
 
+input.button {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  border-radius: 0; }
+
+/* top right menu with green "Upgrade to PRO" text */
+a.dropdown-item.button {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  border-radius: 0; }
+
+a span.badge.badge-info {
+  border-radius: 0; }
+
+a.dropdown-item.button:hover {
+  background-color: #2dbc4e;
+  border-color: #2dbc4e; }
+
+.theme-color {
+  color: #28a745 !important; }
+
+input {
+  border-radius: 0 !important; }
+
+button {
+  border-radius: 0 !important; }
+
+a {
+  color: #28a745; }
+
+p a {
+  color: #28a745 !important; }
+
+input.button:hover {
+  color: #fff;
+  background-color: #2dbc4e;
+  border-color: #2dbc4e; }
+
+.btn-success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745; }
+
+.pricing-button a {
+  background-color: #28a745;
+  border-color: #28a745;
+  border-radius: 0; }
+
+.pricing-button a:hover {
+  background-color: #2dbc4e;
+  border-color: #2dbc4e; }
+
 body {
   color: #4f4f4f;
   background-color: #f8f8f8; }
@@ -7695,7 +7749,8 @@ body {
 
 .container.main {
   background-color: white;
-  padding-left: 2rem; }
+  padding-left: 2rem;
+  min-height: 50vh; }
 
 h2, h3, h4, h5 {
   color: #0C3C26; }
@@ -7764,11 +7819,12 @@ iframe {
       font-size: 0.9rem; } }
 
 .lesson .title {
-  font-weight: bold;
-  color: #008304; }
+  color: #3e3e3e; }
   @media (max-width: 767.98px) {
     .lesson .title {
       font-size: 1.3rem; } }
+  .lesson .title a:hover {
+    color: #28a745; }
 
 @media (max-width: 767.98px) {
   .lesson .description {
@@ -8045,7 +8101,7 @@ button {
 .pricing-content .pricing-table-list ul li i {
   width: 25px;
   display: inline-block;
-  color: #84ba3f; }
+  color: #28a745; }
 
 .pricing-content .pricing-table-list ul li i.fa-times {
   color: red; }
@@ -8084,7 +8140,7 @@ button {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
   padding: 30px;
   border-top: 8px solid #1a1a1a;
-  border-radius: 6px; }
+  border-radius: 0; }
 
 .pricing-table.boxed .pricing-top {
   box-shadow: none;
@@ -8099,7 +8155,7 @@ button {
   margin-top: 20px; }
 
 .pricing-table.active.boxed {
-  border-top: 16px solid #84ba3f;
+  border-top: 16px solid #28a745;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.05); }
 
 /*price simple*/
@@ -8442,17 +8498,17 @@ hr.light {
   border-top: 0px; }
 
 *::-moz-selection {
-  background: #84ba3f;
+  background: #28a745;
   color: #fff;
   text-shadow: none; }
 
 ::-moz-selection {
-  background: #84ba3f;
+  background: #28a745;
   color: #fff;
   text-shadow: none; }
 
 ::selection {
-  background: #84ba3f;
+  background: #28a745;
   color: #fff;
   text-shadow: none; }
 
@@ -12437,6 +12493,61 @@ section {
       background-color: #f5f9fb; }
     .right-sidebar .card .card-body li.active {
       background-color: #e3eef4; }
+
+.legal h1, .legal h2, .legal h3 {
+  color: #3e3e3e;
+  font-weight: 400;
+  width: 100%; }
+
+.legal h1 {
+  font-size: 1.7rem; }
+  @media (max-width: 767.98px) {
+    .legal h1 {
+      font-size: 1.4rem;
+      line-height: 1.7rem; } }
+
+.legal h2 {
+  font-size: 1.5rem; }
+  @media (max-width: 767.98px) {
+    .legal h2 {
+      font-size: 1.2rem;
+      line-height: 1.5rem; } }
+
+.legal h3 {
+  font-size: 1.2rem;
+  font-weight: 600; }
+  @media (max-width: 767.98px) {
+    .legal h3 {
+      font-size: 1.1rem;
+      line-height: 1.3rem; } }
+
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+#card-element {
+  width: 20rem;
+  background-color: #f9ffb8; }
+
+.StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease; }
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df; }
+
+.StripeElement--invalid {
+  border-color: #fa755a; }
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important; }
 
 .page-section {
   padding: 3rem 0; }

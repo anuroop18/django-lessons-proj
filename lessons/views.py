@@ -10,7 +10,11 @@ from django.core.paginator import Paginator
 from lessons.models import (Subscription, Contact)
 from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (Lesson, Course)
-from lessons.payments import create_payment_subscription
+from lessons.payments import (
+    create_payment_subscription,
+    MONTH,
+    YEAR
+)
 from taggit.models import Tag
 
 
@@ -183,5 +187,5 @@ def checkout(request):
     # POST
     create_payment_subscription(
         email=request.user.email,
-        payment_method='...'
+        plan_key=MONTH
     )

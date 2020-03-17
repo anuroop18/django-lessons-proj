@@ -86,7 +86,8 @@
     <div class="row py-3">
         <div class="col-lg-12 col-md-12">
            <div class="container">
-            <form action="/charge" method="post" id="payment-form">
+            <form action="{% url 'checkout' %}" method="post" id="payment-form">
+                {% csrf_token %}
                 <div class="form-group">
                   <label for="card-element">Credit or debit card</label>
                   <div id="card-element">
