@@ -1,4 +1,6 @@
 import logging
+
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
@@ -155,16 +157,27 @@ def contact(request):
     )
 
 
+@login_required
 def upgrade(request):
     return render(request, 'lessons/upgrade.html')
 
 
+@login_required
 def checkout(request):
-    return render(
-        request,
-        'lessons/checkout/month.html',
-        {
-            'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
-        }
-    )
+    # accepts only GET and POST
 
+    # GET
+    if request.method == 'GET':
+        return render(
+            request,
+            'lessons/checkout/month.html',
+            {
+                'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
+            }
+        )
+
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    # POST
+    
