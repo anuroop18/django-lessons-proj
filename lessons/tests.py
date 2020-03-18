@@ -10,11 +10,12 @@ from lessons.models import (Lesson, User, UserProfile)
 
 class UserProfileTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
+        self.user = User(
             email="user1@mail.com",
             username="user1",
             password="abcxyz123"
         )
+        self.user.save()
 
     def test_user_model_has_profile(self):
         """
@@ -23,6 +24,10 @@ class UserProfileTest(TestCase):
         """
         self.assertTrue(
             hasattr(self.user, 'profile')
+        )
+
+        self.assertFalse(
+            self.user.profile.is_pro_user()
         )
 
 
