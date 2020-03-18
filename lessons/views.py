@@ -1,11 +1,14 @@
 import logging
+import stripe
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.conf import settings
-from django.http import (Http404, HttpResponseBadRequest)
+from django.http import (Http404, HttpResponseBadRequest, HttpResponse)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
 
 from lessons.models import (Subscription, Contact)
 from lessons.forms import (SubscribeForm, ContactForm)
@@ -200,3 +203,40 @@ def checkout(request):
     )
 
     return render(request, 'lessons/checkout/thank_you.html')
+
+
+@require_POST
+@csrf_exempt
+def webhooks(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SIGNING_KEY
+        )
+    except ValueError:
+        # Invalid payload
+        logger.warning("Invalid Payload")
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError:
+        # Invalid signature
+        logger.warning("Invalid signature")
+        return HttpResponse(status=400)
+
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        payment_intent = event.data.object # contains a stripe.PaymentIntent
+        print('PaymentIntent was successful!')
+        import pdb; pdb.set_trace()
+    elif event.type == 'payment_method.attached':
+        payment_method = event.data.object  # contains a stripe.PaymentMethod
+        print('PaymentMethod was attached to a Customer!')
+        # ... handle other event types
+    else:
+        # Unexpected event type
+        return HttpResponse(status=400)
+
+    return HttpResponse(status=200)
+

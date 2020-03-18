@@ -31,6 +31,11 @@ urlpatterns = [
         views.checkout,
         name='checkout'
     ),
+    path(
+        'webhooks',
+        views.webhooks,
+        name='webhooks'
+    ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
 ]
