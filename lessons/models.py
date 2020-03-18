@@ -23,7 +23,9 @@ from taggit.models import Tag
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
     )
 
     pro_enddate = models.DateField(
