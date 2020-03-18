@@ -1,3 +1,4 @@
+import datetime
 from django.utils import timezone
 
 from django.db import models
@@ -33,8 +34,17 @@ class UserProfile(models.Model):
         blank=True
     )
 
+    def update_pro_enddate(self, timestamp):
+        """
+        value = integer number representing timestamp
+        """
+        self.pro_enddate = datetime.datetime.fromtimestamp(
+            timestamp
+        )
+        self.save()
+
     def is_pro_user(self):
-        now = timezone.now()
+        now = datetime.datetime.now()
 
         # If pro_enddate is not defined, blank or null
         # user is not a PRO

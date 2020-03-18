@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.utils import timezone
 from django.test import TestCase
 from django.test import Client
@@ -27,6 +29,24 @@ class UserProfileTest(TestCase):
         )
 
         self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_update_pro_enddate(self):
+        dt = datetime.now()
+        td = timedelta(days=30)
+        # timestamp in future
+        timestamp = datetime.timestamp(dt + td)
+
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+
+        self.user.profile.update_pro_enddate(
+            timestamp=timestamp
+        )
+
+        self.assertTrue(
             self.user.profile.is_pro_user()
         )
 
