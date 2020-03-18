@@ -66,3 +66,16 @@ def create_payment_subscription(
         ],
     )
     return subscription.status
+
+
+def upgrade_customer(invoice):
+    """
+    invoice = is stripe.invoice object instance
+    from invoice.payment_succeeded webhook
+    """
+    # invoice['customer_email']
+    # invoice['paid'] = true|false
+    # invoice['subscription'] # hier is an id
+    subscr = Subscription.retrieve(invoice['subscription'])
+    subscr['current_period_start']
+    subscr['current_period_end']

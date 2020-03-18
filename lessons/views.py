@@ -16,6 +16,7 @@ from lessons.models import (Lesson, Course)
 from lessons.payments import (
     LessonsAnnualPlan,
     LessonsMonthPlan,
+    upgrade_customer,
     create_payment_intent,
     create_payment_subscription,
     MONTH,
@@ -226,14 +227,9 @@ def webhooks(request):
         return HttpResponse(status=400)
 
     # Handle the event
-    if event.type == 'payment_intent.succeeded':
-        payment_intent = event.data.object # contains a stripe.PaymentIntent
-        print('PaymentIntent was successful!')
-        import pdb; pdb.set_trace()
-    elif event.type == 'payment_method.attached':
-        payment_method = event.data.object  # contains a stripe.PaymentMethod
-        print('PaymentMethod was attached to a Customer!')
+    if event.type == 'invoice.payment_succeeded':
         # ... handle other event types
+        upgrade_customer(invoice=event.data.object)
     else:
         # Unexpected event type
         return HttpResponse(status=400)
