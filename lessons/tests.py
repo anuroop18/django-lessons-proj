@@ -27,19 +27,23 @@ class LessonsViewTests(TestCase):
         self.lesson_1 = Lesson.objects.create(
             title="Lesson1 ",
             order=1,
-            description="Very interesting information about Django 3.0",
-            publish_date=timezone.now(),
-            public=True,
-            user=self.user,
+            short_description="Very interesting information about Django 3.0",
+            first_published_at=timezone.now(),
+            live=True,
+            path="00010001",
+            depth=2,
+            owner=self.user,
         )
         self.lesson_1.tags.add("django")
         self.lesson_2 = Lesson.objects.create(
             title="Lesson2 ",
             order=2,
-            description="Very interesting information about python3.8",
-            publish_date=timezone.now(),
-            public=True,
-            user=self.user,
+            path="00010001",
+            short_description="Very interesting information about python3.8",
+            first_published_at=timezone.now(),
+            live=True,
+            depth=2,
+            owner=self.user,
         )
         self.lesson_2.tags.add("python")
 
