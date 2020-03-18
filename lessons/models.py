@@ -26,13 +26,10 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE
     )
 
-    pro_enddate = models.DateTimeField(
+    pro_enddate = models.DateField(
         null=True,
         blank=True
     )
-
-    def update_pro(self, pro_timestamp_end):
-        pass
 
     def is_pro_user(self):
         now = timezone.now()

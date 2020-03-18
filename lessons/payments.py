@@ -1,11 +1,14 @@
 import logging
+
 from django.conf import settings
-from django.auth.models import User
+from django.contrib.auth.models import User
 from stripe import (
     Customer,
     Subscription,
     PaymentIntent
 )
+
+from lessons.models import UserProfile
 
 MONTH = 'month'
 YEAR = 'year'
@@ -89,9 +92,16 @@ def upgrade_customer(invoice):
         )
         return False
 
-    subscr = Subscription.retrieve(invoice['subscription'])
+    subscr = Subscription.retrieve(
+        api_key=API_KEY,
+        id=invoice['subscription']
+    )
+
     if invoice['paid']:
-        user.update_pro(
-            pro_timestamp_end=subscr['current_period_end']
+        profile = UserProfile(
+            user=user,
+            pro_enddate=subscr['current_period_end']
         )
+        profile.save()
+
     return True
