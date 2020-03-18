@@ -31,6 +31,9 @@ class UserProfile(models.Model):
         blank=True
     )
 
+    def update_pro(self, pro_timestamp_end):
+        pass
+
     def is_pro_user(self):
         now = timezone.now()
 

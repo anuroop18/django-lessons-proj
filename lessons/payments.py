@@ -1,4 +1,6 @@
+import logging
 from django.conf import settings
+from django.auth.models import User
 from stripe import (
     Customer,
     Subscription,
@@ -13,6 +15,8 @@ PLAN_DICT = {
     MONTH: settings.STRIPE_PLAN_MONTHLY_ID,
     YEAR: settings.STRIPE_PLAN_ANNUAL_ID
 }
+
+logger = logging.getLogger(__name__)
 
 
 class LessonsMonthPlan:
@@ -75,7 +79,19 @@ def upgrade_customer(invoice):
     """
     # invoice['customer_email']
     # invoice['paid'] = true|false
-    # invoice['subscription'] # hier is an id
+    # invoice['current_period_end'] # timestamp of end of subscription
+    email = invoice['customer_email']
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        logger.warning(
+            f"User with email {email} not found while trying to upgrade to PRO"
+        )
+        return False
+
     subscr = Subscription.retrieve(invoice['subscription'])
-    subscr['current_period_start']
-    subscr['current_period_end']
+    if invoice['paid']:
+        user.update_pro(
+            pro_timestamp_end=subscr['current_period_end']
+        )
+    return True
