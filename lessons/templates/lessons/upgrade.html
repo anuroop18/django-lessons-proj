@@ -10,9 +10,9 @@
                 <form method="GET" action="{% url 'checkout' %}">
                     <div class="form-group">
                       <label for="exampleFormControlSelect1">Plan</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option default>$19.95 (monthly)</option>
-                        <option>$199.95 (annual)</option>
+                      <select class="form-control" id="exampleFormControlSelect1" name="plan">
+                        <option value="m" default>$19.95 (monthly)</option>
+                        <option value="a">$199.95 (annual)</option>
                       </select>
                     </div>
                     <button type="submit" class="btn btn-success mb-2">Continue</button>

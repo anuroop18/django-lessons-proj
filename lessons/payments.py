@@ -26,14 +26,36 @@ class LessonsMonthPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
         self.amount = 1995
-        self.currency = "usd"
 
 
 class LessonsAnnualPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_ANNUAL_ID
         self.amount = 19950
-        self.currency = "usd"
+
+
+class LessonsPlan:
+    def __init__(self, plan_id):
+        """
+        plan_id is either string 'm' (stands for monthly)
+        or a string letter 'a' (which stands for annual)
+        """
+        if plan_id == 'm':
+            self.plan = LessonsMonthPlan()
+        elif plan_id == 'a':
+            self.plan = LessonsAnnualPlan()
+        else:
+            raise ValueError('Invalid plan_id value')
+
+        self.currency = 'usd'
+
+    @property
+    def stripe_plan_id(self):
+        return self.plan.stripe_plan_id
+
+    @property
+    def amount(self):
+        return self.plan.amount
 
 
 def create_payment_intent(
