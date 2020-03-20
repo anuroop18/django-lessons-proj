@@ -1,3 +1,4 @@
+from datetime import date
 import logging
 
 from django.conf import settings
@@ -22,14 +23,32 @@ PLAN_DICT = {
 logger = logging.getLogger(__name__)
 
 
-def create_or_update_user_profile(user, timestamp):
+def create_or_update_user_profile(user, timestamp_or_date):
+    #
+    # timestamp_or_date can be instance of
+    #  (1) datetime.date
+    #  (2) timestamp e.g. 122343454 = expressed as integer
+    #  (3) timestamp e.g. 232321133 = expressed as string
+    #
+    #  (2) and (3) input is received from stripe API
+    #  (1) is used in testing, just to make sure it works as expected
+
+    if isinstance(timestamp_or_date, int):
+        some_date = date.fromtimestamp(timestamp_or_date)
+    elif isinstance(timestamp_or_date, str):
+        some_date = date.fromtimestamp(int(timestamp_or_date))
+    else:
+        some_date = timestamp_or_date
+
+    # some_date instance of datetime.date
+
     if hasattr(user, 'profile'):
-        user.profile.pro_enddate = timestamp
+        user.profile.pro_enddate = some_date
         user.save()
     else:
         profile = UserProfile(
             user=user,
-            pro_enddate=timestamp
+            pro_enddate=some_date
         )
         profile.save()
 
@@ -141,6 +160,9 @@ def upgrade_customer(invoice):
 
     if invoice['paid']:
         create_or_update_user_profile(user, current_period_end)
+        logger.info(
+            f"Profile with {current_period_end} saved for user {email}"
+        )
     else:
         logger.info("Invoice is was NOT paid!")
 

@@ -1,6 +1,4 @@
 import datetime
-from django.utils import timezone
-
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -34,18 +32,11 @@ class UserProfile(models.Model):
         blank=True
     )
 
-    def update_pro_enddate(self, timestamp):
-        """
-        value = integer number representing timestamp
-        """
-        self.pro_enddate = datetime.datetime.fromtimestamp(
-            timestamp
-        )
+    def update_pro_enddate(self, some_date):
+        self.pro_enddate = some_date
         self.save()
 
     def is_pro_user(self):
-        now = datetime.datetime.now()
-
         # If pro_enddate is not defined, blank or null
         # user is not a PRO
         if not self.pro_enddate:
@@ -53,7 +44,7 @@ class UserProfile(models.Model):
 
         # if PRO is set in future(user paid for PRO account)
         # means he/she is a PRO
-        if datetime.datetime.timestamp(now) < self.pro_enddate:
+        if datetime.date.today() < self.pro_enddate:
             return True
 
 

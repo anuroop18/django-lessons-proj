@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from django.utils import timezone
 from django.test import TestCase
@@ -34,17 +34,16 @@ class UserProfileTest(TestCase):
         )
 
     def test_update_pro_enddate(self):
-        dt = datetime.now()
-        td = timedelta(days=30)
-        # timestamp in future
-        timestamp = datetime.timestamp(dt + td)
+        today = date.today()
+        days30 = timedelta(days=30)
+        # date in future in future
 
         self.assertFalse(
             self.user.profile.is_pro_user()
         )
 
         self.user.profile.update_pro_enddate(
-            timestamp=timestamp
+            some_date=today + days30
         )
 
         self.assertTrue(
@@ -52,21 +51,65 @@ class UserProfileTest(TestCase):
         )
 
     def test_create_or_update_user_profile(self):
-        dt = datetime.now()
-        td = timedelta(days=30)
-        # timestamp in future
-        timestamp = datetime.timestamp(dt + td)
+        today = date.today()
+        days30 = timedelta(days=30)
 
         self.assertFalse(
             self.user.profile.is_pro_user()
         )
         create_or_update_user_profile(
             self.user,
-            timestamp
+            today + days30
         )
         self.assertTrue(
             self.user.profile.is_pro_user()
         )
+
+    def test_create_or_update_user_profile_input_1(self):
+        """
+        create_or_update_user_profile gets an input an timestamp
+        of a date in the future (as int)
+        """
+        now = datetime.now()
+        days30 = timedelta(days=30)
+        timestamp_in_future = int(
+            datetime.timestamp(now + days30)
+        )
+
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        create_or_update_user_profile(
+            self.user,
+            timestamp_in_future
+        )
+        self.assertTrue(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_create_or_update_user_profile_input_2(self):
+        """
+        create_or_update_user_profile gets an input an timestamp
+        of a date in the future (as str)
+        """
+        now = datetime.now()
+        days30 = timedelta(days=30)
+        timestamp_in_future = int(
+            datetime.timestamp(now + days30)
+        )
+        timestamp_in_future = str(timestamp_in_future)
+
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        create_or_update_user_profile(
+            self.user,
+            timestamp_in_future
+        )
+        self.assertTrue(
+            self.user.profile.is_pro_user()
+        )
+
 
 
 class LessonsOrderTests(TestCase):
