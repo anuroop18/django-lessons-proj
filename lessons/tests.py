@@ -113,7 +113,6 @@ class UserProfileTest(TestCase):
         )
 
 
-
 class LessonsOrderTests(TestCase):
     def test_initial_order(self):
         # if no other lesson is found in DB, initial
