@@ -35,6 +35,13 @@ LOGGING = {
         'file': {
             'class': 'logging.FileHandler',
             'filename': 'lessons.log',
+            'formatter': 'with_funcname'
+        },
+    },
+    'formatters': {
+        'with_funcname': {
+            'format': '[{pathname}:{funcName}:{lineno:d}] {message}',
+            'style': '{',
         },
     },
     'loggers': {

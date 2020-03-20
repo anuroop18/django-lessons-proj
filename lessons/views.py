@@ -254,6 +254,8 @@ def checkout(request):
 @require_POST
 @csrf_exempt
 def webhooks(request):
+    logger.info("Stripe webhook received")
+
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
