@@ -53,7 +53,7 @@ class UserProfile(models.Model):
 
         # if PRO is set in future(user paid for PRO account)
         # means he/she is a PRO
-        if now < self.pro_enddate:
+        if datetime.datetime.timestamp(now) < self.pro_enddate:
             return True
 
 
