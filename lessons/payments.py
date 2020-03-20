@@ -108,6 +108,7 @@ def upgrade_customer(invoice):
     # invoice['paid'] = true|false
     # invoice['current_period_end'] # timestamp of end of subscription
     email = invoice['customer_email']
+    logger.info(f"email={email}")
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -121,6 +122,9 @@ def upgrade_customer(invoice):
         id=invoice['subscription']
     )
 
+    logger.info(f"subscription_id={invoice['subscription']}")
+    logger.info(f"invoice paid = {invoice['paid']}")
+    logger.info(f"pro_enddate= {subscr['current_period_end']}")
     if invoice['paid']:
         if hasattr(user, 'profile'):
             user.profile.pro_enddate = subscr['current_period_end']

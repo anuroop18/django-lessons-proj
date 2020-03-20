@@ -4,7 +4,7 @@ import os
 #
 # If you write "import *" in any other python module and deploy
 # such code in production, bugs will eat your business out!
-from .base import *
+from .base import *  # noqa
 # But in this *very unique scenario*... it works like a charm :)
 
 # All environment common settings are defined in config/env/base.py
@@ -26,6 +26,29 @@ DATABASES = {
 }
 
 DEBUG = True
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'lessons.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+        'lessons': {
+            'handlers': ['file'],
+            'level': os.getenv('LESSONS_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
 
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
 AWS_S3_REGION_NAME = os.environ['AWS_S3_REGION_NAME']

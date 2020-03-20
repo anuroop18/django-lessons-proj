@@ -197,6 +197,7 @@ def user_profile(request):
 
 @login_required
 def upgrade(request):
+    logger.info("upgrade")
     return render(request, 'lessons/upgrade.html')
 
 
