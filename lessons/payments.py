@@ -46,7 +46,7 @@ def create_or_update_user_profile(user, timestamp_or_date):
         logger.info(
             f"user already has a profile; some_date={some_date}"
         )
-        user.profile.pro_enddate = some_date
+        user.profile.update_pro_enddate(some_date)
         user.save()
         logger.info(f"pro_enddate={user.profile.pro_enddate}")
         logger.info(f"is_pro={user.profile.is_pro_user()}")

@@ -45,9 +45,9 @@ class UserProfileTest(TestCase):
         self.user.profile.update_pro_enddate(
             some_date=today + days30
         )
-
+        user = User.objects.get(id=self.user.id)
         self.assertTrue(
-            self.user.profile.is_pro_user()
+            user.profile.is_pro_user()
         )
 
     def test_create_or_update_user_profile(self):
@@ -61,8 +61,9 @@ class UserProfileTest(TestCase):
             self.user,
             today + days30
         )
+        user = User.objects.get(id=self.user.id)
         self.assertTrue(
-            self.user.profile.is_pro_user()
+            user.profile.is_pro_user()
         )
 
     def test_create_or_update_user_profile_input_1(self):
@@ -83,8 +84,9 @@ class UserProfileTest(TestCase):
             self.user,
             timestamp_in_future
         )
+        user = User.objects.get(id=self.user.id)
         self.assertTrue(
-            self.user.profile.is_pro_user()
+            user.profile.is_pro_user()
         )
 
     def test_create_or_update_user_profile_input_2(self):
