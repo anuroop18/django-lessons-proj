@@ -15,7 +15,12 @@
     <div class="col-lg-12 col-md-12">
         <div class="row justify-content-center">
             <div class=" m-2 m-md-4 p-2 p-md-4">
-                User Profile here
+                {% if is_pro %}
+                  PRO Account
+                  {{user_profile.pro_enddate}}
+                {% else %}
+                  FREE Account
+                {% endif %}
             </div>
         </div>
     </div>

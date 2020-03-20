@@ -122,10 +122,13 @@ def upgrade_customer(invoice):
     )
 
     if invoice['paid']:
-        profile = UserProfile(
-            user=user,
-            pro_enddate=subscr['current_period_end']
-        )
-        profile.save()
+        if hasattr(user, 'profile'):
+            user.profile.pro_enddate = subscr['current_period_end']
+        else:
+            profile = UserProfile(
+                user=user,
+                pro_enddate=subscr['current_period_end']
+            )
+            profile.save()
 
     return True

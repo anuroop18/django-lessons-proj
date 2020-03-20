@@ -36,6 +36,11 @@ urlpatterns = [
         views.webhooks,
         name='webhooks'
     ),
+    path(
+        'profile',
+        views.user_profile,
+        name='user_profile'
+    ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500')
 ]

@@ -15,11 +15,10 @@ from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (Lesson, Course)
 from lessons.payments import (
     LessonsPlan,
+    UserProfile,
     upgrade_customer,
     create_payment_intent,
     create_payment_subscription,
-    MONTH,
-    YEAR
 )
 from taggit.models import Tag
 
@@ -164,6 +163,34 @@ def contact(request):
         {
             'form': form,
             'courses': courses
+        }
+    )
+
+
+@login_required
+def user_profile(request):
+
+    user = request.user
+
+    if hasattr(user, 'profile'):
+        user_profile = user.profile
+    else:
+        user_profile = UserProfile(
+            user=user,
+        )
+        user_profile.save()
+
+    is_pro = False
+
+    if user_profile:
+        is_pro = user_profile.is_pro_user()
+
+    return render(
+        request,
+        'account/profile.html',
+        {
+            'user_profile': user_profile,
+            'is_pro': is_pro
         }
     )
 
