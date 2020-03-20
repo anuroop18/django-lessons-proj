@@ -178,6 +178,16 @@ def checkout(request):
     # accepts only GET and POST
     # GET
     if request.method == 'GET':
+
+        payment_method = request.GET.get('payment_method', 'card')
+
+        # paypal coming soon...
+        if payment_method == 'paypal':
+            return render(
+                request,
+                'lessons/checkout/paypal.html'
+            )
+
         lesson_plan = LessonsPlan(
             request.GET.get('plan', False)
         )
