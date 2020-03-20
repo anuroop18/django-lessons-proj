@@ -42,8 +42,10 @@ class LessonsPlan:
         """
         if plan_id == 'm':
             self.plan = LessonsMonthPlan()
+            self.id = 'm'
         elif plan_id == 'a':
             self.plan = LessonsAnnualPlan()
+            self.id = 'a'
         else:
             raise ValueError('Invalid plan_id value')
 

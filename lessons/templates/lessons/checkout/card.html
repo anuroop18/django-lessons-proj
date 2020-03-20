@@ -20,6 +20,7 @@
            <div class="container">
             <form action="{% url 'checkout' %}" method="post" id="payment-form">
                 {% csrf_token %}
+                <input type="hidden" value="{{plan_id}}" name="plan_id"/>
                 <div class="form-group">
                   <label for="card-element">Credit or debit card</label>
                   <div id="card-element">
