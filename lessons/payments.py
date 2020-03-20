@@ -22,6 +22,18 @@ PLAN_DICT = {
 logger = logging.getLogger(__name__)
 
 
+def create_or_update_user_profile(user, timestamp):
+    if hasattr(user, 'profile'):
+        user.profile.pro_enddate = timestamp
+        user.save()
+    else:
+        profile = UserProfile(
+            user=user,
+            pro_enddate=timestamp
+        )
+        profile.save()
+
+
 class LessonsMonthPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
@@ -128,20 +140,7 @@ def upgrade_customer(invoice):
     logger.info(f"pro_enddate= {subscr['current_period_end']}")
 
     if invoice['paid']:
-        logger.info("Invoice was paid!")
-        if hasattr(user, 'profile'):
-            logger.info("profile exists")
-            user.profile.pro_enddate = current_period_end
-        else:
-            logger.info("creating profile")
-            profile = UserProfile(
-                user=user,
-                pro_enddate=current_period_end
-            )
-            profile.save()
-            logger.info(
-                f"Profile with {current_period_end} saved for user {email}"
-            )
+        create_or_update_user_profile(user, current_period_end)
     else:
         logger.info("Invoice is was NOT paid!")
 

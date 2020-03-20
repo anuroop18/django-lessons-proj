@@ -8,6 +8,7 @@ from django.urls import reverse
 from taggit.models import Tag
 
 from lessons.models import (Lesson, User, UserProfile)
+from lessons.payments import create_or_update_user_profile
 
 
 class UserProfileTest(TestCase):
@@ -46,6 +47,23 @@ class UserProfileTest(TestCase):
             timestamp=timestamp
         )
 
+        self.assertTrue(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_create_or_update_user_profile(self):
+        dt = datetime.now()
+        td = timedelta(days=30)
+        # timestamp in future
+        timestamp = datetime.timestamp(dt + td)
+
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        create_or_update_user_profile(
+            self.user,
+            timestamp
+        )
         self.assertTrue(
             self.user.profile.is_pro_user()
         )
