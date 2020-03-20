@@ -122,17 +122,27 @@ def upgrade_customer(invoice):
         id=invoice['subscription']
     )
 
+    current_period_end = subscr['current_period_end']
     logger.info(f"subscription_id={invoice['subscription']}")
     logger.info(f"invoice paid = {invoice['paid']}")
     logger.info(f"pro_enddate= {subscr['current_period_end']}")
+
     if invoice['paid']:
+        logger.info("Invoice was paid!")
         if hasattr(user, 'profile'):
-            user.profile.pro_enddate = subscr['current_period_end']
+            logger.info("profile exists")
+            user.profile.pro_enddate = current_period_end
         else:
+            logger.info("creating profile")
             profile = UserProfile(
                 user=user,
-                pro_enddate=subscr['current_period_end']
+                pro_enddate=current_period_end
             )
             profile.save()
+            logger.info(
+                f"Profile with {current_period_end} saved for user {email}"
+            )
+    else:
+        logger.info("Invoice is was NOT paid!")
 
     return True

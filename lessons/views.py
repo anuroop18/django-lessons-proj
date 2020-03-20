@@ -264,6 +264,7 @@ def webhooks(request):
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SIGNING_KEY
         )
+        logger.info("Event constructed correctly")
     except ValueError:
         # Invalid payload
         logger.warning("Invalid Payload")
