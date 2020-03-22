@@ -94,7 +94,7 @@ class LessonTagIndex(Page):
 
         # Filter by tag
         tag = request.GET.get('tag')
-        lessons = Lesson.objects.filter(
+        lessons = Lesson.objects.filter(live=True).filter(
             tags__name=tag
         ).order_by('-last_published_at')
 
