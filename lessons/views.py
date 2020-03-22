@@ -55,16 +55,12 @@ def index(request):
     paginator = Paginator(lessons, ITEMS_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-    courses = Course.objects.order_by(
-        '-first_published_at'
-    )
 
     return render(
         request,
         'lessons/index.html',
         {
             'lessons': page_obj.object_list,
-            'courses': courses,
             'tags': Tag.objects.order_by('name'),
             'page_obj': page_obj,
             'page_number': int(page_number),
@@ -81,16 +77,11 @@ def lesson(request, order, slug):
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
-    courses = Course.objects.order_by(
-        '-first_published_at'
-    )
-
     return render(
         request,
         'lessons/lesson.html',
         {
             'page': lesson,
-            'courses': courses
         }
     )
 
@@ -124,16 +115,11 @@ def subscribe(request):
     else:
         form = SubscribeForm()
 
-    courses = Course.objects.order_by(
-        '-first_published_at'
-    )
-
     return render(
         request,
         'lessons/subscribe.html',
         {
             'form': form,
-            'courses': courses
         }
     )
 
@@ -153,16 +139,11 @@ def contact(request):
     else:
         form = ContactForm()
 
-    courses = Course.objects.order_by(
-        '-first_published_at'
-    )
-
     return render(
         request,
         'lessons/contact.html',
         {
             'form': form,
-            'courses': courses
         }
     )
 

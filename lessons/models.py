@@ -97,16 +97,12 @@ class LessonTagIndex(Page):
         lessons = Lesson.objects.filter(
             tags__name=tag
         ).order_by('-last_published_at')
-        courses = Course.objects.order_by(
-            '-first_published_at'
-        )
 
         # Update template context
         context = super().get_context(request)
         context['lessons'] = lessons
         context['tags'] = Tag.objects.order_by('name')
         context['current_tag_name'] = tag
-        context['courses'] = courses
 
         return context
 
@@ -167,18 +163,6 @@ class Lesson(Page):
         StreamFieldPanel('content'),
     ]
 
-    def get_context(self, request):
-
-        # Update template context
-        courses = Course.objects.order_by(
-            '-first_published_at'
-        )
-
-        context = super().get_context(request)
-        context['courses'] = courses
-
-        return context
-
     def __str__(self):
         return f"#{self.order} {self.title}"
 
@@ -230,14 +214,9 @@ class Course(Page):
             course=self
         ).order_by('order')
 
-        courses = Course.objects.order_by(
-            '-first_published_at'
-        )
-
         # Update template context
         context = super().get_context(request)
         context['lesson_groups'] = lesson_groups
-        context['courses'] = courses
 
         return context
 
