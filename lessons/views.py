@@ -71,11 +71,48 @@ def index(request):
 
 
 def lesson(request, order, slug):
+    """
+    One lesson can be viewed in two different ways:
+
+        (1) as independent lesson
+        (2) as part of one course
+
+    As (1) it is well, independent. And it is not really
+    important to jump to next in order lesson or not.
+    It is more important in this conetxt to display 'related lessons'.
+
+    As (2) this lesson is within logical sequence of group of lessons
+    - a course.
+    In this context, lesson title from within a course may override
+    the title of the lesson.
+
+    E.g. L#18, lesson.title = Django Deployment from Zero to Hero Part 1
+         L#19, lesson.title = Django Deployment from Zero to Hero Part 2
+         L#20, lesson.title = Django Deployment from Zero to Hero Part 3
+
+    Within course, those lessons will be titled differently:
+        course.title = Django Deployment from Zero to Hero
+
+         lesson#1 - Setup VPS host
+         lesson#2 - Setup Nginx
+         lesson#3 - Prepare Database
+
+    where lesson#1 is same 'thing' as L#18
+          lesson#2 is same 'thing' as L#19.
+
+    they are just within different context.
+
+    Long story short, if user clicks on lesson from course view - lesson
+    will be displayed little bit differenty. The switch/toggle will be
+    view=lesson|course GET parameter.
+    """
     try:
         lesson = Lesson.objects.get(order=order)
     except Lesson.DoesNotExist:
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
+
+    view = request.GET.get('view', 'lesson')
 
     course = None
     if lesson.lesson_groups.count() > 0:
@@ -86,7 +123,8 @@ def lesson(request, order, slug):
         'lessons/lesson.html',
         {
             'page': lesson,
-            'course': course
+            'course': course,
+            'view': view  # as independent lesson | as lesson within course
         }
     )
 
