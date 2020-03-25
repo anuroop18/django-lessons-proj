@@ -38,36 +38,83 @@
                 {{page.short_description | richtext }}
             </div>
         </div>
-        <div class="row  py-3">
-            <div class="col-lg-12">
-                {% for block in page.content %}
-                    <section class="block-{{ block.block_type }}">
-                            {% include_block block %}
-                    </section>
-                {% endfor %}
+        <ul class="nav nav-tabs" id="tab">
+            <li class="nav-item">
+                <a class="nav-link active" id="notes-tab" data-toggle="tab" href="#main-content">
+                    Lesson
+                    <!-- End of main content for this lesson -->
+                </a>
+            </li>
+            <li class="nav-item">
+                <a  class="nav-link" id="similar-lesson-tab" role="tab" data-toggle="tab" href="#similar">
+                    <!--- Similar Lessons BEGIN -->
+                    Similar Lessons
+                    <!--- Similar Lessons BEGIN -->
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="previous-lesson-tab" role="tab" data-toggle="tab" href="#prev">
+                    Previous Lesson
+                </a>
+            </li>
+            <li class="nav-item">
+                <a  class="nav-link" id="next-lesson-tab" role="tab" data-toggle="tab" href="#next">
+                    Next Lesson
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="main-content" role="tabpanel">
+                <!--- BEGIN Main content for this lesson -->
+                <div class="row  py-3">
+                    <div class="col-lg-12">
+                        {% for block in page.content %}
+                            <section class="block-{{ block.block_type }}">
+                                    {% include_block block %}
+                            </section>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="header text-muted">
+                            <ul class="list-unstyled d-flex flex-row">
+                                <li class="mx-1"><span class="font-weight-bold">Lesson #{{page.order}}</span></li>
+                                <li>–</li>
+                                <li class="mx-1">{{page.first_published_at | date:"M d, Y"}}</li>
+                                {% if page.tags.all.count %}
+                                    <li class="mx-1 tags">
+                                        {% for tag in page.tags.all %}
+                                            <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                                <spanc class="badge badge-info">{{ tag }}</span>
+                                            </a>
+                                        {% endfor %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--- END Main content for this lesson -->
             </div>
+            <div class="tab-pane" id="similar" role="tabpanel">
+                <!--- BEGIN Similar lessons -->
+                Similar
+                <!--- END of Similar lessons -->
+            </div>
+          <div class="tab-pane" id="next" role="tabpanel">
+                <!-- Next lesson -->
+              Next
+                <!-- Next lesson -->
+          </div>
+          <div class="tab-pane" id="prev" role="tabpanel">
+            <!-- Previous lesson -->
+                Previous
+            <!-- Previous lesson -->
+          </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="header text-muted">
-                    <ul class="list-unstyled d-flex flex-row">
-                        <li class="mx-1"><span class="font-weight-bold">Lesson #{{page.order}}</span></li>
-                        <li>–</li>
-                        <li class="mx-1">{{page.first_published_at | date:"M d, Y"}}</li>
-                        {% if page.tags.all.count %}
-                            <li class="mx-1 tags">
-                                {% for tag in page.tags.all %}
-                                    <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                        <spanc class="badge badge-info">{{ tag }}</span>
-                                    </a>
-                                {% endfor %}
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
 
     </div>
 {% endblock %}
