@@ -120,6 +120,7 @@ def lesson(request, order, slug):
         template_name = 'lessons/lesson_within_course.html'
 
     course = None
+    lesson_group = None
     if lesson.lesson_groups.count() > 0:
         lesson_group = lesson.lesson_groups.first()
         course = lesson_group.course
