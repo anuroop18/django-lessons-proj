@@ -77,11 +77,16 @@ def lesson(request, order, slug):
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
+    course = None
+    if lesson.lesson_groups.count() > 0:
+        course = lesson.lesson_groups.first().course
+
     return render(
         request,
         'lessons/lesson.html',
         {
             'page': lesson,
+            'course': course
         }
     )
 

@@ -232,12 +232,14 @@ class LessonGroup(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name='lesson_groups'
     )
     course = models.ForeignKey(
         Course,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name='lesson_groups'
     )
 
     def __str__(self):
