@@ -131,6 +131,7 @@ def lesson(request, order, slug):
         next_item = lesson_group.get_next_lesson_group_obj()
         prev_item = lesson_group.get_prev_lesson_group_obj()
     else:
+        lesson_groups = []
         similar_lessons = lesson.related_lessons.all()
         next_item = lesson.get_next_lesson_obj()
         prev_item = lesson.get_prev_lesson_obj()
