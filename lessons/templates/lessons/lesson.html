@@ -100,7 +100,13 @@
             </div>
             <div class="tab-pane" id="similar" role="tabpanel">
                 <!--- BEGIN Similar lessons -->
-                Similar
+                <div class="row  py-3">
+                    <div class="col-lg-12">
+                        {% for similar_lesson in similar_lessons %}
+                            {% include 'lessons/includes/_lesson.html' with lesson=similar_lesson %}
+                        {% endfor %}
+                    </div>
+                </div>
                 <!--- END of Similar lessons -->
             </div>
           <div class="tab-pane" id="next" role="tabpanel">

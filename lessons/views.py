@@ -125,13 +125,16 @@ def lesson(request, order, slug):
         lesson_group = lesson.lesson_groups.first()
         course = lesson_group.course
 
+    similar_lessons = lesson.related_lessons.all()
+
     return render(
         request,
         template_name,
         {
             'page': lesson,
             'course': course,
-            'lesson_group': lesson_group
+            'lesson_group': lesson_group,
+            'similar_lessons': similar_lessons
         }
     )
 

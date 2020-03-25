@@ -140,6 +140,12 @@ class Lesson(Page):
 
     script = RichTextField(blank=True)
 
+    related_lessons = models.ManyToManyField(
+        "self",
+        blank=True,
+        related_name='related_lessons'
+    )
+
     content = StreamField([
         ('paragraph', blocks.RichTextBlock()),
         ('pro_paragraph', blocks.RichTextBlock()),
@@ -160,6 +166,7 @@ class Lesson(Page):
         FieldPanel('short_description'),
         FieldPanel('tags'),
         FieldPanel('script'),
+        FieldPanel('related_lessons'),
         StreamFieldPanel('content'),
     ]
 
