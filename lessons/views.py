@@ -103,8 +103,8 @@ def lesson(request, order, slug):
     they are just within different context.
 
     Long story short, if user clicks on lesson from course view - lesson
-    will be displayed little bit differenty. The switch/toggle will be
-    view=lesson|course GET parameter.
+    will be displayed differently - as lesson within course.
+    To switch between views - pass http parameter view = course | lesson
     """
     try:
         lesson = Lesson.objects.get(order=order)
@@ -114,17 +114,21 @@ def lesson(request, order, slug):
 
     view = request.GET.get('view', 'lesson')
 
+    if view == 'lesson':
+        template_name = 'lessons/lesson.html'
+    else:
+        template_name = 'lessons/lesson_within_course.html'
+
     course = None
     if lesson.lesson_groups.count() > 0:
         course = lesson.lesson_groups.first().course
 
     return render(
         request,
-        'lessons/lesson.html',
+        template_name,
         {
             'page': lesson,
             'course': course,
-            'view': view  # as independent lesson | as lesson within course
         }
     )
 
