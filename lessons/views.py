@@ -121,7 +121,8 @@ def lesson(request, order, slug):
 
     course = None
     if lesson.lesson_groups.count() > 0:
-        course = lesson.lesson_groups.first().course
+        lesson_group = lesson.lesson_groups.first()
+        course = lesson_group.course
 
     return render(
         request,
@@ -129,6 +130,7 @@ def lesson(request, order, slug):
         {
             'page': lesson,
             'course': course,
+            'lesson_group': lesson_group
         }
     )
 

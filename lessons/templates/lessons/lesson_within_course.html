@@ -9,36 +9,27 @@
 {% block central_content %}
     <div class="page">
         <div class="row pt-3">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                <h3 class="title">
-                    <span class="text-muted">
-                        #{{page.order}}
-                    </span>
                     <span class="font-weight-bold">
-                    {{page.title}}
+                    {{lesson_group.title}}
                     </span>
                 </h3>
             </div>
-            <div class="col-lg-3">
+        </div>
+         <div class="row">
+            <div class="col-lg-12 description">
+                {{lesson_group.short_description | richtext }}
             </div>
         </div>
-        {% if course %}
         <div class="row pb-3">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <a href="{% slugurl course.slug %}">
-                   <span class="text-muted">This lesson is part of </span> {{course.title}} course
+                   <span class="text-muted">This part {{lesson_group.order}} of </span> {{course.title}} course
                 </a>
             </div>
-            <div class="col-lg-3">
-            </div>
         </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-lg-12 description">
-                {{page.short_description | richtext }}
-            </div>
-        </div>
-        <div class="row  py-3">
+        <div class="row py-3">
             <div class="col-lg-12">
                 {% for block in page.content %}
                     <section class="block-{{ block.block_type }}">
