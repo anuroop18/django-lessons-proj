@@ -134,7 +134,9 @@ def lesson(request, order, slug):
             'page': lesson,
             'course': course,
             'lesson_group': lesson_group,
-            'similar_lessons': similar_lessons
+            'similar_lessons': similar_lessons,
+            'next_lesson': lesson.get_next_lesson_obj,
+            'prev_lesson': lesson.get_prev_lesson_obj
         }
     )
 

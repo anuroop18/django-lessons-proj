@@ -110,14 +110,10 @@
                 <!--- END of Similar lessons -->
             </div>
           <div class="tab-pane" id="next" role="tabpanel">
-                <!-- Next lesson -->
-              Next
-                <!-- Next lesson -->
+                {% include 'lessons/includes/_lesson.html' with lesson=next_lesson %}
           </div>
           <div class="tab-pane" id="prev" role="tabpanel">
-            <!-- Previous lesson -->
-                Previous
-            <!-- Previous lesson -->
+            {% include 'lessons/includes/_lesson.html' with lesson=prev_lesson %}
           </div>
         </div>
 

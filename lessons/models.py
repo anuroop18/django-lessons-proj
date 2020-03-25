@@ -187,6 +187,16 @@ class Lesson(Page):
                 }
             )
 
+    def get_next_lesson_obj(self, course=None):
+        current_order = self.order
+        ret = Lesson.objects.filter(order=current_order + 1).first()
+        return ret
+
+    def get_prev_lesson_obj(self, course=None):
+        current_order = self.order
+        ret = Lesson.objects.filter(order=current_order - 1).first()
+        return ret
+
     def next_order():
         lessons = [
             obj.order for obj in Lesson.objects.all()
