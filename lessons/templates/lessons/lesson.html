@@ -104,16 +104,26 @@
                     <div class="col-lg-12">
                         {% for similar_lesson in similar_lessons %}
                             {% include 'lessons/includes/_lesson.html' with lesson=similar_lesson %}
+                        {% empty %}
+                            <div class="p-2">
+                                Wow, no similar lessons found! You have just found a very unique lesson!
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
                 <!--- END of Similar lessons -->
             </div>
           <div class="tab-pane" id="next" role="tabpanel">
-                {% include 'lessons/includes/_lesson.html' with lesson=next_lesson %}
+            {% if next_lesson %}
+                {% include 'lessons/includes/_lesson.html' with lesson=next_item %}
+            {% else %}
+                <div class="p-2">
+                    Other lessons will be published soon
+                </div>
+            {% endif %}
           </div>
           <div class="tab-pane" id="prev" role="tabpanel">
-            {% include 'lessons/includes/_lesson.html' with lesson=prev_lesson %}
+            {% include 'lessons/includes/_lesson.html' with lesson=prev_item %}
           </div>
         </div>
 

@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from lessons.models import (Subscription, Contact)
 from lessons.forms import (SubscribeForm, ContactForm)
-from lessons.models import (Lesson, Course)
+from lessons.models import (Lesson, Course, LessonGroup)
 from lessons.payments import (
     LessonsPlan,
     UserProfile,
@@ -124,8 +124,16 @@ def lesson(request, order, slug):
     if lesson.lesson_groups.count() > 0:
         lesson_group = lesson.lesson_groups.first()
         course = lesson_group.course
-
-    similar_lessons = lesson.related_lessons.all()
+        similar_lessons = []
+        lesson_groups = LessonGroup.objects.filter(
+            course=course
+        ).order_by('order')
+        next_item = lesson_group.get_next_lesson_group_obj()
+        prev_item = lesson_group.get_prev_lesson_group_obj()
+    else:
+        similar_lessons = lesson.related_lessons.all()
+        next_item = lesson.get_next_lesson_obj()
+        prev_item = lesson.get_prev_lesson_obj()
 
     return render(
         request,
@@ -135,8 +143,9 @@ def lesson(request, order, slug):
             'course': course,
             'lesson_group': lesson_group,
             'similar_lessons': similar_lessons,
-            'next_lesson': lesson.get_next_lesson_obj,
-            'prev_lesson': lesson.get_prev_lesson_obj
+            'all_course_lessons': lesson_groups,
+            'next_item': next_item,
+            'prev_item': prev_item
         }
     )
 

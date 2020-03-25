@@ -187,14 +187,18 @@ class Lesson(Page):
                 }
             )
 
-    def get_next_lesson_obj(self, course=None):
+    def get_next_lesson_obj(self):
         current_order = self.order
-        ret = Lesson.objects.filter(order=current_order + 1).first()
+        ret = Lesson.objects.filter(live=True).filter(
+            order=current_order + 1
+        ).first()
         return ret
 
-    def get_prev_lesson_obj(self, course=None):
+    def get_prev_lesson_obj(self):
         current_order = self.order
-        ret = Lesson.objects.filter(order=current_order - 1).first()
+        ret = Lesson.objects.filter(live=True).filter(
+            order=current_order - 1
+        ).first()
         return ret
 
     def next_order():
@@ -258,6 +262,20 @@ class LessonGroup(models.Model):
         null=True,
         related_name='lesson_groups'
     )
+
+    def get_next_lesson_group_obj(self):
+        current_order = self.order
+        ret = LessonGroup.objects.filter(
+            order=current_order + 1
+        ).first()
+        return ret
+
+    def get_prev_lesson_group_obj(self):
+        current_order = self.order
+        ret = LessonGroup.objects.filter(
+            order=current_order - 1
+        ).first()
+        return ret
 
     def __str__(self):
         return self.title
