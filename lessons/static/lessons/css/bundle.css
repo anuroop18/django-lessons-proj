@@ -12549,12 +12549,19 @@ section {
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important; }
 
-a.twitter-share-button {
-  display: block;
-  width: 32px;
-  margin: 0 0rem 1rem 0.5rem;
-  height: 32px;
-  background-image: url(/static/lessons/img/twitter_logo_blue_32.png); }
+ul.lesson-social {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+          justify-content: flex-end; }
+  ul.lesson-social li {
+    list-style: none; }
+    ul.lesson-social li a.twitter-share-button {
+      display: inline-block;
+      width: 32px;
+      margin: 0 0rem 1rem 0.5rem;
+      height: 32px;
+      background-image: url(/static/lessons/img/twitter_logo_blue_32.png); }
 
 .page-section {
   padding: 3rem 0; }

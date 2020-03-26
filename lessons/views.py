@@ -121,15 +121,17 @@ def lesson(request, order, slug):
 
     course = None
     lesson_group = None
-    if lesson.lesson_groups.count() > 0:
-        lesson_group = lesson.lesson_groups.first()
-        course = lesson_group.course
-        similar_lessons = []
-        lesson_groups = LessonGroup.objects.filter(
-            course=course
-        ).order_by('order')
-        next_item = lesson_group.get_next_lesson_group_obj()
-        prev_item = lesson_group.get_prev_lesson_group_obj()
+
+    if view == 'course':
+        if lesson.lesson_groups.count() > 0:
+            lesson_group = lesson.lesson_groups.first()
+            course = lesson_group.course
+            similar_lessons = []
+            lesson_groups = LessonGroup.objects.filter(
+                course=course
+            ).order_by('order')
+            next_item = lesson_group.get_next_lesson_group_obj()
+            prev_item = lesson_group.get_prev_lesson_group_obj()
     else:
         lesson_groups = []
         similar_lessons = lesson.related_lessons.all()

@@ -17888,6 +17888,27 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/js/copy_url.js":
+/*!****************************!*\
+  !*** ./src/js/copy_url.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function copy_url() {
+  let dummy = document.createElement('input'),
+      text = window.location.href;
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  document.body.removeChild(dummy);
+}
+
+module.exports = copy_url;
+
+/***/ }),
+
 /***/ "./src/js/index.js":
 /*!*************************!*\
   !*** ./src/js/index.js ***!
@@ -17901,10 +17922,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _copy_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./copy_url */ "./src/js/copy_url.js");
+/* harmony import */ var _copy_url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_copy_url__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tab li:first-child a').tab('show');
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#copy-url').click(function (e) {
+    _copy_url__WEBPACK_IMPORTED_MODULE_2___default()();
+  });
 });
 
 /***/ }),
