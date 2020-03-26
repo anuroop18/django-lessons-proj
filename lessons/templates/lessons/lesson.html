@@ -126,7 +126,7 @@
                 <!--- END of Similar lessons -->
             </div>
           <div class="tab-pane" id="next" role="tabpanel">
-            {% if next_lesson %}
+            {% if next_item %}
                 {% include 'lessons/includes/_lesson.html' with lesson=next_item %}
             {% else %}
                 <div class="p-2">
