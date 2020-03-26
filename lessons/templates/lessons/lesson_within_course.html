@@ -1,5 +1,5 @@
 {% extends 'lessons/base.html' %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags lesson_extras %}
 
 {% block central_col_class %} col-lg-12 {% endblock %}
 
@@ -20,6 +20,18 @@
          <div class="row">
             <div class="col-lg-12 description">
                 {{lesson_group.short_description | richtext }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="lesson-social">
+                    <li class="mx-2">
+                        {% tweet_tag title=page.title lesson_url=request.build_absolute_uri %}
+                    </li>
+                    <li class="mx-2">
+                        <button type="button"class="btn btn-light" id="copy-url">Copy URL</button>
+                    </li>
+                 </ul>
             </div>
         </div>
         <ul class="nav nav-tabs" id="tab">
