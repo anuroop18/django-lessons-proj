@@ -12549,6 +12549,13 @@ section {
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important; }
 
+a.twitter-share-button {
+  display: block;
+  width: 32px;
+  margin: 0 0rem 1rem 0.5rem;
+  height: 32px;
+  background-image: url(/static/lessons/img/twitter_logo_blue_32.png); }
+
 .page-section {
   padding: 3rem 0; }
 
