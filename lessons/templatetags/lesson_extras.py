@@ -1,6 +1,22 @@
 from django import template
+from django.utils.http import urlencode
+
 
 register = template.Library()
+
+
+@register.inclusion_tag("lessons/includes/tweet.html")
+def tweet_tag(title, lesson_url):
+
+    url = urlencode({
+        'url': lesson_url,
+        'text': title,
+        'via': 'DjangoLessons',
+    })
+
+    return {
+        'url': url
+    }
 
 
 @register.simple_tag
