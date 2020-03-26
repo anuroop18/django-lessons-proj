@@ -86,6 +86,19 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': os.environ['GITHUB_SECRET'],
             'key': os.environ['GITHUB_KEY']
         }
+    },
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': os.environ['GOOGLE_CLIENT_ID'],
+            'secret': os.environ['GOOGLE_SECRET'],
+        }
     }
 }
 
