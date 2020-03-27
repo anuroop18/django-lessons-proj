@@ -19,6 +19,21 @@ def tweet_tag(title, lesson_url):
     }
 
 
+@register.simple_tag(takes_context=True)
+def activate_on(context, name, *names):
+    """
+    Used to activate/highlight current menu item.
+    https://django-lessons.com/lesson/lesson-28-render-menu-one-active-item
+    """
+    if context['request'].resolver_match.url_name == name:
+        return 'active'
+
+    if context['request'].resolver_match.url_name in names:
+        return 'active'
+
+    return ''
+
+
 @register.simple_tag
 def note_css_class(note_type):
     """
