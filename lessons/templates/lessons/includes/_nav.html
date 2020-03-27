@@ -63,13 +63,13 @@
           </div>
         </li>
       {% else %}
-        <li class="nav-item {% block prices %}  {% endblock %}">
+        <li class="nav-item {% activate_on 'prices' %}">
           <a class="nav-link block" href="{% url 'prices' %}">Pricing</a>
         </li>
-        <li class="nav-item mx-2 my-2 my-lg-0 {% block signin %}  {% endblock %}">
+        <li class="nav-item mx-2 my-2 my-lg-0 {% activate_on 'account_login' %}">
           <a class="nav-link text-center btn btn-outline-success block text-nowrap" href="{% url 'account_login' %}">Login</a>
         </li>
-        <li class="nav-item mx-2 my-2 my-lg-0 {% block register %}  {% endblock %}">
+        <li class="nav-item mx-2 my-2 my-lg-0 {% activate_on 'account_signup' %}">
           <a class="nav-link text-center btn-success block text-nowrap" href="{% url 'account_signup' %}">Sign Up</a>
         </li>
       {% endif %}
