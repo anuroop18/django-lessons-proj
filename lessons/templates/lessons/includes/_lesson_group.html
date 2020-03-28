@@ -1,12 +1,12 @@
 {% load static thumbnail wagtailcore_tags %}
 
 <div class="row lesson border-bottom py-3">
-    <div class="col-lg-2 px-2 d-lg-flex flex-column justify-content-center align-items-center">
+    <div class="col-lg-4 px-2 d-lg-flex flex-column justify-content-center align-items-center">
         <a href="{{ lg.lesson.get_absolute_url }}?view=course">
             <img src="{% thumbnail lg.lesson.image 280x160 crop %}" alt="">
         </a>
     </div>
-    <div class="col-lg-10">
+    <div class="col-lg-8">
         <h4 class="title"><a href="{{ lg.lesson.get_absolute_url }}?view=course">#{{lg.order}} {{ lg.title }}</a></h4>
         <p class="description mb-3">
             {{lg.short_description | safe | truncatewords:32 }}
