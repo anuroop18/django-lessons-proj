@@ -3,6 +3,7 @@
 
 
 {% block central_content %}
+<div class="row">
   <div class="{% block central_col_class %} col-lg-10  col-md-9 {% endblock %}">
     {% for lesson in lessons %}
         {% include 'lessons/includes/_lesson.html' with lesson=lesson %}
@@ -18,4 +19,5 @@
   <div class="{% block sidebar_col_class %} col-lg-2 col-md-3 {% endblock %}">
     {% include 'lessons/_right_sidebar.html' %}
   </div>
+</div>
 {% endblock %}
