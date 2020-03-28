@@ -9,7 +9,7 @@
     <div class="col-lg-8">
         <h4 class="title"><a href="{{ lg.lesson.get_absolute_url }}?view=course">#{{lg.order}} {{ lg.title }}</a></h4>
         <p class="description mb-3">
-            {{lg.short_description | safe | truncatewords:32 }}
+            {{lg.short_description | safe }}
         </p>
     </div>
 </div>
