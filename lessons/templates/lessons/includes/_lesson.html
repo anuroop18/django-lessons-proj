@@ -3,6 +3,7 @@
 <div class="row lesson border-bottom py-3">
     <div class="picture col-lg-4 px-2 d-lg-flex flex-column justify-content-center align-items-center">
         <a href="{{ lesson.get_absolute_url }}">
+            [{{lesson.image}}]
             <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
         </a>
         {% if lesson.tags.all.count %}
