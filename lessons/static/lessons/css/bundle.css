@@ -7830,31 +7830,6 @@ iframe {
   .lesson .description {
     font-size: 1rem; } }
 
-.login-social li {
-  display: inline-block;
-  margin: 0 1rem 3rem 1rem;
-  font-size: 14px;
-  background: #f8f9fa; }
-  .login-social li a {
-    transition: all 0.5s ease-in-out;
-    -webkit-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out; }
-  .login-social li a.github {
-    display: block;
-    padding: 12px 20px;
-    color: #333;
-    border-radius: 0;
-    border: 1px solid #dae0e5; }
-  .login-social li a.github:hover {
-    background: #dae0e5; }
-  .login-social li i {
-    border-right: 1px solid #fff;
-    padding-right: 10px;
-    font-size: 1.5rem;
-    margin-right: 10px; }
-
 /***************************
         button
 ***************************/
@@ -12562,6 +12537,38 @@ ul.lesson-social {
       margin: 0 0rem 1rem 0.5rem;
       height: 32px;
       background-image: url(/static/lessons/img/twitter_logo_blue_32.png); }
+
+.login-social li {
+  display: inline-block;
+  margin: 0 1rem 3rem 1rem;
+  font-size: 14px;
+  background: #f8f9fa; }
+  .login-social li a {
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out; }
+  .login-social li a.github {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    border-radius: 0;
+    border: 1px solid #dae0e5; }
+  .login-social li a.github:hover {
+    background: #dae0e5; }
+  .login-social li i {
+    border-right: 1px solid #fff;
+    padding-right: 10px;
+    font-size: 1.5rem;
+    margin-right: 10px; }
+  .login-social li a.google {
+    background-color: #1a73e8;
+    display: block;
+    padding: 12px 20px;
+    color: white; }
+  .login-social li a.google:hover {
+    background: #488fed; }
 
 .page-section {
   padding: 3rem 0; }
