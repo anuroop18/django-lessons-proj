@@ -7830,6 +7830,10 @@ iframe {
     .lesson .lesson-info-column .description {
       font-size: 0.9rem; } }
 
+@media (max-width: 991.98px) {
+  .eugen-ciur-picture {
+    max-width: 180px; } }
+
 /***************************
         button
 ***************************/
