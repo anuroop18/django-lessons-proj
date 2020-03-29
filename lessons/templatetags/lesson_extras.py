@@ -18,7 +18,8 @@ def django_lessons_userline(user):
         providers.append(account)
 
     if accounts and accounts.get('github', False):
-        github = accounts.get('github', False)
+        github = accounts.get('github', [])
+
         if github and len(github) > 0:
             extra_data = github[0].extra_data
 
@@ -31,7 +32,8 @@ def django_lessons_userline(user):
             userline_dict['provider'] = 'GitHub'
 
     if accounts and accounts.get('google', False):
-        google = accounts.get('google', False)
+        google = accounts.get('google', [])
+
         if google and len(google) > 0:
             extra_data = google[0].extra_data
             if extra_data.get('name', False):
