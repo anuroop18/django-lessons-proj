@@ -42,7 +42,8 @@ urlpatterns = [
         name='user_profile'
     ),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
-    path('500', views.handler500, name='handler500')
+    path('500', views.handler500, name='handler500'),
+    path('sentry-debug/', views.trigger_error)
 ]
 
 pages = [

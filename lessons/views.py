@@ -29,6 +29,8 @@ logger = logging.getLogger(__name__)
 ITEMS_PER_PAGE = 10
 
 
+
+
 def handler500(request):
     return render(request, "lessons/500.html")
 
@@ -213,6 +215,11 @@ def contact(request):
             'form': form,
         }
     )
+
+
+@login_required
+def trigger_error(request):
+    division_by_zero = 1 / 0  # noqa
 
 
 @login_required
