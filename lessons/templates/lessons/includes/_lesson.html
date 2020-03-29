@@ -1,7 +1,7 @@
 {% load static thumbnail wagtailcore_tags %}
 
 <div class="row lesson border-bottom py-3">
-    <div class="picture col-lg-4 px-2 d-lg-flex flex-column justify-content-center align-items-center">
+    <div class="picture col-lg-4 col-md-5 px-2 d-lg-flex flex-column justify-content-center align-items-center">
         <a href="{{ lesson.get_absolute_url }}">
             <img src="{% thumbnail lesson.image 280x160 crop %}" alt="">
         </a>
@@ -15,8 +15,10 @@
             </div>
         {% endif %}
     </div>
-    <div class="col-lg-8">
-        <h4 class="title"><a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a></h4>
+    <div class="col-lg-8 col-md-7 lesson-info-column">
+        <h4 class="title">
+            <a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a>
+        </h4>
         <div class="header text-muted">
             <ul class="list-unstyled d-flex flex-row">
                 <li class="mx-1"><span class="font-weight-bold">#{{lesson.order}}</span></li>
@@ -24,9 +26,8 @@
                 <li class="mx-1">{{lesson.first_published_at | date:"M d, Y"}}</li>
             </ul>
         </div>
-        
-        <p class="description mb-3">
+        <div class="description mb-3">
             {{lesson.short_description | safe | truncatewords:32 }}
-        </p>
+        </div>
     </div>
 </div>
