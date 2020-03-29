@@ -5,6 +5,46 @@ from django.utils.http import urlencode
 register = template.Library()
 
 
+@register.inclusion_tag("lessons/includes/userline.html")
+def django_lessons_userline(user):
+
+    accounts = {}
+    userline_dict = {
+        'username': user.username
+    }
+
+    for account in user.socialaccount_set.all().iterator():
+        providers = accounts.setdefault(account.provider, [])
+        providers.append(account)
+
+    if accounts and accounts.get('github', False):
+        github = accounts.get('github', False)
+        if github and len(github) > 0:
+            extra_data = github[0].extra_data
+
+            if extra_data.get('login', False):
+                userline_dict['username'] = github[0].extra_data['login']
+
+            if extra_data.get('avatar_url', False):
+                userline_dict['avatar_url'] = extra_data['avatar_url']
+
+            userline_dict['provider'] = 'GitHub'
+
+    if accounts and accounts.get('google', False):
+        google = accounts.get('google', False)
+        if google and len(google) > 0:
+            extra_data = google[0].extra_data
+            if extra_data.get('name', False):
+                userline_dict['username'] = extra_data['name']
+
+            if extra_data.get('picture', False):
+                userline_dict['avatar_url'] = extra_data['picture']
+
+            userline_dict['provider'] = 'Google'
+
+    return userline_dict
+
+
 @register.inclusion_tag("lessons/includes/tweet.html")
 def tweet_tag(title, lesson_url):
 

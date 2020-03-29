@@ -12542,6 +12542,14 @@ ul.lesson-social {
       height: 32px;
       background-image: url(/static/lessons/img/twitter_logo_blue_32.png); }
 
+.userline {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center; }
+  .userline img.userline_avatar {
+    max-width: 32px; }
+
 .login-social li {
   display: inline-block;
   margin: 0 1rem 3rem 1rem;
