@@ -158,3 +158,13 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 WEBSITE = "django-lessons.com"
 SERVICE_NAME = "Django Lessons"
 SERVICE_EMAIL = "eugen@django-lessons.com"
+
+
+# /home/eugen/projects/Django-Lessons.py/.venv/lib/python3.8/site-packages/storages/backends/s3boto3.py:340:
+# /UserWarning: The default behavior of S3Boto3Storage is insecure and will
+# /change in django-storages 1.10. By default files and new buckets are saved
+# /with an ACL of 'public-read' (globally publicly readable). Version 1.10
+# /will default to using the bucket's ACL. To opt into the new behavior set
+# /AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly set
+# /AWS_DEFAULT_ACL.
+# AWS_DEFAULT_ACL = None

@@ -29,8 +29,6 @@ logger = logging.getLogger(__name__)
 ITEMS_PER_PAGE = 10
 
 
-
-
 def handler500(request):
     return render(request, "lessons/500.html")
 
@@ -136,7 +134,10 @@ def lesson(request, order, slug):
             prev_item = lesson_group.get_prev_lesson_group_obj()
     else:
         lesson_groups = []
-        similar_lessons = lesson.related_lessons.all()
+        similar_lessons = [
+            sim_lesson.post
+            for sim_lesson in lesson.similar_lessons.all()
+        ]
         next_item = lesson.get_next_lesson_obj()
         prev_item = lesson.get_prev_lesson_obj()
 

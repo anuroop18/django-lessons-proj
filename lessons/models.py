@@ -9,13 +9,13 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 
 from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page
+from wagtail.core.models import (Page, Orderable)
 from wagtail.core import blocks
 from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import (FieldPanel, InlinePanel)
 
 from taggit.models import Tag
 
@@ -115,6 +115,22 @@ class LessonTag(TaggedItemBase):
     )
 
 
+class SimilarLesson(Orderable):
+    # https://goonan.io/manytomany-relationships-in-wagtail/
+    post = ParentalKey(
+        'Lesson',
+        related_name='similar_lessons'
+    )
+    page = models.ForeignKey(
+        'Lesson',
+        related_name="+",
+        on_delete=models.CASCADE
+    )
+    panels = [
+        FieldPanel('page')
+    ]
+
+
 class Lesson(Page):
 
     order = models.IntegerField(blank=True, default=0)
@@ -140,10 +156,11 @@ class Lesson(Page):
 
     script = RichTextField(blank=True)
 
+    # absolete: to be removed (replaced by similar_lessons)
     related_lessons = models.ManyToManyField(
         "self",
         blank=True,
-        related_name='related_lessons'
+        related_name='related_lessons',
     )
 
     content = StreamField([
@@ -166,8 +183,9 @@ class Lesson(Page):
         FieldPanel('short_description'),
         FieldPanel('tags'),
         FieldPanel('script'),
-        FieldPanel('related_lessons'),
         StreamFieldPanel('content'),
+        # https://goonan.io/manytomany-relationships-in-wagtail/
+        InlinePanel('similar_lessons', label="Similar Lessons")
     ]
 
     def __str__(self):
