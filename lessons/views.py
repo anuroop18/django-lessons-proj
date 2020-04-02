@@ -4,8 +4,9 @@ import stripe
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.conf import settings
+from django.urls import reverse
 from django.http import (Http404, HttpResponseBadRequest, HttpResponse)
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
@@ -111,6 +112,9 @@ def lesson(request, order, slug):
     except Lesson.DoesNotExist:
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
+
+    if lesson.lesson_type == 'pro' and not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('account_login'))
 
     view = request.GET.get('view', 'lesson')
 
