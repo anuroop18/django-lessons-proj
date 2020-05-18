@@ -1,13 +1,10 @@
 from datetime import date, datetime, timedelta
 
-from django.utils import timezone
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 
-from taggit.models import Tag
-
-from lessons.models import (Lesson, User, UserProfile)
+from lessons.models import (Lesson, User)
 from lessons.payments.stripe import create_or_update_user_profile
 
 
