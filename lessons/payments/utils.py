@@ -3,6 +3,17 @@ from django.shortcuts import HttpResponseRedirect
 from django.utils.http import urlencode
 
 
+def profile_with_pro_url(lesson_order):
+    base_url = reverse('user_profile')
+    query_string = urlencode(
+        {
+            'lesson-order': lesson_order,
+            'step': 1
+        }
+    )
+    return f"{base_url}?{query_string}"
+
+
 def login_with_pro(lesson_order):
     """
     Returns an HttpResponseRedirect to login window with

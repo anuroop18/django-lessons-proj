@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
+from django.urls import reverse
+
 from allauth.account.views import LoginView
 
 from lessons.forms import (SubscribeForm, ContactForm)
@@ -28,7 +30,10 @@ from lessons.payments.stripe import (
     create_payment_intent,
     create_payment_subscription,
 )
-from lessons.payments.utils import login_with_pro
+from lessons.payments.utils import (
+    login_with_pro,
+    profile_with_pro_url
+)
 
 
 logger = logging.getLogger(__name__)
@@ -61,6 +66,7 @@ class LessonLoginView(LoginView):
             return context
 
         context['lesson'] = lesson
+        context['redirect_field_value'] = lesson.get_absolute_url
 
         return context
 
