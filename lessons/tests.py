@@ -8,7 +8,7 @@ from django.urls import reverse
 from taggit.models import Tag
 
 from lessons.models import (Lesson, User, UserProfile)
-from lessons.payments import create_or_update_user_profile
+from lessons.payments.stripe import create_or_update_user_profile
 
 
 class UserProfileTest(TestCase):
