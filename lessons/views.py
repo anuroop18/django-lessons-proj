@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
+from allauth.account.views import LoginView
 
 from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (
@@ -38,6 +39,30 @@ ITEMS_PER_PAGE = 10
 
 def handler500(request):
     return render(request, "lessons/500.html")
+
+
+class LessonLoginView(LoginView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.method != 'GET':
+            return context
+
+        lesson_ord = self.request.GET.get('lesson-order', False)
+        if not lesson_ord:
+            return context
+
+        try:
+            lesson = Lesson.objects.get(order=lesson_ord)
+        except Lesson.DoesNotExist:
+            logger.error(
+                f"Failed to get lesson with #{lesson_ord}"
+            )
+            return context
+
+        context['lesson'] = lesson
+
+        return context
 
 
 def index(request):
@@ -350,3 +375,5 @@ def webhooks(request):
 
     return HttpResponse(status=200)
 
+
+login_view = LessonLoginView.as_view()
