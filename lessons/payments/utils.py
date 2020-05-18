@@ -3,7 +3,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.utils.http import urlencode
 
 
-def upgrade_with_pro(lesson_order):
+def upgrade_with_pro_url(lesson_order):
     base_url = reverse('upgrade')
     query_string = urlencode(
         {
@@ -11,7 +11,11 @@ def upgrade_with_pro(lesson_order):
             'step': 2
         }
     )
-    url = f"{base_url}?{query_string}"
+    return f"{base_url}?{query_string}"
+
+
+def upgrade_with_pro(lesson_order):
+    url = upgrade_with_pro_url(lesson_order)
 
     return HttpResponseRedirect(url)
 
