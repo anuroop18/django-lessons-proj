@@ -4,24 +4,30 @@ import stripe
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.conf import settings
-from django.urls import reverse
 from django.http import (Http404, HttpResponseBadRequest, HttpResponse)
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
+from taggit.models import Tag
 
-from lessons.models import (Subscription, Contact)
 from lessons.forms import (SubscribeForm, ContactForm)
-from lessons.models import (Lesson, Course, LessonGroup)
-from lessons.payments import (
+from lessons.models import (
+    Lesson,
+    Course,
+    LessonGroup,
+    Subscription,
+    Contact,
+    PRO
+)
+from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
     upgrade_customer,
     create_payment_intent,
     create_payment_subscription,
 )
-from taggit.models import Tag
+from lessons.payments.utils import login_with_pro
 
 
 logger = logging.getLogger(__name__)
@@ -113,8 +119,8 @@ def lesson(request, order, slug):
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
-    if lesson.lesson_type == 'pro' and not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('account_login'))
+    if lesson.lesson_type == PRO and not request.user.is_authenticated:
+        return login_with_pro(lesson_order=order)
 
     view = request.GET.get('view', 'lesson')
 

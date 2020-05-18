@@ -19,6 +19,9 @@ from wagtail.admin.edit_handlers import (FieldPanel, InlinePanel)
 
 from taggit.models import Tag
 
+FREE = 'free'  # it is always better to use constants instead of strings
+PRO = 'pro'
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -138,7 +141,7 @@ class Lesson(Page):
     short_description = RichTextField()
 
     lesson_type = models.CharField(
-        choices=[('free', 'Free'), ('pro', 'Pro')],
+        choices=[(FREE, 'Free'), (PRO, 'Pro')],
         null=True,
         default='free',
         max_length=16,
