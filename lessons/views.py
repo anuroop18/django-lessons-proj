@@ -10,8 +10,6 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
-from django.urls import reverse
-
 from allauth.account.views import LoginView
 
 from lessons.forms import (SubscribeForm, ContactForm)
@@ -32,7 +30,7 @@ from lessons.payments.stripe import (
 )
 from lessons.payments.utils import (
     login_with_pro,
-    profile_with_pro_url
+    upgrade_with_pro,
 )
 
 
@@ -150,8 +148,16 @@ def lesson(request, order, slug):
         logger.warning(f"Lesson #{order} not found")
         raise Http404("Lesson not found")
 
-    if lesson.lesson_type == PRO and not request.user.is_authenticated:
+    user = request.user
+
+    if lesson.lesson_type == PRO and not user.is_authenticated:
         return login_with_pro(lesson_order=order)
+    elif lesson.lesson_type == PRO and user.is_authenticated:
+        if user.profile and not user.profile.is_pro_user():
+            # means an authenticated user which is not PRO
+            # wants to access a PRO lesson => he will be redirected
+            # to upgrade view with lesson_ord argument
+            return upgrade_with_pro(lesson_order=order)
 
     view = request.GET.get('view', 'lesson')
 

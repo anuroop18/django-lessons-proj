@@ -3,15 +3,17 @@ from django.shortcuts import HttpResponseRedirect
 from django.utils.http import urlencode
 
 
-def profile_with_pro_url(lesson_order):
-    base_url = reverse('user_profile')
+def upgrade_with_pro(lesson_order):
+    base_url = reverse('upgrade')
     query_string = urlencode(
         {
             'lesson-order': lesson_order,
-            'step': 1
+            'step': 2
         }
     )
-    return f"{base_url}?{query_string}"
+    url = f"{base_url}?{query_string}"
+
+    return HttpResponseRedirect(url)
 
 
 def login_with_pro(lesson_order):
