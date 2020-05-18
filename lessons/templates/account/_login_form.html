@@ -20,11 +20,12 @@
          <input id="id_password" class="Password form-control" type="password" placeholder="Password" name="password">
       </div>
       <div class="section-field">
-        <div class="custom-control custom-checkbox mb-30">
-          <input type="checkbox" class="custom-control-input" id="id_remember" name="remember">
-          <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+        <div class="form-check mb-30">
+          <input type="checkbox" class="form-check-input" id="id_remember" name="remember">
+          <label class="form-check-label" for="id_remember">Remember me</label>
         </div>
       </div>
+
       {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}
