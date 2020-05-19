@@ -351,6 +351,7 @@ def checkout(request):
         context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
         context['payment_intent_id'] = payment_intent.id
         context['automatic'] = automatic
+        logger.debug(f"PI created {payment_intent.id}")
 
         return render(request, 'lessons/payments/card.html', context)
     elif payment_method == 'paypal':
@@ -379,13 +380,13 @@ def card(request):
 
     if automatic == 'on':
         # create subs
-        ret, latest_invoice = create_stripe_subscription(
+        status, latest_invoice = create_stripe_subscription(
             email=request.user.email,
             stripe_plan_id=stripe_plan_id,
             payment_method_id=payment_method_id
         )
 
-        if ret.status == 'requires_action':
+        if status == 'requires_action':
             pi = stripe.PaymentIntent.retrieve(
                 latest_invoice.payment_intent
             )

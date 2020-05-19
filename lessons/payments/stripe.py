@@ -14,6 +14,7 @@ from lessons.models import UserProfile
 
 MONTH = 'month'
 YEAR = 'year'
+STATUS_PAID = 'paid'
 
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
@@ -155,12 +156,17 @@ def create_stripe_subscription(
         ]
     )
     latest_invoice = stripe.Invoice.retrieve(s.latest_invoice)
-
-    ret = stripe.PaymentIntent.confirm(
-        latest_invoice.payment_intent
+    logger.debug(
+        f"Confirming PI = {latest_invoice.payment_intent}"
     )
+    if latest_invoice.status != STATUS_PAID:
+        ret = stripe.PaymentIntent.confirm(
+            latest_invoice.payment_intent
+        )
 
-    return ret, latest_invoice
+        return ret.status, latest_invoice
+
+    return STATUS_PAID, latest_invoice
 
 
 def upgrade_customer(invoice):

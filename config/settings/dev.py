@@ -33,9 +33,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'lessons.log',
-            'formatter': 'with_funcname'
+            'class': 'logging.StreamHandler',
         },
     },
     'formatters': {
@@ -47,11 +45,11 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': 'INFO',
         },
         'lessons': {
             'handlers': ['file'],
-            'level': os.getenv('LESSONS_LOG_LEVEL', 'INFO'),
+            'level': 'DEBUG',
         },
     },
 }
