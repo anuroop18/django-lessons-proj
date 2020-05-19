@@ -300,8 +300,31 @@ def user_profile(request):
 
 @login_required
 def upgrade(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest
+
     logger.info("upgrade")
-    return render(request, 'lessons/upgrade.html')
+    lesson_ord = request.GET.get('lesson-order', False)
+
+    if not lesson_ord:
+        return render(request, 'lessons/upgrade.html')
+
+    try:
+        lesson = Lesson.objects.get(order=lesson_ord)
+    except Lesson.DoesNotExist:
+        logger.error(
+            f"Failed to get lesson with #{lesson_ord}"
+        )
+        return render(request, 'lessons/upgrade.html')
+
+    context = {}
+    context['lesson'] = lesson
+
+    return render(
+        request,
+        'lessons/upgrade.html',
+        context
+    )
 
 
 @login_required
