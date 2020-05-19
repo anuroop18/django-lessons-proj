@@ -18,6 +18,12 @@
     <div class="row py-3">
         <div class="col-lg-12 col-md-12">
            <div class="container">
+            <p>
+              If you click Pay Now button you will be charged {{lesson_plan.human_message}} from your card.
+            </p>
+            <p>
+              Your plan details: {{ lesson_plan.human_details }}
+            </p>
             <form action="{% url 'checkout' %}" method="post" id="payment-form">
                 {% csrf_token %}
                 <input type="hidden" value="{{plan_id}}" name="plan_id"/>

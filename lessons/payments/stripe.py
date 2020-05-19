@@ -71,7 +71,7 @@ class LessonsAnnualPlan:
 
 
 class LessonsPlan:
-    def __init__(self, plan_id):
+    def __init__(self, plan_id, automatic=False):
         """
         plan_id is either string 'm' (stands for monthly)
         or a string letter 'a' (which stands for annual)
@@ -86,6 +86,7 @@ class LessonsPlan:
             raise ValueError('Invalid plan_id value')
 
         self.currency = 'usd'
+        self.automatic = automatic
 
     @property
     def stripe_plan_id(self):
@@ -94,6 +95,29 @@ class LessonsPlan:
     @property
     def amount(self):
         return self.plan.amount
+
+    @property
+    def human_details(self):
+        msg = "PRO account "
+
+        if self.automatic in ('True', 'on'):
+            if isinstance(self.plan, LessonsMonthPlan):
+                msg += "with monthly subscription."
+            elif isinstance(self.plan, LessonsAnnualPlan):
+                msg += "with annual subscription."
+        else:
+            if isinstance(self.plan, LessonsMonthPlan):
+                msg += " for a month."
+            elif isinstance(self.plan, LessonsAnnualPlan):
+                msg += " for a year."
+            msg += " No subscription."
+
+        return msg
+
+    @property
+    def human_message(self):
+        dollars = self.plan.amount / 100
+        return f"${dollars:.2f}"
 
 
 def create_payment_intent(

@@ -329,17 +329,19 @@ def upgrade(request):
 @login_required
 def checkout(request):
     payment_method = request.POST.get('payment_method', 'card')
-    automatic = request.POST.get('automatic', 'on')
+    automatic = request.POST.get('automatic', False)
     lesson_plan = LessonsPlan(
-        request.POST.get('plan', 'm')
+        plan_id=request.POST.get('plan', 'm'),
+        automatic=automatic
+
     )
     context = {}
 
-    logger.debug("Hi!")
     if payment_method == 'card':
         payment_intent = create_payment_intent(
             lesson_plan=lesson_plan
         )
+        context['lesson_plan'] = lesson_plan
         context['stripe_plan_id'] = lesson_plan.stripe_plan_id
         context['secret_key'] = payment_intent.client_secret
         context['customer_email'] = request.user.email
