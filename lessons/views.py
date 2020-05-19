@@ -328,19 +328,22 @@ def upgrade(request):
 @require_POST
 @login_required
 def checkout(request):
+    stripe.api_key = API_KEY
     payment_method = request.POST.get('payment_method', 'card')
     automatic = request.POST.get('automatic', False)
     lesson_plan = LessonsPlan(
         plan_id=request.POST.get('plan', 'm'),
         automatic=automatic
-
     )
     context = {}
 
     if payment_method == 'card':
-        payment_intent = create_payment_intent(
-            lesson_plan=lesson_plan
+        payment_intent = stripe.PaymentIntent.create(
+            amount=lesson_plan.amount,
+            currency=lesson_plan.currency,
+            payment_method_types=['card']
         )
+
         context['lesson_plan'] = lesson_plan
         context['stripe_plan_id'] = lesson_plan.stripe_plan_id
         context['secret_key'] = payment_intent.client_secret

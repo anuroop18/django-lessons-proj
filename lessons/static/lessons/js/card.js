@@ -1,4 +1,4 @@
-function checkout(stripe_publishable_key, customer_email) {
+function card(stripe_publishable_key, customer_email) {
   document.addEventListener("DOMContentLoaded", function(event) { 
       var stripe = Stripe(stripe_publishable_key);
       // Create an instance of Elements.

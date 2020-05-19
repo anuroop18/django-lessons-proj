@@ -11,36 +11,13 @@ urlpatterns = [
         views.lesson,
         name='lesson'
     ),
-    path(
-        'subscribe',
-        views.subscribe,
-        name='subscribe'
-    ),
-    path(
-        'contact',
-        views.contact,
-        name='contact'
-    ),
-    path(
-        'upgrade',
-        views.upgrade,
-        name='upgrade'
-    ),
-    path(
-        'checkout',
-        views.checkout,
-        name='checkout'
-    ),
-    path(
-        'webhooks',
-        views.webhooks,
-        name='webhooks'
-    ),
-    path(
-        'profile',
-        views.user_profile,
-        name='user_profile'
-    ),
+    path('subscribe', views.subscribe, name='subscribe'),
+    path('contact', views.contact, name='contact'),
+    path('upgrade', views.upgrade, name='upgrade'),
+    path('checkout', views.checkout, name='checkout'),
+    path('card', views.card, name='card'),
+    path('webhooks', views.webhooks, name='webhooks'),
+    path('profile', views.user_profile, name='user_profile'),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500'),
     path('sentry-debug/', views.trigger_error)

@@ -5,9 +5,9 @@
 
 {% block extra_js %}
 <script src="https://js.stripe.com/v3/"></script>
-<script src="{% static 'lessons/js/checkout.js' %}"></script>
+<script src="{% static 'lessons/js/card.js' %}"></script>
 <script>
-  checkout('{{STRIPE_PUBLISHABLE_KEY}}', '{{customer_email}}');
+  card('{{STRIPE_PUBLISHABLE_KEY}}', '{{customer_email}}');
 </script>
 {% endblock extra_js %}
 
