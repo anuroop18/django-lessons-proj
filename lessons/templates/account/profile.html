@@ -26,6 +26,14 @@
                 </div>
               {% endif %}
               <div class="form-group">
+                <label for="username">username:</label>
+                <span>{{ user.username }}</span>
+              </div>
+              <div class="form-group">
+                <label for="email">email:</label>
+                <span>{{ user.email }}</span>
+              </div>
+              <div class="form-group">
                 <label for="accout_type">Password</label>
                 <a class="theme-color" href="{% url 'account_change_password' %}">Change</a>
               </div>

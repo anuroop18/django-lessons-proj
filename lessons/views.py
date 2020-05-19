@@ -293,6 +293,7 @@ def user_profile(request):
         request,
         'account/profile.html',
         {
+            'user': user,
             'user_profile': user_profile,
             'is_pro': is_pro
         }
