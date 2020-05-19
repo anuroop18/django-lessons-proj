@@ -106,7 +106,7 @@ def create_payment_intent(
         currency=lesson_plan.currency,
         payment_method_types=[payment_method_type],
     )
-    return payment_intent.client_secret
+    return payment_intent
 
 
 def create_payment_subscription(

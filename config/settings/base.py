@@ -168,3 +168,12 @@ SERVICE_EMAIL = "eugen@django-lessons.com"
 # /AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly set
 # /AWS_DEFAULT_ACL.
 # AWS_DEFAULT_ACL = None
+from django.contrib.messages import constants as messages  # noqa
+
+MESSAGE_TAGS = {
+    messages.INFO: 'text-primary',
+    messages.SUCCESS: 'text-success',
+    messages.WARNING: 'text-warning',
+    messages.ERROR: 'text-danger'
+}
+

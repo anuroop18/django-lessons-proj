@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 from taggit.models import Tag
 from allauth.account.views import LoginView
 
@@ -300,9 +301,6 @@ def user_profile(request):
 
 @login_required
 def upgrade(request):
-    if request.method != 'GET':
-        return HttpResponseBadRequest
-
     logger.info("upgrade")
     lesson_ord = request.GET.get('lesson-order', False)
 
@@ -327,54 +325,42 @@ def upgrade(request):
     )
 
 
+@require_POST
 @login_required
 def checkout(request):
-    # accepts only GET and POST
-    # GET
-    if request.method == 'GET':
+    payment_method = request.POST.get('payment_method', 'card')
+    automatic = request.POST.get('automatic', 'on')
+    lesson_plan = LessonsPlan(
+        request.POST.get('plan', 'm')
+    )
+    context = {}
 
-        payment_method = request.GET.get('payment_method', 'card')
-
-        # paypal coming soon...
-        if payment_method == 'paypal':
-            return render(
-                request,
-                'lessons/checkout/paypal.html'
-            )
-
-        lesson_plan = LessonsPlan(
-            request.GET.get('plan', False)
-        )
-
-        secret_key = create_payment_intent(
+    logger.debug("Hi!")
+    if payment_method == 'card':
+        payment_intent = create_payment_intent(
             lesson_plan=lesson_plan
         )
+        context['stripe_plan_id'] = lesson_plan.stripe_plan_id
+        context['secret_key'] = payment_intent.client_secret
+        context['customer_email'] = request.user.email
+        context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+        context['payment_intent_id'] = payment_intent.id
+        context['automatic'] = automatic
+
+        return render(request, 'lessons/payments/card.html', context)
+    elif payment_method == 'paypal':
         return render(
             request,
-            'lessons/checkout/card.html',
-            {
-                'plan_id': lesson_plan.id,
-                'secret_key': secret_key,
-                'customer_email': request.user.email,
-                'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
-            }
+            'lessons/payments/paypal.html'
+        )
+    else:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Unknown payment method, please try again."
         )
 
-    if request.method != 'POST':
-        return HttpResponseBadRequest()
-
-    lesson_plan = LessonsPlan(
-        request.POST.get('plan_id', False)
-    )
-
-    # POST
-    create_payment_subscription(
-        email=request.user.email,
-        lesson_plan=lesson_plan,
-        payment_method_id=request.POST.get('payment_method_id', False)
-    )
-
-    return render(request, 'lessons/checkout/thank_you.html')
+    return render(request, 'lessons/upgrade.html')
 
 
 @require_POST
