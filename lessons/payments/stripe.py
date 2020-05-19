@@ -1,3 +1,4 @@
+import stripe
 from datetime import date
 import logging
 
@@ -133,30 +134,33 @@ def create_payment_intent(
     return payment_intent
 
 
-def create_payment_subscription(
+def create_stripe_subscription(
     email,
-    lesson_plan,  # = 'month' | 'year'
+    stripe_plan_id,
     payment_method_id
 ):
-    customer = Customer.create(
-        api_key=API_KEY,
+    customer = stripe.Customer.create(
         email=email,
         payment_method=payment_method_id,
         invoice_settings={
-            'default_payment_method': payment_method_id,
-        },
+            'default_payment_method': payment_method_id
+        }
     )
-
-    subscription = Subscription.create(
-        api_key=API_KEY,
+    s = stripe.Subscription.create(
         customer=customer.id,
         items=[
             {
-                'plan': lesson_plan.stripe_plan_id,
+                'plan': stripe_plan_id
             },
-        ],
+        ]
     )
-    return subscription.status
+    latest_invoice = stripe.Invoice.retrieve(s.latest_invoice)
+
+    ret = stripe.PaymentIntent.confirm(
+        latest_invoice.payment_intent
+    )
+
+    return ret, latest_invoice
 
 
 def upgrade_customer(invoice):

@@ -26,8 +26,7 @@ from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
     upgrade_customer,
-    create_payment_intent,
-    create_payment_subscription,
+    create_stripe_subscription,
 )
 from lessons.payments.utils import (
     login_with_pro,
@@ -37,7 +36,7 @@ from lessons.payments.utils import (
 
 logger = logging.getLogger(__name__)
 
-
+API_KEY = settings.STRIPE_SECRET_KEY
 ITEMS_PER_PAGE = 10
 
 
@@ -364,6 +363,42 @@ def checkout(request):
         )
 
     return render(request, 'lessons/upgrade.html')
+
+
+@login_required
+def card(request):
+
+    payment_intent_id = request.POST['payment_intent_id']
+    payment_method_id = request.POST['payment_method_id']
+    stripe_plan_id = request.POST['stripe_plan_id']
+    automatic = request.POST['automatic']
+    stripe.api_key = API_KEY
+
+    if automatic == 'on':
+        # create subs
+        ret, latest_invoice = create_stripe_subscription(
+            email=request.user.email,
+            stripe_plan_id=stripe_plan_id,
+            payment_method_id=payment_method_id
+        )
+
+        if ret.status == 'requires_action':
+            pi = stripe.PaymentIntent.retrieve(
+                latest_invoice.payment_intent
+            )
+            context = {}
+
+            context['payment_intent_secret'] = pi.client_secret
+            context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+
+            return render(request, 'land/payments/3dsec.html', context)
+    else:
+        stripe.PaymentIntent.modify(
+            payment_intent_id,
+            payment_method=payment_method_id
+        )
+
+    return render(request, 'lessons/payments/thank_you.html')
 
 
 @require_POST

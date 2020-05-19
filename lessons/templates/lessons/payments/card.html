@@ -24,9 +24,12 @@
             <p>
               Your plan details: {{ lesson_plan.human_details }}
             </p>
-            <form action="{% url 'checkout' %}" method="post" id="payment-form">
+            <form action="{% url 'card' %}" method="post" id="payment-form">
                 {% csrf_token %}
-                <input type="hidden" value="{{plan_id}}" name="plan_id"/>
+                <input type="hidden" name="payment_intent_id" value="{{ payment_intent_id }}" >
+                <input type="hidden" name="stripe_plan_id" value="{{ stripe_plan_id }}" >
+                <input type="hidden" name="automatic" value="{{ automatic }}" >
+
                 <div class="form-group">
                   <label for="card-element">Credit or debit card</label>
                   <div id="card-element">
