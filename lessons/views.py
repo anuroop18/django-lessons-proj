@@ -369,6 +369,24 @@ def checkout(request):
 
 
 @login_required
+def thank_you(request):
+    # useful for testing
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
+    context = {}
+    context['msg'] = request.GET.get('msg', '')
+    context['tag'] = request.GET.get('tag', '')
+    context['title'] = request.GET.get('title', '')
+
+    return render(
+        request,
+        'lessons/payments/thank_you.html',
+        context
+    )
+
+
+@login_required
 def card(request):
 
     payment_intent_id = request.POST['payment_intent_id']
@@ -401,7 +419,19 @@ def card(request):
             payment_method=payment_method_id
         )
 
-    return render(request, 'lessons/payments/thank_you.html')
+    msg = """
+    Payment succeeded. Thank you! You can enjoy now all PRO lessons.
+    """
+    context = {
+        'msg': msg,
+        'tag': 'text-success',
+        'title': 'Payment Success'
+    }
+    return render(
+        request,
+        'lessons/payments/thank_you.html',
+        context
+    )
 
 
 login_view = LessonLoginView.as_view()
