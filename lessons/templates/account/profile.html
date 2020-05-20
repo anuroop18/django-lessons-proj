@@ -7,6 +7,12 @@
 
 {% block central_content %}
     <div class="col-lg-12 col-md-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb br-0">
+          <li class="breadcrumb-item"><a class="theme-color" href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Profile</li>
+        </ol>
+      </nav>
       <div class="section-title text-center">
           <h3 class="title-effect">{% trans "Your Profile" %}</h3>
       </div>
