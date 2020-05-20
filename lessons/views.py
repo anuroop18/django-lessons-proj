@@ -4,11 +4,11 @@ import stripe
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.conf import settings
-from django.http import (Http404, HttpResponseBadRequest, HttpResponse)
+from django.http import (Http404, HttpResponseBadRequest)
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator
-from django.views.decorators.csrf import csrf_exempt
+
 from django.contrib import messages
 from taggit.models import Tag
 from allauth.account.views import LoginView
@@ -25,7 +25,6 @@ from lessons.models import (
 from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
-    upgrade_customer,
     create_stripe_subscription,
 )
 from lessons.payments.utils import (
@@ -403,40 +402,6 @@ def card(request):
         )
 
     return render(request, 'lessons/payments/thank_you.html')
-
-
-@require_POST
-@csrf_exempt
-def webhooks(request):
-    logger.info("Stripe webhook received")
-
-    payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    event = None
-
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SIGNING_KEY
-        )
-        logger.info("Event constructed correctly")
-    except ValueError:
-        # Invalid payload
-        logger.warning("Invalid Payload")
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError:
-        # Invalid signature
-        logger.warning("Invalid signature")
-        return HttpResponse(status=400)
-
-    # Handle the event
-    if event.type == 'invoice.payment_succeeded':
-        # ... handle other event types
-        upgrade_customer(invoice=event.data.object)
-    else:
-        # Unexpected event type
-        return HttpResponse(status=400)
-
-    return HttpResponse(status=200)
 
 
 login_view = LessonLoginView.as_view()

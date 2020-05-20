@@ -2,6 +2,7 @@ from django.urls import path
 
 from lessons.feed import LatestLessonsFeed
 from lessons import views
+from lessons.webhooks.stripe import webhook as stripe_webhook
 from lessons.views import PageView
 
 urlpatterns = [
@@ -16,7 +17,7 @@ urlpatterns = [
     path('upgrade', views.upgrade, name='upgrade'),
     path('checkout', views.checkout, name='checkout'),
     path('card', views.card, name='card'),
-    path('webhooks', views.webhooks, name='webhooks'),
+    path('stripe-webhooks', stripe_webhook, name='stripe_webhooks'),
     path('profile', views.user_profile, name='user_profile'),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500'),
