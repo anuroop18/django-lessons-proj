@@ -38,8 +38,5 @@ def webhook(request):
     if event.type == 'invoice.payment_succeeded':
         # ... handle other event types
         upgrade_customer(invoice=event.data.object)
-    else:
-        # Unexpected event type
-        return HttpResponseBadRequest()
 
     return HttpResponse(status=200)
