@@ -7,40 +7,34 @@
 
 {% block central_content %}
     <div class="col-lg-12 col-md-12">
-      <div class="section-title">
-          <h4 class="title-effect">{% trans "User Profile" %}</h2>
+      <div class="section-title text-center">
+          <h3 class="title-effect">{% trans "Your Profile" %}</h3>
       </div>
-    </div>
-
-    <div class="col-lg-12 col-md-12">
-        <div class="row">
-            <div class="p-1 p-md-3">
-              <div class="form-group">
-                <label for="accout_type">Account Type:</label>
-                <span>{% if is_pro %}PRO{% else %}FREE{% endif %}</span>
-                {% if not is_pro %}
-                  <a  class="theme-color" href="{% url 'upgrade' %}">Upgrade</a>
-                {% endif %}
-              </div>
-              {% if is_pro %}
-                <div class="form-group">
-                  <label for="accout_type">Paid until</label>
-                  <input class="form-control" type="text" placeholder="{{ user_profile.pro_enddate }}" readonly>
-                </div>
-              {% endif %}
-              <div class="form-group">
-                <label for="username">Username:</label>
-                <span>{{ user.username }}</span>
-              </div>
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <span>{{ user.email }}</span>
-              </div>
-              <div class="form-group">
-                <label for="accout_type">Password</label>
-                <a class="theme-color" href="{% url 'account_change_password' %}">Change</a>
-              </div>
-            </div>
+      <form>
+        <div class="form-group">
+          <label for="id_account_type">Acount Type</label>
+          <input type="text" readonly class="form-control" id="id_account_type" value="{% if is_pro %}PRO{% else %}FREE{% endif %}">
         </div>
+        {% if is_pro %}
+          <div class="form-group">
+            <label for="id_paid_until">Paid until</label>
+            <input class="form-control" id="id_paid_until" type="text" value="{{ user_profile.pro_enddate }}" readonly>
+          </div>
+        {% endif %}
+        <div class="form-group">
+          <label for="id_username">Username:</label>
+          <input type="text" readonly class="form-control" id="id_username" value="{{ user.username }}">
+        </div>
+        <div class="form-group">
+          <label for="id_username">Email:</label>
+          <input type="email" readonly class="form-control" id="id_email" value="{{ user.email }}">
+        </div>
+        
+        <div class="py-3">
+          <a class="btn btn-info br-0" href="{% url 'account_change_password' %}">Change Password</a>
+          {% if not is_pro %} <a class="btn btn-success br-0" href="{% url 'upgrade' %}">Upgrade</a> 
+          {% endif %}
+        </div>
+      </form>
     </div>
 {% endblock %}
