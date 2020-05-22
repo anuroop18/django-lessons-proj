@@ -82,7 +82,7 @@ def index(request):
     q = request.GET.get('q', None)
 
     if q:
-        lessons = lessons.filter(title__icontains=q)
+        lessons = lessons.search(q)
 
     if lesson_type:
         lessons = lessons.filter(lesson_type=lesson_type)
