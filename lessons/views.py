@@ -25,7 +25,6 @@ from lessons.models import (
 from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
-    create_stripe_subscription,
 )
 from lessons.payments.utils import (
     login_with_pro,
@@ -337,21 +336,11 @@ def checkout(request):
     context = {}
 
     if payment_method == 'card':
-        payment_intent = stripe.PaymentIntent.create(
-            amount=lesson_plan.amount,
-            currency=lesson_plan.currency,
-            payment_method_types=['card']
-        )
-
         context['lesson_plan'] = lesson_plan
         context['stripe_plan_id'] = lesson_plan.stripe_plan_id
-        context['secret_key'] = payment_intent.client_secret
         context['customer_email'] = request.user.email
         context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
-        context['payment_intent_id'] = payment_intent.id
         context['automatic'] = automatic
-        logger.debug(f"PI created {payment_intent.id}")
-
         return render(request, 'lessons/payments/card.html', context)
     elif payment_method == 'paypal':
         return render(
@@ -389,24 +378,31 @@ def thank_you(request):
 @login_required
 def card(request):
 
-    payment_intent_id = request.POST['payment_intent_id']
     payment_method_id = request.POST['payment_method_id']
     stripe_plan_id = request.POST['stripe_plan_id']
     automatic = request.POST['automatic']
+    lesson_plan_id = request.POST['lesson_plan_id']
     stripe.api_key = API_KEY
 
     if automatic == 'on':
-        # create subs
-        status, latest_invoice = create_stripe_subscription(
+        customer = stripe.Customer.create(
             email=request.user.email,
-            stripe_plan_id=stripe_plan_id,
-            payment_method_id=payment_method_id
+            payment_method=payment_method_id,
+            invoice_settings={
+                'default_payment_method': payment_method_id
+            }
         )
-
-        if status == 'requires_action':
-            pi = stripe.PaymentIntent.retrieve(
-                latest_invoice.payment_intent
-            )
+        s = stripe.Subscription.create(
+            customer=customer.id,
+            items=[
+                {
+                    'plan': stripe_plan_id
+                },
+            ],
+            expand=['latest_invoice.payment_intent'],
+        )
+        if s.latest_invoice.payment_intent.status == 'requires_action':
+            pi = s.latest_invoice.payment_intent
             context = {}
 
             context['payment_intent_secret'] = pi.client_secret
@@ -414,9 +410,18 @@ def card(request):
 
             return render(request, 'land/payments/3dsec.html', context)
     else:
+        lesson_plan = LessonsPlan(plan_id=lesson_plan_id)
+        payment_intent = stripe.PaymentIntent.create(
+            amount=lesson_plan.amount,
+            currency=lesson_plan.currency,
+            payment_method_types=['card']
+        )
         stripe.PaymentIntent.modify(
-            payment_intent_id,
+            payment_intent.id,
             payment_method=payment_method_id
+        )
+        stripe.PaymentIntent.confirm(
+            payment_intent.id,
         )
 
     msg = """

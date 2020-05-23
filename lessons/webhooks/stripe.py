@@ -6,9 +6,15 @@ from django.views.decorators.http import require_POST
 from django.http import (HttpResponseBadRequest, HttpResponse)
 from django.conf import settings
 
-from lessons.payments.stripe import upgrade_customer
+from lessons.payments.stripe import (
+    upgrade_customer_from_invoice,
+    upgrade_customer_from_charge
+)
 
 logger = logging.getLogger(__name__)
+
+INVOICE_PAYMENT_SUCCESS = 'invoice.payment_succeeded'
+CHARGE_SUCCESS = 'charge.succeeded'
 
 
 @require_POST
@@ -34,9 +40,15 @@ def webhook(request):
         logger.warning("Invalid signature")
         return HttpResponseBadRequest()
 
-    # Handle the event
-    if event.type == 'invoice.payment_succeeded':
-        # ... handle other event types
-        upgrade_customer(invoice=event.data.object)
+    if event.type == INVOICE_PAYMENT_SUCCESS:
+        # recurring payments
+        upgrade_customer_from_invoice(
+            invoice=event.data.object
+        )
+    if event.type == CHARGE_SUCCESS:
+        # one time charges
+        upgrade_customer_from_charge(
+            amount=event.data.amount
+        )
 
     return HttpResponse(status=200)

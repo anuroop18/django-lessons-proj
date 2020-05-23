@@ -1,5 +1,3 @@
-{% include 'lessons/includes/_messages.html' %}
-
 <form method="POST" action="{% url 'checkout' %}">
     {% csrf_token %}
     <div class="form-group">

@@ -135,41 +135,16 @@ def create_payment_intent(
     return payment_intent
 
 
-def create_stripe_subscription(
-    email,
-    stripe_plan_id,
-    payment_method_id
-):
-    customer = stripe.Customer.create(
-        email=email,
-        payment_method=payment_method_id,
-        invoice_settings={
-            'default_payment_method': payment_method_id
-        }
-    )
-    s = stripe.Subscription.create(
-        customer=customer.id,
-        items=[
-            {
-                'plan': stripe_plan_id
-            },
-        ]
-    )
-    latest_invoice = stripe.Invoice.retrieve(s.latest_invoice)
-    logger.debug(
-        f"Confirming PI = {latest_invoice.payment_intent}"
-    )
-    if latest_invoice.status != STATUS_PAID:
-        ret = stripe.PaymentIntent.confirm(
-            latest_invoice.payment_intent
-        )
-
-        return ret.status, latest_invoice
-
-    return STATUS_PAID, latest_invoice
+def upgrade_customer_from_charge(amount):
+    """
+    amount is a string:
+        "1995"  => one time month pay
+        "19950" => one time annual pay
+    """
+    pass
 
 
-def upgrade_customer(invoice):
+def upgrade_customer_from_invoice(invoice):
     """
     invoice = is stripe.invoice object instance
     from invoice.payment_succeeded webhook
