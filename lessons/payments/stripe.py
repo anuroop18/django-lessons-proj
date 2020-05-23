@@ -1,5 +1,4 @@
-import stripe
-from datetime import date
+from datetime import date, timedelta
 import logging
 
 from django.conf import settings
@@ -15,6 +14,8 @@ from lessons.models import UserProfile
 MONTH = 'month'
 YEAR = 'year'
 STATUS_PAID = 'paid'
+MONTHLY_AMOUNT = 1995
+ANNUAL_AMOUNT = 19950
 
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
@@ -63,13 +64,13 @@ def create_or_update_user_profile(user, timestamp_or_date):
 class LessonsMonthPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
-        self.amount = 1995
+        self.amount = MONTHLY_AMOUNT
 
 
 class LessonsAnnualPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_ANNUAL_ID
-        self.amount = 19950
+        self.amount = ANNUAL_AMOUNT
 
 
 class LessonsPlan:
@@ -135,13 +136,35 @@ def create_payment_intent(
     return payment_intent
 
 
-def upgrade_customer_from_charge(amount):
+def upgrade_customer_from_charge(charge):
     """
     amount is a string:
         "1995"  => one time month pay
         "19950" => one time annual pay
     """
-    pass
+    current_date = date.today()
+    email = charge.receipt_email
+
+    logger.info(f"email={email}")
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        logger.warning(
+            f"User with email {email} not found while trying to upgrade to PRO"
+        )
+        return False
+
+    if charge.amount == MONTHLY_AMOUNT:
+        current_period_end = current_date + timedelta(days=31)
+    elif charge.amount == ANNUAL_AMOUNT:
+        current_period_end = current_date + timedelta(days=365)
+    else:
+        logger.error(
+            "Unrecognizable amount received"
+        )
+
+    create_or_update_user_profile(user, current_period_end)
 
 
 def upgrade_customer_from_invoice(invoice):

@@ -48,7 +48,7 @@ def webhook(request):
     if event.type == CHARGE_SUCCESS:
         # one time charges
         upgrade_customer_from_charge(
-            amount=event.data.amount
+            charge=event.data.object
         )
 
     return HttpResponse(status=200)

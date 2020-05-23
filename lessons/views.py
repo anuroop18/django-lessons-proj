@@ -414,6 +414,7 @@ def card(request):
         payment_intent = stripe.PaymentIntent.create(
             amount=lesson_plan.amount,
             currency=lesson_plan.currency,
+            receipt_email=request.user.email,
             payment_method_types=['card']
         )
         stripe.PaymentIntent.modify(
