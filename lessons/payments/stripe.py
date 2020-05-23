@@ -124,7 +124,7 @@ class LessonsPlan:
 
 
 def get_or_create_customer(user, payment_method_id):
-    if not user.stripe_customer_id:
+    if not user.profile.stripe_customer_id:
         # no customer id associated - new customer!
         customer = stripe.Customer.create(
             email=user.email,
@@ -133,11 +133,11 @@ def get_or_create_customer(user, payment_method_id):
                 'default_payment_method': payment_method_id
             }
         )
-        user.stripe_customer_id = customer.id
-        user.save()
+        user.profile.stripe_customer_id = customer.id
+        user.profile.save()
     else:
         customer = stripe.Customer.retrieve(
-            user.stripe_customer_id
+            user.profile.stripe_customer_id
         )
 
     return customer
@@ -148,11 +148,7 @@ def get_or_create_subscription(
     customer,
     stripe_plan_id
 ):
-    if user.stripe_subscription_id:
-        subscription = stripe.Subscription.retrieve(
-            user.stripe_subscription_id
-        )
-    else:
+    if not user.profile.stripe_subscription_id:
         subscription = stripe.Subscription.create(
             customer=customer.id,
             items=[
@@ -161,6 +157,12 @@ def get_or_create_subscription(
                 },
             ],
             expand=['latest_invoice.payment_intent'],
+        )
+        user.profile.stripe_subscription_id = subscription.id
+        user.profile.save()
+    else:
+        subscription = stripe.Subscription.retrieve(
+            user.profile.stripe_subscription_id
         )
 
     return subscription

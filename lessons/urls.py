@@ -15,6 +15,11 @@ urlpatterns = [
     path('subscribe', views.subscribe, name='subscribe'),
     path('contact', views.contact, name='contact'),
     path('upgrade', views.upgrade, name='upgrade'),
+    path(
+        'cancel-subsription',
+        views.cancel_subscription,
+        name='cancel_subscription'
+    ),
     path('checkout', views.checkout, name='checkout'),
     path('card', views.card, name='card'),
     path('thank-you', views.thank_you, name='thank_you'),

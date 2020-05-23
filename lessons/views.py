@@ -326,6 +326,17 @@ def upgrade(request):
     )
 
 
+@login_required
+def cancel_subscription(request):
+    if request.method == 'POST':
+        pass
+
+    return render(
+        request,
+        'lessons/cancel_subscription.html'
+    )
+
+
 @require_POST
 @login_required
 def checkout(request):
@@ -424,7 +435,8 @@ def card(request):
         )
 
     msg = """
-    Payment succeeded. Thank you! You can enjoy now all PRO lessons.
+    Success! Thank you!
+    It may take 2-3 minutes to process the payment and update your account.
     """
     context = {
         'msg': msg,

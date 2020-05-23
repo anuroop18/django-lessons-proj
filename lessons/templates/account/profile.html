@@ -31,9 +31,9 @@
         {% if automatic_renew %}
           <div class="form-group">
               <input type="checkbox" disabled name="automatic" checked />
-              <label for="automatic">Subscription Enabled</label>
+              <label for="automatic">Subscription enabled</label>
               <small class="form-text text-muted">
-                Will charge automatically during next billing cycle. You can <a class="theme-color" href="#">cancel subscription</a> anytime.
+                Will charge automatically during next billing cycle. You can <a class="theme-color" href="{% url 'cancel_subscription' %}">cancel subscription</a> anytime.
               </small>
           </div>
         {% else %}
