@@ -26,6 +26,78 @@ PLAN_DICT = {
 logger = logging.getLogger(__name__)
 
 
+class PaymentStatus:
+    def __init__(self):
+        self._code
+        self._message
+        self._tag
+        self._title
+
+
+class Payment:
+    def __init__(self, api_key, user):
+        self._api_key = api_key
+        self._user = user
+        self._status = PaymentStatus()
+
+
+class OneTimePayment(Payment):
+
+    def __init__(self):
+        self._api_key = api_key
+
+
+class RecurringPayment(Payment):
+    def __init__(
+        self,
+        api_key,
+        user,
+        payment_method_id,
+        stripe_plan_id
+    ):
+        self._api_key = api_key
+        self._user = user
+        self._payment_method_id = payment_method_id
+        self._stripe_plan_id = stripe_plan_id
+        self._status
+
+    def create_subscription(self):
+        pass
+
+    def get_client_secret(self):
+        pass
+
+    @property
+    def requires_3ds(self):
+        pass
+
+    @property
+    def customer_id(self):
+        return self.user.profile.stripe_customer_id
+
+    @property
+    def subscription_id(self):
+        return self.user.profile.stripe_subscription_id
+
+    def get_or_create_customer(self):
+
+        if not self.stripe_customer_id:
+            customer = stripe.Customer.create(
+                email=self.user.email,
+                payment_method=self.payment_method_id,
+                invoice_settings={
+                    'default_payment_method': self.payment_method_id
+                }
+            )
+            self.save_customer_id(customer.id)
+        else:
+            customer = stripe.Customer.retrieve(
+                user.profile.stripe_customer_id
+            )
+
+        return customer
+
+
 def create_or_update_user_profile(user, timestamp_or_date):
     #
     # timestamp_or_date can be instance of
@@ -124,23 +196,7 @@ class LessonsPlan:
 
 
 def get_or_create_customer(user, payment_method_id):
-    if not user.profile.stripe_customer_id:
-        # no customer id associated - new customer!
-        customer = stripe.Customer.create(
-            email=user.email,
-            payment_method=payment_method_id,
-            invoice_settings={
-                'default_payment_method': payment_method_id
-            }
-        )
-        user.profile.stripe_customer_id = customer.id
-        user.profile.save()
-    else:
-        customer = stripe.Customer.retrieve(
-            user.profile.stripe_customer_id
-        )
 
-    return customer
 
 
 def get_or_create_subscription(

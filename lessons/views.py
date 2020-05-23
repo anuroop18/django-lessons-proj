@@ -25,8 +25,9 @@ from lessons.models import (
 from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
-    get_or_create_customer,
-    get_or_create_subscription
+    Payment,
+    RecurringPayment,
+    OneTimePayment
 )
 from lessons.payments.utils import (
     login_with_pro,
@@ -415,7 +416,6 @@ def thank_you(request):
 
 @login_required
 def card(request):
-
     payment_method_id = request.POST['payment_method_id']
     stripe_plan_id = request.POST['stripe_plan_id']
     automatic = request.POST['automatic']
@@ -423,57 +423,34 @@ def card(request):
     stripe.api_key = API_KEY
 
     if automatic == 'on':
-        customer = get_or_create_customer(
+        payment = RecurringPayment(
+            api_key=API_KEY,
             user=request.user,
+            stripe_plan_id=stripe_plan_id,
             payment_method_id=payment_method_id
         )
 
-        s = get_or_create_subscription(
-            user=request.user,
-            customer=customer,
-            stripe_plan_id=stripe_plan_id
-        )
+        payment.create_subscription()
 
-        if s.status == INCOMPLETE:
-            latest_invoice = stripe.Invoice.retrieve(s.latest_invoice)
-
-            ret = stripe.PaymentIntent.confirm(
-                latest_invoice.payment_intent
+        if payment.requires_3ds:
+            return render(
+                request,
+                'lessons/payments/3dsec.html',
+                payment.get_3ds_context
             )
-            if ret.status == REQUIRES_ACTION:
-                pi = stripe.PaymentIntent.retrieve(
-                    latest_invoice.payment_intent
-                )
-                context = {}
-
-                context['payment_intent_secret'] = pi.client_secret
-                context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
-
-                return render(request, 'lessons/payments/3dsec.html', context)
     else:
-        lesson_plan = LessonsPlan(plan_id=lesson_plan_id)
-        payment_intent = stripe.PaymentIntent.create(
-            amount=lesson_plan.amount,
-            currency=lesson_plan.currency,
-            receipt_email=request.user.email,
-            payment_method_types=['card']
+        payment = OneTimePayment(
+            api_key=API_KEY,
+            user=request.user,
+            lesson_plan_id=lesson_plan_id
         )
-        stripe.PaymentIntent.modify(
-            payment_intent.id,
-            payment_method=payment_method_id
-        )
-        stripe.PaymentIntent.confirm(
-            payment_intent.id,
-        )
+        payment.pay()
 
-    msg = """
-    Success! Thank you!
-    It may take 2-3 minutes to process the payment and update your account.
-    """
+    status = payment.status
     context = {
-        'msg': msg,
-        'tag': 'text-success',
-        'title': 'Payment Success'
+        'msg': status.message,
+        'tag': status.tag,
+        'title': status.title
     }
     return render(
         request,
