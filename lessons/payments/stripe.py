@@ -137,11 +137,6 @@ def create_payment_intent(
 
 
 def upgrade_customer_from_charge(charge):
-    """
-    amount is a string:
-        "1995"  => one time month pay
-        "19950" => one time annual pay
-    """
     current_date = date.today()
     email = charge.receipt_email
 
