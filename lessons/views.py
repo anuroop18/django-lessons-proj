@@ -328,8 +328,30 @@ def upgrade(request):
 
 @login_required
 def cancel_subscription(request):
+    stripe.api_key = API_KEY
     if request.method == 'POST':
-        pass
+        user = request.user
+        subs_id = user.profile.stripe_subscription_id
+
+        if subs_id:
+            stripe.Subscription.delete(subs_id)
+            user.profile.stripe_subscription_id = None
+            user.profile.stripe_product_id = None
+            user.profile.save()
+
+            msg = """
+            Subscription canceled :( Thank you for using Django Lessons!
+            """
+            context = {
+                'msg': msg,
+                'tag': 'text-success',
+                'title': 'Subscription canceled.'
+            }
+            return render(
+                request,
+                'lessons/payments/thank_you.html',
+                context
+            )
 
     return render(
         request,
