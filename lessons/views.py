@@ -439,7 +439,7 @@ def card(request):
             context['payment_intent_secret'] = pi.client_secret
             context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
 
-            return render(request, 'land/payments/3dsec.html', context)
+            return render(request, 'lessons/payments/3dsec.html', context)
     else:
         lesson_plan = LessonsPlan(plan_id=lesson_plan_id)
         payment_intent = stripe.PaymentIntent.create(
