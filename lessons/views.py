@@ -37,6 +37,8 @@ from lessons.payments.utils import (
 logger = logging.getLogger(__name__)
 
 API_KEY = settings.STRIPE_SECRET_KEY
+INCOMPLETE = 'incomplete'
+REQUIRES_ACTION = 'requires_action'
 ITEMS_PER_PAGE = 10
 
 
@@ -432,14 +434,22 @@ def card(request):
             stripe_plan_id=stripe_plan_id
         )
 
-        if s.latest_invoice.payment_intent.status == 'requires_action':
-            pi = s.latest_invoice.payment_intent
-            context = {}
+        if s.status == INCOMPLETE:
+            latest_invoice = stripe.Invoice.retrieve(s.latest_invoice)
 
-            context['payment_intent_secret'] = pi.client_secret
-            context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+            ret = stripe.PaymentIntent.confirm(
+                latest_invoice.payment_intent
+            )
+            if ret.status == REQUIRES_ACTION:
+                pi = stripe.PaymentIntent.retrieve(
+                    latest_invoice.payment_intent
+                )
+                context = {}
 
-            return render(request, 'lessons/payments/3dsec.html', context)
+                context['payment_intent_secret'] = pi.client_secret
+                context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+
+                return render(request, 'lessons/payments/3dsec.html', context)
     else:
         lesson_plan = LessonsPlan(plan_id=lesson_plan_id)
         payment_intent = stripe.PaymentIntent.create(
