@@ -294,7 +294,8 @@ def user_profile(request):
         {
             'user': user,
             'user_profile': user_profile,
-            'is_pro': is_pro
+            'is_pro': is_pro,
+            'automatic_renew': user_profile.is_with_automatic_renew
         }
     )
 

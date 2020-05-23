@@ -60,6 +60,13 @@ class UserProfile(models.Model):
         max_length=64,
     )
 
+    @property
+    def is_with_automatic_renew(self):
+        if not self.stripe_subscription_id:
+            return False
+
+        return True
+
     def update_pro_enddate(self, some_date):
         self.pro_enddate = some_date
         self.save()

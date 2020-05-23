@@ -23,14 +23,31 @@
         </div>
         {% if is_pro %}
           <div class="form-group">
-            <label for="id_paid_until">Paid until</label>
+            <label for="id_paid_until">PRO Until</label>
             <input class="form-control" id="id_paid_until" type="text" value="{{ user_profile.pro_enddate }}" readonly>
           </div>
         {% endif %}
+
+        {% if automatic_renew %}
+          <div class="form-group">
+              <input type="checkbox" disabled name="automatic" checked />
+              <label for="automatic">Subscription Enabled</label>
+              <small class="form-text text-muted">
+                Will charge automatically during next billing cycle. You can <a class="theme-color" href="#">cancel subscription</a> anytime.
+              </small>
+          </div>
+        {% else %}
+          <div class="form-group">
+            <label for="id_paid_until">Subscription?</label>
+            <input class="form-control" id="id_subscription" type="text" value="No" readonly>
+          </div>
+        {% endif %}
+
         <div class="form-group">
           <label for="id_username">Username:</label>
           <input type="text" readonly class="form-control" id="id_username" value="{{ user.username }}">
         </div>
+
         <div class="form-group">
           <label for="id_username">Email:</label>
           <input type="email" readonly class="form-control" id="id_email" value="{{ user.email }}">
