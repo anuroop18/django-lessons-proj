@@ -25,6 +25,8 @@ from lessons.models import (
 from lessons.payments.stripe import (
     LessonsPlan,
     UserProfile,
+    get_or_create_customer,
+    get_or_create_subscription
 )
 from lessons.payments.utils import (
     login_with_pro,
@@ -385,22 +387,17 @@ def card(request):
     stripe.api_key = API_KEY
 
     if automatic == 'on':
-        customer = stripe.Customer.create(
-            email=request.user.email,
-            payment_method=payment_method_id,
-            invoice_settings={
-                'default_payment_method': payment_method_id
-            }
+        customer = get_or_create_customer(
+            user=request.user,
+            payment_method_id=payment_method_id
         )
-        s = stripe.Subscription.create(
-            customer=customer.id,
-            items=[
-                {
-                    'plan': stripe_plan_id
-                },
-            ],
-            expand=['latest_invoice.payment_intent'],
+
+        s = get_or_create_subscription(
+            user=request.user,
+            customer=customer,
+            stripe_plan_id=stripe_plan_id
         )
+
         if s.latest_invoice.payment_intent.status == 'requires_action':
             pi = s.latest_invoice.payment_intent
             context = {}

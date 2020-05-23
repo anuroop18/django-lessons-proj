@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 import logging
+import stripe
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -120,6 +121,49 @@ class LessonsPlan:
     def human_message(self):
         dollars = self.plan.amount / 100
         return f"${dollars:.2f}"
+
+
+def get_or_create_customer(user, payment_method_id):
+    if not user.stripe_customer_id:
+        # no customer id associated - new customer!
+        customer = stripe.Customer.create(
+            email=user.email,
+            payment_method=payment_method_id,
+            invoice_settings={
+                'default_payment_method': payment_method_id
+            }
+        )
+        user.stripe_customer_id = customer.id
+        user.save()
+    else:
+        customer = stripe.Customer.retrieve(
+            user.stripe_customer_id
+        )
+
+    return customer
+
+
+def get_or_create_subscription(
+    user,
+    customer,
+    stripe_plan_id
+):
+    if user.stripe_subscription_id:
+        subscription = stripe.Subscription.retrieve(
+            user.stripe_subscription_id
+        )
+    else:
+        subscription = stripe.Subscription.create(
+            customer=customer.id,
+            items=[
+                {
+                    'plan': stripe_plan_id
+                },
+            ],
+            expand=['latest_invoice.payment_intent'],
+        )
+
+    return subscription
 
 
 def create_payment_intent(
