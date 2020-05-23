@@ -38,8 +38,7 @@ from lessons.payments.utils import (
 logger = logging.getLogger(__name__)
 
 API_KEY = settings.STRIPE_SECRET_KEY
-INCOMPLETE = 'incomplete'
-REQUIRES_ACTION = 'requires_action'
+
 ITEMS_PER_PAGE = 10
 
 
@@ -432,7 +431,7 @@ def card(request):
 
         payment.create_subscription()
 
-        if payment.requires_3ds:
+        if payment.requires_action:
             return render(
                 request,
                 'lessons/payments/3dsec.html',

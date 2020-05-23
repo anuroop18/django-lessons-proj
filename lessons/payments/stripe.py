@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 import logging
-import stripe
+# Stripe SDK original module
+import stripe as orig_stripe
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -25,20 +26,106 @@ PLAN_DICT = {
 
 logger = logging.getLogger(__name__)
 
+SUBSCRIPTION_ACTIVE = 'active'
+SUBSCRIPTION_INCOMPLETE = 'incomplete'
+
 
 class PaymentStatus:
+
+    # codes
+    REQUIRES_ACTION = 'requires_action'
+
     def __init__(self):
         self._code
         self._message
         self._tag
         self._title
 
+    def set_status(self, code):
+        self._code = code
+
+    def __eq__(self, other_code):
+        return self.code == other_code
+
+
+class PaymentClient:
+    """
+    A thin wrapper over Stripe SDK.
+    For unit tests will be replaced with own test client.
+    """
+
+    def __init__(self, api_key):
+        self._api_key = api_key
+        orig_stripe.api_key = self._api_key
+
+    @property
+    def api_key(self):
+        return self._api_key
+
+    def create_customer(self, email, payment_method_id):
+        customer = orig_stripe.Customer.create(
+            email=email,
+            payment_method=payment_method_id,
+            invoice_settings={
+                'default_payment_method': payment_method_id
+            }
+        )
+        return customer
+
+    def retrieve_customer(self, customer_id):
+        customer = orig_stripe.Customer.retrieve(
+            stripe_customer_id
+        )
+        return customer
+
+    def create_subscription(self, customer, stripe_plan_id):
+        """
+        customer = is orig_stripe.Customer instance
+        """
+        subscription = stripe.Subscription.create(
+            customer=customer.id,
+            items=[
+                {
+                    'plan': stripe_plan_id
+                },
+            ],
+            expand=['latest_invoice.payment_intent'],
+        )
+        return subscription
+
+    def retrieve_payment_intent(self, payment_intent):
+        pi = orig_stripe.PaymentIntent.retrieve(
+            payment_intent
+        )
+        return pi
+
+    def confirm_payment_intent(self, payment_intent):
+        orig_stripe.PaymentIntent.confirm(
+            payment_intent
+        )
+
 
 class Payment:
     def __init__(self, api_key, user):
-        self._api_key = api_key
+        self._client = PaymentClient(api_key=api_key)
         self._user = user
         self._status = PaymentStatus()
+
+    @property
+    def client(self):
+        return self._client
+
+    @property
+    def user(self):
+        return self._user
+
+    @property
+    def profile(self):
+        return self._user.profile
+
+    @property
+    def status(self):
+        return self._status
 
 
 class OneTimePayment(Payment):
@@ -54,22 +141,15 @@ class RecurringPayment(Payment):
         user,
         payment_method_id,
         stripe_plan_id
+
     ):
-        self._api_key = api_key
-        self._user = user
+        super().__init__(
+            api_key=api_key,
+            user=user
+        )
         self._payment_method_id = payment_method_id
         self._stripe_plan_id = stripe_plan_id
-        self._status
-
-    def create_subscription(self):
-        pass
-
-    def get_client_secret(self):
-        pass
-
-    @property
-    def requires_3ds(self):
-        pass
+        self._latest_invoice = None
 
     @property
     def customer_id(self):
@@ -79,10 +159,68 @@ class RecurringPayment(Payment):
     def subscription_id(self):
         return self.user.profile.stripe_subscription_id
 
+    @property
+    def requires_action(self):
+        return self.status == PaymentStatus.REQUIRES_ACTION
+
+    @property
+    def get_3ds_context(self):
+        pi = self.client.retrieve_payment_intent(
+            payment_intent=self._latest_invoice.payment_intent
+        )
+        context = {}
+        context['payment_intent_secret'] = pi.client_secret
+        context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+
+        return context
+
+    def create_subscription(self):
+        customer = self.get_or_create_customer()
+
+        subscription = self.get_or_create_subscription(
+            customer
+        )
+
+        if subscription.status == SUBSCRIPTION_ACTIVE:
+            self.status.set_success()
+            return True
+
+        if subscription.status == SUBSCRIPTION_INACTIVE:
+            latest_inv = self.client.retrieve_invoice(
+                s.latest_invoice
+            )
+
+            ret = self.client.confirm_payment_intent(
+                payment_intent=s.latest_invoice.payment_intent
+            )
+            if ret.status == PaymentStatus.REQUIRES_ACTION:
+                self.status.set_status(
+                    PaymentStatus.REQUIRES_ACTION
+                )
+                return True
+
+        return True
+
+    def get_or_create_subscription(self, customer):
+        """
+        customer is orig_stripe.Customer instance.
+        """
+        if not self.subscription_id:
+            subscription = self.client.create_subscription(
+                customer
+            )
+            self.save_subscription_id(subscription.id)
+        else:
+            subscription = stripe.Subscription.retrieve(
+                user.profile.stripe_subscription_id
+            )
+
+        return subscription
+
     def get_or_create_customer(self):
 
         if not self.stripe_customer_id:
-            customer = stripe.Customer.create(
+            customer = self.client.create_customer(
                 email=self.user.email,
                 payment_method=self.payment_method_id,
                 invoice_settings={
@@ -91,11 +229,15 @@ class RecurringPayment(Payment):
             )
             self.save_customer_id(customer.id)
         else:
-            customer = stripe.Customer.retrieve(
-                user.profile.stripe_customer_id
+            customer = self.client.retrieve_customer(
+                customer_id=self.customer_id
             )
 
         return customer
+
+    def save_subscription_id(self, subscription_id):
+        self.user.profile.stripe_subscription_id = subscription.id
+        self.user.profile.save()
 
 
 def create_or_update_user_profile(user, timestamp_or_date):
@@ -204,24 +346,7 @@ def get_or_create_subscription(
     customer,
     stripe_plan_id
 ):
-    if not user.profile.stripe_subscription_id:
-        subscription = stripe.Subscription.create(
-            customer=customer.id,
-            items=[
-                {
-                    'plan': stripe_plan_id
-                },
-            ],
-            expand=['latest_invoice.payment_intent'],
-        )
-        user.profile.stripe_subscription_id = subscription.id
-        user.profile.save()
-    else:
-        subscription = stripe.Subscription.retrieve(
-            user.profile.stripe_subscription_id
-        )
 
-    return subscription
 
 
 def create_payment_intent(
