@@ -35,6 +35,31 @@ class UserProfile(models.Model):
         blank=True
     )
 
+    # In case user pays via Stripe and opts for
+    # subcription all
+    #  * stripe_subscription_id
+    #  * stripe_customer_id
+    #  * stripe_product_id
+    # will be stored.
+    # (this allows stripe's subscription cancelation)
+    stripe_subscription_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+
+    stripe_customer_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+
+    stripe_product_id = models.CharField(
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+
     def update_pro_enddate(self, some_date):
         self.pro_enddate = some_date
         self.save()
