@@ -1,35 +1,23 @@
 import logging
 
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.conf import settings
-from django.http import (Http404, HttpResponseBadRequest)
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.core.paginator import Paginator
-
-from django.contrib import messages
-from taggit.models import Tag
 from allauth.account.views import LoginView
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import Http404, HttpResponseBadRequest
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
+from taggit.models import Tag
 
-from .forms import (SubscribeForm, ContactForm)
-from .models import (
-    Lesson,
-    Course,
-    UserProfile,
-    LessonGroup,
-    Subscription,
-    Contact,
-    PRO
-)
+from .forms import ContactForm, SubscribeForm
+from .models import (PRO, Contact, Course, Lesson, LessonGroup, Subscription,
+                     UserProfile)
 from .payments import plans
 from .payments import stripe as my_stripe
 from .payments.clients.stripe import stripe_client
-from .payments.utils import (
-    login_with_pro,
-    upgrade_with_pro,
-)
-
+from .payments.utils import login_with_pro, upgrade_with_pro
 
 logger = logging.getLogger(__name__)
 

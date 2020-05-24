@@ -1,15 +1,13 @@
 from datetime import date, timedelta
 
-from django.test import TestCase
-from django.test import Client
 from django.contrib.auth import get_user_model
-from wagtail.core.models import Page
+from django.test import Client, TestCase
 from django.urls import reverse
+from wagtail.core.models import Page
 
-from .models import (Lesson, PRO)
+from .models import PRO, Lesson
 from .payments import utils as pay_utils
 from .payments.stripe import create_or_update_user_profile
-
 
 User = get_user_model()
 

@@ -1,14 +1,12 @@
-from datetime import date, timedelta
 import logging
+from datetime import date, timedelta
+
 # Stripe SDK original module
 import stripe as orig_stripe
-
 from django.conf import settings
 from django.contrib.auth.models import User
-
-from lessons.payments import plans
 from lessons.models import UserProfile
-
+from lessons.payments import plans
 
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
