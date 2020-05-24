@@ -1,5 +1,5 @@
 from django.contrib.syndication.views import Feed
-from lessons.models import Lesson
+from .models import Lesson
 
 
 class LatestLessonsFeed(Feed):

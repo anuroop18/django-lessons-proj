@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.admin import UserAdmin
-from lessons.models import (
+from .models import (
     Subscription,
     Lesson,
     Course,

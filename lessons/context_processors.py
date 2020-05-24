@@ -1,4 +1,4 @@
-from lessons.models import Course
+from .models import Course
 
 
 def courses(request):

@@ -182,7 +182,7 @@ class RecurringPayment(Payment):
             )
             return True
 
-        if subscription.status == SUBSCRIPTION_INACTIVE:
+        if subscription.status == SUBSCRIPTION_INCOMPLETE:
             latest_inv = self.client.retrieve_invoice(
                 subscription.latest_invoice
             )

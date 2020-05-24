@@ -4,8 +4,8 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 
-from lessons.models import (Lesson, User)
-from lessons.payments.stripe import create_or_update_user_profile
+from .models import (Lesson, User)
+from .payments.stripe import create_or_update_user_profile
 
 
 class UserProfileTest(TestCase):

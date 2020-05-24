@@ -6,9 +6,9 @@ from django.contrib.auth import get_user_model
 from wagtail.core.models import Page
 from django.urls import reverse
 
-from lessons.models import (Lesson, PRO)
-from lessons.payments import utils as pay_utils
-from lessons.payments.stripe import create_or_update_user_profile
+from .models import (Lesson, PRO)
+from .payments import utils as pay_utils
+from .payments.stripe import create_or_update_user_profile
 
 
 User = get_user_model()

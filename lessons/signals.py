@@ -4,7 +4,7 @@ from django.db.models.signals import (
 )
 from django.contrib.auth.models import User
 
-from lessons.models import UserProfile
+from .models import UserProfile
 
 
 @receiver(post_save, sender=User)

@@ -1,9 +1,9 @@
 from django.urls import path
 
-from lessons.feed import LatestLessonsFeed
-from lessons import views
-from lessons.webhooks.stripe import webhook as stripe_webhook
-from lessons.views import PageView
+from .feed import LatestLessonsFeed
+from . import views
+from .webhooks.stripe import webhook as stripe_webhook
+from .views import PageView
 
 urlpatterns = [
     path('', views.index, name='index'),

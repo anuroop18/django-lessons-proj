@@ -12,8 +12,8 @@ from django.contrib import messages
 from taggit.models import Tag
 from allauth.account.views import LoginView
 
-from lessons.forms import (SubscribeForm, ContactForm)
-from lessons.models import (
+from .forms import (SubscribeForm, ContactForm)
+from .models import (
     Lesson,
     Course,
     UserProfile,
@@ -22,10 +22,10 @@ from lessons.models import (
     Contact,
     PRO
 )
-from lessons.payments import plans
-from lessons.payments import stripe as my_stripe
-from lessons.payments.clients.stripe import stripe_client
-from lessons.payments.utils import (
+from .payments import plans
+from .payments import stripe as my_stripe
+from .payments.clients.stripe import stripe_client
+from .payments.utils import (
     login_with_pro,
     upgrade_with_pro,
 )

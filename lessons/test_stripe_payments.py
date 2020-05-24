@@ -2,9 +2,9 @@ from django.test import TestCase
 
 # my stripe = my own stripe module located in
 # lessons.payments.stripe
-from lessons.payments import stripe as my_stripe
-from lessons.payments.clients.stripe import FakeClient as PaymentTestClient
-from lessons.utils import create_user
+from .payments import stripe as my_stripe
+from .payments.clients.stripe import FakeClient as PaymentTestClient
+from .utils import create_user
 
 
 class UserProfileTest(TestCase):
