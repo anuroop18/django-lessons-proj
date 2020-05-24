@@ -5,10 +5,6 @@ import stripe as orig_stripe
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from stripe import (
-    Subscription,
-    PaymentIntent
-)
 
 from lessons.payments import plans
 from lessons.models import UserProfile
@@ -33,19 +29,25 @@ class PaymentStatus:
     REQUIRES_ACTION = 'requires_action'
     NOT_INITIATED = 'not_initiated'
     SUCCESS = 'success'
+    SUBSCRIPTION_CANCELED_SUCCESS = 'subscription_canceled_success'
 
     MESSAGES = {
         SUCCESS: """Success! Thank You!
         It may take 2-3 minutes to process the payment and update your account.
+        """,
+        SUBSCRIPTION_CANCELED_SUCCESS: """
+        Subscription canceled :( Thank you for using Django Lessons!
         """
     }
 
     TAGS = {
-        SUCCESS: 'text-success'
+        SUCCESS: 'text-success',
+        SUBSCRIPTION_CANCELED_SUCCESS: 'text-success'
     }
 
     TITLES = {
-        SUCCESS: 'Payment Success'
+        SUCCESS: 'Payment Success',
+        SUBSCRIPTION_CANCELED_SUCCESS: 'Subscription Canceled'
     }
 
     def __init__(self):
@@ -228,6 +230,25 @@ class RecurringPayment(Payment):
         self.user.profile.save()
 
 
+class Subscription(Payment):
+    def __init__(self, client, user):
+        super().__init__(
+            client=client,
+            user=user
+        )
+
+    def cancel(self, subscription_id):
+        self.client.cancel_subscription(subscription_id)
+
+        self.user.profile.stripe_subscription_id = None
+        self.user.profile.stripe_product_id = None
+        self.user.profile.save()
+
+        self.set_status(
+            PaymentStatus.SUBSCRIPTION_CANCELED_SUCCESS
+        )
+
+
 def create_or_update_user_profile(user, timestamp_or_date):
     #
     # timestamp_or_date can be instance of
@@ -267,7 +288,7 @@ def create_payment_intent(
     lesson_plan,
     payment_method_type="card"
 ):
-    payment_intent = PaymentIntent.create(
+    payment_intent = orig_stripe.PaymentIntent.create(
         api_key=API_KEY,
         amount=lesson_plan.amount,
         currency=lesson_plan.currency,

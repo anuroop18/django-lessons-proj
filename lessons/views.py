@@ -326,24 +326,21 @@ def upgrade(request):
 
 @login_required
 def cancel_subscription(request):
-    stripe.api_key = API_KEY
     if request.method == 'POST':
         user = request.user
         subs_id = user.profile.stripe_subscription_id
 
         if subs_id:
-            stripe.Subscription.delete(subs_id)
-            user.profile.stripe_subscription_id = None
-            user.profile.stripe_product_id = None
-            user.profile.save()
-
-            msg = """
-            Subscription canceled :( Thank you for using Django Lessons!
-            """
+            subs = my_stripe.Subscription(
+                client=stripe_client,
+                user=request.user
+            )
+            subs.cancel(subscription_id=subs_id)
+            status = subs.status
             context = {
-                'msg': msg,
-                'tag': 'text-success',
-                'title': 'Subscription canceled.'
+                'msg': status.message,
+                'tag': status.tag,
+                'title': status.title
             }
             return render(
                 request,
