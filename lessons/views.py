@@ -1,5 +1,4 @@
 import logging
-import stripe
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -17,18 +16,15 @@ from lessons.forms import (SubscribeForm, ContactForm)
 from lessons.models import (
     Lesson,
     Course,
+    UserProfile,
     LessonGroup,
     Subscription,
     Contact,
     PRO
 )
-from lessons.payments.stripe import (
-    LessonsPlan,
-    UserProfile,
-    Payment,
-    RecurringPayment,
-    OneTimePayment
-)
+from lessons.payments import plans
+from lessons.payments import stripe as my_stripe
+from lessons.payments.clients.stripe import stripe_client
 from lessons.payments.utils import (
     login_with_pro,
     upgrade_with_pro,
@@ -364,10 +360,9 @@ def cancel_subscription(request):
 @require_POST
 @login_required
 def checkout(request):
-    stripe.api_key = API_KEY
     payment_method = request.POST.get('payment_method', 'card')
     automatic = request.POST.get('automatic', False)
-    lesson_plan = LessonsPlan(
+    lesson_plan = plans.LessonsPlan(
         plan_id=request.POST.get('plan', 'm'),
         automatic=automatic
     )
@@ -419,11 +414,10 @@ def card(request):
     stripe_plan_id = request.POST['stripe_plan_id']
     automatic = request.POST['automatic']
     lesson_plan_id = request.POST['lesson_plan_id']
-    stripe.api_key = API_KEY
 
     if automatic == 'on':
-        payment = RecurringPayment(
-            api_key=API_KEY,
+        payment = my_stripe.RecurringPayment(
+            client=stripe_client,
             user=request.user,
             stripe_plan_id=stripe_plan_id,
             payment_method_id=payment_method_id
@@ -438,8 +432,8 @@ def card(request):
                 payment.get_3ds_context
             )
     else:
-        payment = OneTimePayment(
-            api_key=API_KEY,
+        payment = my_stripe.OneTimePayment(
+            client=stripe_client,
             user=request.user,
             lesson_plan_id=lesson_plan_id
         )

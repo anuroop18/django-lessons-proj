@@ -10,23 +10,20 @@ from stripe import (
     PaymentIntent
 )
 
+from lessons.payments import plans
 from lessons.models import UserProfile
 
-MONTH = 'month'
-YEAR = 'year'
-STATUS_PAID = 'paid'
-MONTHLY_AMOUNT = 1995
-ANNUAL_AMOUNT = 19950
 
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
-    MONTH: settings.STRIPE_PLAN_MONTHLY_ID,
-    YEAR: settings.STRIPE_PLAN_ANNUAL_ID
+    plans.MONTH: settings.STRIPE_PLAN_MONTHLY_ID,
+    plans.YEAR: settings.STRIPE_PLAN_ANNUAL_ID
 }
 
 logger = logging.getLogger(__name__)
 
 SUBSCRIPTION_ACTIVE = 'active'
+SUBSCRIPTION_INACTIVE = 'inactive'
 SUBSCRIPTION_INCOMPLETE = 'incomplete'
 
 
@@ -34,12 +31,41 @@ class PaymentStatus:
 
     # codes
     REQUIRES_ACTION = 'requires_action'
+    NOT_INITIATED = 'not_initiated'
+    SUCCESS = 'success'
+
+    MESSAGES = {
+        SUCCESS: """Success! Thank You!
+        It may take 2-3 minutes to process the payment and update your account.
+        """
+    }
+
+    TAGS = {
+        SUCCESS: 'text-success'
+    }
+
+    TITLES = {
+        SUCCESS: 'Payment Success'
+    }
 
     def __init__(self):
-        self._code
-        self._message
-        self._tag
-        self._title
+        self._code = PaymentStatus.NOT_INITIATED
+
+    @property
+    def code(self):
+        return self._code
+
+    @property
+    def message(self):
+        return PaymentStatus.MESSAGES[self.code]
+
+    @property
+    def title(self):
+        return PaymentStatus.TITLES[self.code]
+
+    @property
+    def tag(self):
+        return PaymentStatus.TAGS[self.code]
 
     def set_status(self, code):
         self._code = code
@@ -48,66 +74,9 @@ class PaymentStatus:
         return self.code == other_code
 
 
-class PaymentClient:
-    """
-    A thin wrapper over Stripe SDK.
-    For unit tests will be replaced with own test client.
-    """
-
-    def __init__(self, api_key):
-        self._api_key = api_key
-        orig_stripe.api_key = self._api_key
-
-    @property
-    def api_key(self):
-        return self._api_key
-
-    def create_customer(self, email, payment_method_id):
-        customer = orig_stripe.Customer.create(
-            email=email,
-            payment_method=payment_method_id,
-            invoice_settings={
-                'default_payment_method': payment_method_id
-            }
-        )
-        return customer
-
-    def retrieve_customer(self, customer_id):
-        customer = orig_stripe.Customer.retrieve(
-            stripe_customer_id
-        )
-        return customer
-
-    def create_subscription(self, customer, stripe_plan_id):
-        """
-        customer = is orig_stripe.Customer instance
-        """
-        subscription = stripe.Subscription.create(
-            customer=customer.id,
-            items=[
-                {
-                    'plan': stripe_plan_id
-                },
-            ],
-            expand=['latest_invoice.payment_intent'],
-        )
-        return subscription
-
-    def retrieve_payment_intent(self, payment_intent):
-        pi = orig_stripe.PaymentIntent.retrieve(
-            payment_intent
-        )
-        return pi
-
-    def confirm_payment_intent(self, payment_intent):
-        orig_stripe.PaymentIntent.confirm(
-            payment_intent
-        )
-
-
 class Payment:
-    def __init__(self, api_key, user):
-        self._client = PaymentClient(api_key=api_key)
+    def __init__(self, client, user):
+        self._client = client
         self._user = user
         self._status = PaymentStatus()
 
@@ -130,26 +99,37 @@ class Payment:
 
 class OneTimePayment(Payment):
 
-    def __init__(self):
-        self._api_key = api_key
+    def __init__(self, client, user):
+        super().__init__(
+            client=client,
+            user=user
+        )
 
 
 class RecurringPayment(Payment):
     def __init__(
         self,
-        api_key,
+        client,
         user,
         payment_method_id,
         stripe_plan_id
 
     ):
         super().__init__(
-            api_key=api_key,
+            client=client,
             user=user
         )
         self._payment_method_id = payment_method_id
         self._stripe_plan_id = stripe_plan_id
         self._latest_invoice = None
+
+    @property
+    def payment_method_id(self):
+        return self._payment_method_id
+
+    @property
+    def stripe_plan_id(self):
+        return self._stripe_plan_id
 
     @property
     def customer_id(self):
@@ -178,20 +158,23 @@ class RecurringPayment(Payment):
         customer = self.get_or_create_customer()
 
         subscription = self.get_or_create_subscription(
-            customer
+            customer,
+            self.stripe_plan_id
         )
 
         if subscription.status == SUBSCRIPTION_ACTIVE:
-            self.status.set_success()
+            self.status.set_status(
+                PaymentStatus.SUCCESS
+            )
             return True
 
         if subscription.status == SUBSCRIPTION_INACTIVE:
             latest_inv = self.client.retrieve_invoice(
-                s.latest_invoice
+                subscription.latest_invoice
             )
 
             ret = self.client.confirm_payment_intent(
-                payment_intent=s.latest_invoice.payment_intent
+                payment_intent=latest_inv.payment_intent
             )
             if ret.status == PaymentStatus.REQUIRES_ACTION:
                 self.status.set_status(
@@ -201,28 +184,29 @@ class RecurringPayment(Payment):
 
         return True
 
-    def get_or_create_subscription(self, customer):
+    def get_or_create_subscription(self, customer, stripe_plan_id):
         """
         customer is orig_stripe.Customer instance.
         """
         if not self.subscription_id:
-            subscription = self.client.create_subscription(
-                customer
+            sub = self.client.create_subscription(
+                customer,
+                stripe_plan_id
             )
-            self.save_subscription_id(subscription.id)
+            self.save_subscription_id(sub.id)
         else:
-            subscription = stripe.Subscription.retrieve(
-                user.profile.stripe_subscription_id
+            sub = self.client.retrieve_subscription(
+                self.subscription_id
             )
 
-        return subscription
+        return sub
 
     def get_or_create_customer(self):
 
-        if not self.stripe_customer_id:
+        if not self.customer_id:
             customer = self.client.create_customer(
                 email=self.user.email,
-                payment_method=self.payment_method_id,
+                payment_method_id=self.payment_method_id,
                 invoice_settings={
                     'default_payment_method': self.payment_method_id
                 }
@@ -236,7 +220,11 @@ class RecurringPayment(Payment):
         return customer
 
     def save_subscription_id(self, subscription_id):
-        self.user.profile.stripe_subscription_id = subscription.id
+        self.user.profile.stripe_subscription_id = subscription_id
+        self.user.profile.save()
+
+    def save_customer_id(self, customer_id):
+        self.user.profile.stripe_customer_id = customer_id
         self.user.profile.save()
 
 
@@ -273,80 +261,6 @@ def create_or_update_user_profile(user, timestamp_or_date):
             pro_enddate=some_date
         )
         profile.save()
-
-
-class LessonsMonthPlan:
-    def __init__(self):
-        self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
-        self.amount = MONTHLY_AMOUNT
-
-
-class LessonsAnnualPlan:
-    def __init__(self):
-        self.stripe_plan_id = settings.STRIPE_PLAN_ANNUAL_ID
-        self.amount = ANNUAL_AMOUNT
-
-
-class LessonsPlan:
-    def __init__(self, plan_id, automatic=False):
-        """
-        plan_id is either string 'm' (stands for monthly)
-        or a string letter 'a' (which stands for annual)
-        """
-        if plan_id == 'm':
-            self.plan = LessonsMonthPlan()
-            self.id = 'm'
-        elif plan_id == 'a':
-            self.plan = LessonsAnnualPlan()
-            self.id = 'a'
-        else:
-            raise ValueError('Invalid plan_id value')
-
-        self.currency = 'usd'
-        self.automatic = automatic
-
-    @property
-    def stripe_plan_id(self):
-        return self.plan.stripe_plan_id
-
-    @property
-    def amount(self):
-        return self.plan.amount
-
-    @property
-    def human_details(self):
-        msg = "PRO account "
-
-        if self.automatic in ('True', 'on'):
-            if isinstance(self.plan, LessonsMonthPlan):
-                msg += "with monthly subscription."
-            elif isinstance(self.plan, LessonsAnnualPlan):
-                msg += "with annual subscription."
-        else:
-            if isinstance(self.plan, LessonsMonthPlan):
-                msg += " for a month."
-            elif isinstance(self.plan, LessonsAnnualPlan):
-                msg += " for a year."
-            msg += " No subscription."
-
-        return msg
-
-    @property
-    def human_message(self):
-        dollars = self.plan.amount / 100
-        return f"${dollars:.2f}"
-
-
-def get_or_create_customer(user, payment_method_id):
-
-
-
-def get_or_create_subscription(
-    user,
-    customer,
-    stripe_plan_id
-):
-
 
 
 def create_payment_intent(
