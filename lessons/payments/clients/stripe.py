@@ -60,6 +60,9 @@ class BaseClient:
     def confirm_payment_intent(self, payment_intent):
         pass
 
+    def cancel_subscription(self, subscription_id):
+        pass
+
 
 class RealClient(BaseClient):
     """
@@ -127,6 +130,9 @@ class RealClient(BaseClient):
             payment_intent
         )
 
+    def cancel_subscription(self, subscription_id):
+        orig_stripe.Subscription.delete(subscription_id)
+
 
 class FakeClient(BaseClient):
     def __init__(self, api_key):
@@ -157,6 +163,9 @@ class FakeClient(BaseClient):
         return FakePaymentIntent()
 
     def confirm_payment_intent(self, payment_intent):
+        pass
+
+    def cancel_subscription(self, subscription_id):
         pass
 
 

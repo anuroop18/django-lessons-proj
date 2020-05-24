@@ -31,3 +31,15 @@ class UserProfileTest(TestCase):
         self.assertIn(
             "Thank You!", status.message
         )
+
+    def test_cancel_subsription(self):
+        subs = my_stripe.Subscription(
+            client=PaymentTestClient("fake"),
+            user=self.user,)
+        subs.cancel(
+            subscription_id="whatever"
+        )
+        self.assertIn(
+            "canceled", subs.status.message
+        )
+

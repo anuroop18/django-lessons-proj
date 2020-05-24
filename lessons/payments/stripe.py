@@ -244,7 +244,7 @@ class Subscription(Payment):
         self.user.profile.stripe_product_id = None
         self.user.profile.save()
 
-        self.set_status(
+        self.status.set_status(
             PaymentStatus.SUBSCRIPTION_CANCELED_SUCCESS
         )
 
