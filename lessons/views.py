@@ -335,7 +335,7 @@ def cancel_subscription(request):
                 client=stripe_client,
                 user=request.user
             )
-            subs.cancel(subscription_id=subs_id)
+            subs.cancel(subscription_id=subs.id)
             status = subs.status
             context = {
                 'msg': status.message,

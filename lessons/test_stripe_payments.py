@@ -23,6 +23,15 @@ class UserProfileTest(TestCase):
         )
         payment.create_subscription()
 
+    def test_payment_status_initial_state(self):
+        status = my_stripe.PaymentStatus()
+        self.assertIn(
+            "not initiated", status.message
+        )
+        self.assertEquals(
+            status.code, my_stripe.PaymentStatus.NOT_INITIATED
+        )
+
     def test_status(self):
         status = my_stripe.PaymentStatus()
         status.set_status(

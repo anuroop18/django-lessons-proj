@@ -32,6 +32,8 @@ class PaymentStatus:
     SUBSCRIPTION_CANCELED_SUCCESS = 'subscription_canceled_success'
 
     MESSAGES = {
+        REQUIRES_ACTION: 'Requires action (3D secure user auth)',
+        NOT_INITIATED: 'Payment process not initiated yet',
         SUCCESS: """Success! Thank You!
         It may take 2-3 minutes to process the payment and update your account.
         """,
@@ -41,11 +43,15 @@ class PaymentStatus:
     }
 
     TAGS = {
+        REQUIRES_ACTION: 'text-warning',
+        NOT_INITIATED: 'text-success',
         SUCCESS: 'text-success',
         SUBSCRIPTION_CANCELED_SUCCESS: 'text-success'
     }
 
     TITLES = {
+        REQUIRES_ACTION: 'Requires Action',
+        NOT_INITIATED: 'Payment Not Yet Started',
         SUCCESS: 'Payment Success',
         SUBSCRIPTION_CANCELED_SUCCESS: 'Subscription Canceled'
     }
@@ -74,6 +80,12 @@ class PaymentStatus:
 
     def __eq__(self, other_code):
         return self.code == other_code
+
+    def __str__(self):
+        return f"PaymentStatus(code={self.code}, message={self.message})"
+
+    def __repr__(self):
+        return str(self)
 
 
 class Payment:
