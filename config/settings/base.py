@@ -1,8 +1,20 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from django.contrib.messages import constants as messages  # noqa
+from dotenv import load_dotenv
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.abspath(__file__)
+        )
+    )
+)
+
+env_file_path = os.path.join(BASE_DIR, 'env.txt')
+if os.path.exists(env_file_path):
+    load_dotenv(env_file_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -160,15 +172,6 @@ SERVICE_NAME = "Django Lessons"
 SERVICE_EMAIL = "eugen@django-lessons.com"
 
 
-# /home/eugen/projects/Django-Lessons.py/.venv/lib/python3.8/site-packages/storages/backends/s3boto3.py:340:
-# /UserWarning: The default behavior of S3Boto3Storage is insecure and will
-# /change in django-storages 1.10. By default files and new buckets are saved
-# /with an ACL of 'public-read' (globally publicly readable). Version 1.10
-# /will default to using the bucket's ACL. To opt into the new behavior set
-# /AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly set
-# /AWS_DEFAULT_ACL.
-# AWS_DEFAULT_ACL = None
-from django.contrib.messages import constants as messages  # noqa
 
 MESSAGE_TAGS = {
     messages.INFO: 'text-primary',
@@ -176,4 +179,3 @@ MESSAGE_TAGS = {
     messages.WARNING: 'text-warning',
     messages.ERROR: 'text-danger'
 }
-

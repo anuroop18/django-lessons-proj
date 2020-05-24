@@ -1,10 +1,7 @@
 import os
-# Never ever use "import *" except django configuration
-# files like this one!
-#
-# If you write "import *" in any other python module and deploy
-# such code in production, bugs will eat your business out!
+
 from .base import *  # noqa
+
 # But in this *very unique scenario*... it works like a charm :)
 
 # All environment common settings are defined in config/env/base.py
@@ -13,6 +10,7 @@ ALLOWED_HOSTS = [
     'django-lessons.test', '*'
 ]
 INTERNAL_IPS = ('127.0.0.1',)
+STATIC_ROOT = '/opt/django-lessons/static'
 
 DATABASES = {
     'default': {
@@ -28,31 +26,31 @@ DATABASES = {
 DEBUG = True
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'formatters': {
-        'with_funcname': {
-            'format': '[{pathname}:{funcName}:{lineno:d}] {message}',
-            'style': '{',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-        },
-        'lessons': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-        },
-    },
-}
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'file': {
+#            'class': 'logging.StreamHandler',
+#        },
+#    },
+#    'formatters': {
+#        'with_funcname': {
+#            'format': '[{pathname}:{funcName}:{lineno:d}] {message}',
+#            'style': '{',
+#        },
+#    },
+#    'loggers': {
+#        'django': {
+#            'handlers': ['file'],
+#            'level': 'INFO',
+#        },
+#        'lessons': {
+#            'handlers': ['file'],
+#            'level': 'INFO',
+#        },
+#    },
+#}
 
 
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
@@ -63,10 +61,6 @@ AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_S3_CUSTOM_DOMAIN']
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-STATICFILES_DIRS = [
-    '/home/eugen/projects/Django-Lessons.js/static/',
-]
 
 EMAIL_FROM = 'eugen@django-lessons.com'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'

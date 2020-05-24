@@ -1,6 +1,7 @@
 *.log
 *.sqlite3
 env.sh
+env.txt
 test_env.sh
 __pycache__
 *.pyc

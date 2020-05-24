@@ -1,3 +1,4 @@
+python-dotenv
 stripe
 psycopg2
 Pillow
