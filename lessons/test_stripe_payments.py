@@ -61,3 +61,11 @@ class UserProfileTest(TestCase):
         self.assertIn(
             "canceled", subs.status.message
         )
+
+    def test_one_time_payment_basic(self):
+        payment = my_stripe.OneTimePayment(
+            client=PaymentTestClient("fake"),
+            user=self.user,
+            lesson_plan_id='m'  # LessonsPlan, monthly
+        )
+        payment.pay()
