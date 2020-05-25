@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from lessons.models import UserProfile
 from lessons.payments import plans
 
+from .plans import ANNUAL_AMOUNT, MONTHLY_AMOUNT
+
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
     plans.MONTH: settings.STRIPE_PLAN_MONTHLY_ID,
@@ -362,7 +364,7 @@ def upgrade_customer_from_invoice(invoice):
         )
         return False
 
-    subscr = Subscription.retrieve(
+    subscr = orig_stripe.Subscription.retrieve(
         api_key=API_KEY,
         id=invoice['subscription']
     )
