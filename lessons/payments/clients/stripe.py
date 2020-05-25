@@ -1,5 +1,5 @@
-from django.conf import settings
 import stripe as orig_stripe
+from django.conf import settings
 
 
 class Fake:
@@ -46,6 +46,9 @@ class BaseClient:
         pass
 
     def retrieve_customer(self, customer_id):
+        pass
+
+    def retrieve_invoice(self, invoice_id):
         pass
 
     def create_subscription(self, customer, stripe_plan_id):
@@ -112,6 +115,24 @@ class RealClient(BaseClient):
         )
         return subscription
 
+    def retrieve_invoice(self, invoice):
+        """
+        invoice is either string instance as an ID or
+        an instance of orig_stripe.Invoice.
+        """
+        if isinstance(invoice, str):
+            inv = orig_stripe.Invoice.retrieve(
+                invoice
+            )
+        elif isinstance(invoice, orig_stripe.Invoice):
+            inv = orig_stripe.Invoice.retrieve(
+                invoice.id
+            )
+        else:
+            raise ValueError("Unexpected invoice type in retrieve_invoice")
+
+        return inv
+
     def retrieve_subscription(self, subscription_id):
         sub = orig_stripe.Subscription.retrieve(
             subscription_id
@@ -126,9 +147,10 @@ class RealClient(BaseClient):
         return pi
 
     def confirm_payment_intent(self, payment_intent):
-        orig_stripe.PaymentIntent.confirm(
+        ret = orig_stripe.PaymentIntent.confirm(
             payment_intent
         )
+        return ret
 
     def cancel_subscription(self, subscription_id):
         orig_stripe.Subscription.delete(subscription_id)

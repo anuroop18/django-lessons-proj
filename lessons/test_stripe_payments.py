@@ -41,6 +41,16 @@ class UserProfileTest(TestCase):
             "Thank You!", status.message
         )
 
+    def test_status_equality(self):
+        status = my_stripe.PaymentStatus()
+        status.set_status(
+            my_stripe.PaymentStatus.REQUIRES_ACTION
+        )
+        # status instance can be compares with status code
+        self.assertTrue(
+            status == my_stripe.PaymentStatus.REQUIRES_ACTION
+        )
+
     def test_cancel_subsription(self):
         subs = my_stripe.Subscription(
             client=PaymentTestClient("fake"),
@@ -51,4 +61,3 @@ class UserProfileTest(TestCase):
         self.assertIn(
             "canceled", subs.status.message
         )
-

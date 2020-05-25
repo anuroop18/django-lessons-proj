@@ -174,6 +174,12 @@ class RecurringPayment(Payment):
             self.stripe_plan_id
         )
 
+        # This subscription.status describes the status of
+        # the payment intent for the latest subscription invoice.
+        # The invoice tracks overall payment status for the
+        # subscription; the payment intent tracks the status
+        # of an individual payment.
+        # To get this value, you must expand the child objects of the reponse.
         if subscription.status == SUBSCRIPTION_ACTIVE:
             self.status.set_status(
                 PaymentStatus.SUCCESS
