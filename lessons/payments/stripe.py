@@ -133,7 +133,6 @@ class RecurringPayment(Payment):
         )
         self._payment_method_id = payment_method_id
         self._stripe_plan_id = stripe_plan_id
-        self._latest_invoice = None
 
     @property
     def payment_method_id(self):
@@ -155,10 +154,9 @@ class RecurringPayment(Payment):
     def requires_action(self):
         return self.status == PaymentStatus.REQUIRES_ACTION
 
-    @property
-    def get_3ds_context(self):
+    def get_3ds_context(self, latest_invoice):
         pi = self.client.retrieve_payment_intent(
-            payment_intent=self._latest_invoice.payment_intent
+            payment_intent=latest_invoice.payment_intent
         )
         context = {}
         context['payment_intent_secret'] = pi.client_secret
@@ -167,6 +165,13 @@ class RecurringPayment(Payment):
         return context
 
     def create_subscription(self):
+        """
+        In case of success (even if payment still requires action)
+        will return orig_stripe.Invoice instance - which is latest invoice.
+        In case of 3D secure, from latest invoice instance, the
+        confirmation view is generated.
+        In case of failure returns False.
+        """
         customer = self.get_or_create_customer()
 
         subscription = self.get_or_create_subscription(
@@ -184,7 +189,7 @@ class RecurringPayment(Payment):
             self.status.set_status(
                 PaymentStatus.SUCCESS
             )
-            return True
+            return subscription.latest_invoice
 
         if subscription.status == SUBSCRIPTION_INCOMPLETE:
             latest_inv = self.client.retrieve_invoice(
@@ -198,9 +203,9 @@ class RecurringPayment(Payment):
                 self.status.set_status(
                     PaymentStatus.REQUIRES_ACTION
                 )
-                return True
+                return latest_inv
 
-        return True
+        return False
 
     def get_or_create_subscription(self, customer, stripe_plan_id):
         """

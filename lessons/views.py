@@ -408,13 +408,13 @@ def card(request):
             payment_method_id=payment_method_id
         )
 
-        payment.create_subscription()
+        latest_invoice = payment.create_subscription()
 
         if payment.requires_action:
             return render(
                 request,
                 'lessons/payments/3dsec.html',
-                payment.get_3ds_context
+                payment.get_3ds_context(latest_invoice)
             )
     else:
         payment = my_stripe.OneTimePayment(
