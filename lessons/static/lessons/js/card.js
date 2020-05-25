@@ -1,3 +1,16 @@
+function spinner_start() {
+  $("#card-button").html(
+    "<span class='spinner-border spinner-border-sm' " +
+    "role='status' aria-hidden='true'></span>Processing..."
+  );
+  $("#card-button").attr("disabled", true);
+}
+
+function spinner_stop() {
+  $("#card-button").html("Pay Now");
+  $("#card-button").attr("disabled", false);
+}
+
 function card(stripe_publishable_key, customer_email) {
   document.addEventListener("DOMContentLoaded", function(event) { 
       var stripe = Stripe(stripe_publishable_key);
@@ -42,12 +55,14 @@ function card(stripe_publishable_key, customer_email) {
       var form = document.getElementById('payment-form');
       form.addEventListener('submit', function(event) {
         event.preventDefault();
+        spinner_start();
 
         stripe.createToken(card).then(function(result) {
           if (result.error) {
             // Inform the user if there was an error.
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
+            spinner_stop();
           } else {
             // Send the token to your server.
             stripe.createPaymentMethod({
@@ -60,6 +75,7 @@ function card(stripe_publishable_key, customer_email) {
               if (payment_method_result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = payment_method_result.error.message;
+                spinner_stop()
               } else {
                 stripeTokenHandler(payment_method_result.paymentMethod);
               };
