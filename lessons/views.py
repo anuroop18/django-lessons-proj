@@ -393,7 +393,7 @@ def paypal(request):
     if automatic == 'on':
         redirect_url = payment.create_subscription()
     else:
-        redirect_url = payment.create_one_time_order()
+        redirect_url = payment.create_onetime_order()
 
     return HttpResponseRedirect(redirect_url)
 

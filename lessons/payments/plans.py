@@ -10,12 +10,14 @@ ANNUAL_AMOUNT = 19950
 class LessonsMonthPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_MONTHLY_ID
+        self.paypal_plan_id = settings.PAYPAL_PLAN_MONTHLY_ID
         self.amount = MONTHLY_AMOUNT
 
 
 class LessonsAnnualPlan:
     def __init__(self):
         self.stripe_plan_id = settings.STRIPE_PLAN_ANNUAL_ID
+        self.paypal_plan_id = settings.PAYPAL_PLAN_ANNUAL_ID
         self.amount = ANNUAL_AMOUNT
 
 
@@ -36,6 +38,10 @@ class LessonsPlan:
 
         self.currency = 'usd'
         self.automatic = automatic
+
+    @property
+    def paypal_plan_id(self):
+        return self.plan.paypal_plan_id
 
     @property
     def stripe_plan_id(self):
@@ -67,4 +73,3 @@ class LessonsPlan:
     def human_message(self):
         dollars = self.plan.amount / 100
         return f"${dollars:.2f}"
-
