@@ -1,6 +1,18 @@
+import os
+
 import paypalrestsdk
+import yaml
 from django.conf import settings
 from lessons.payments import plans
+
+BASE_DIR = os.path.join(
+    "..",  # proj
+    "..",  # land
+    os.path.dirname(__file__)  # commands
+)
+
+ORDER_A_CONF_PATH = os.path.join("paypal", "order-annual.yml")
+ORDER_M_CONF_PATH = os.path.join("paypal", "order-monthly.yml")
 
 
 class BaseClient:
@@ -42,8 +54,28 @@ class RealClient(BaseClient):
             data
         )
 
+    def get_order(self, lesson_plan):
+        data = None
+
+        if isinstance(lesson_plan.plan, plans.LessonsAnnualPlan):
+            order_path = ORDER_A_CONF_PATH
+        elif isinstance(lesson_plan.plan, plans.LessonsMonthPlan):
+            order_path = ORDER_M_CONF_PATH
+        else:
+            raise ValueError("Unexpected lesson plan instance")
+
+        with open(order_path, "r") as f:
+            data = yaml.safe_load(f)
+
+        return data
+
     def create_onetime_order(self, lesson_plan):
-        pass
+        order_dict = self.get_order(lesson_plan)
+
+        return self._api.post(
+            "v2/checkout/orders",
+            order_dict
+        )
 
 
 class FakeClient(BaseClient):
