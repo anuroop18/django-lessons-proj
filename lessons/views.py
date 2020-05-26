@@ -420,7 +420,8 @@ def card(request):
         payment = my_stripe.OneTimePayment(
             client=stripe_client,
             user=request.user,
-            lesson_plan_id=lesson_plan_id
+            lesson_plan_id=lesson_plan_id,
+            payment_method_id=payment_method_id
         )
         payment.pay()
 

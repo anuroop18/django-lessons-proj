@@ -66,6 +66,7 @@ class UserProfileTest(TestCase):
         payment = my_stripe.OneTimePayment(
             client=PaymentTestClient("fake"),
             user=self.user,
+            payment_method_id="blah",
             lesson_plan_id='m'  # LessonsPlan, monthly
         )
         payment.pay()

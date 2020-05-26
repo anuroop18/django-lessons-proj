@@ -12,6 +12,12 @@ class Fake:
         return "fake_status"
 
 
+class FakeStatus(Fake):
+    @property
+    def status(self):
+        return "succeeded"
+
+
 class FakeCustomer(Fake):
     pass
 
@@ -58,6 +64,22 @@ class BaseClient:
         pass
 
     def retrieve_payment_intent(self, payment_intent):
+        pass
+
+    def create_payment_intent(
+        self,
+        amount,
+        currency,
+        receipt_email,
+        payment_method_types
+    ):
+        pass
+
+    def modify_payment_intent(
+        self,
+        payment_intent_id,
+        payment_method_id
+    ):
         pass
 
     def confirm_payment_intent(self, payment_intent):
@@ -146,6 +168,31 @@ class RealClient(BaseClient):
         )
         return pi
 
+    def create_payment_intent(
+        self,
+        amount,
+        currency,
+        receipt_email,
+        payment_method_types
+    ):
+        pi = orig_stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            receipt_email=receipt_email,
+            payment_method_types=payment_method_types
+        )
+        return pi
+
+    def modify_payment_intent(
+        self,
+        payment_intent_id,
+        payment_method_id
+    ):
+        orig_stripe.PaymentIntent.modify(
+            payment_intent_id,
+            payment_method=payment_method_id
+        )
+
     def confirm_payment_intent(self, payment_intent):
         ret = orig_stripe.PaymentIntent.confirm(
             payment_intent
@@ -184,8 +231,25 @@ class FakeClient(BaseClient):
     def retrieve_payment_intent(self, payment_intent):
         return FakePaymentIntent()
 
-    def confirm_payment_intent(self, payment_intent):
+    def create_payment_intent(
+        self,
+        amount,
+        currency,
+        receipt_email,
+        payment_method_types
+    ):
+
+        return FakePaymentIntent()
+
+    def modify_payment_intent(
+        self,
+        payment_intent_id,
+        payment_method_id
+    ):
         pass
+
+    def confirm_payment_intent(self, payment_intent):
+        return FakeStatus()
 
     def cancel_subscription(self, subscription_id):
         pass

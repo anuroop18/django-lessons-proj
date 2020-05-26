@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 SUBSCRIPTION_ACTIVE = 'active'
 SUBSCRIPTION_INACTIVE = 'inactive'
 SUBSCRIPTION_INCOMPLETE = 'incomplete'
+PAYMENT_SUCCEEDED = 'succeeded'
 
 
 class PaymentStatus:
@@ -113,11 +114,49 @@ class Payment:
 
 class OneTimePayment(Payment):
 
-    def __init__(self, client, user):
+    def __init__(
+        self,
+        client,
+        user,
+        payment_method_id,
+        lesson_plan_id
+    ):
         super().__init__(
             client=client,
             user=user
         )
+        self._payment_method_id = payment_method_id
+        self._lesson_plan_id = lesson_plan_id
+
+    @property
+    def payment_method_id(self):
+        return self._payment_method_id
+
+    @property
+    def lesson_plan_id(self):
+        return self._lesson_plan_id
+
+    def pay(self):
+        lesson_plan = plans.LessonsPlan(
+            plan_id=self.lesson_plan_id
+        )
+        payment_intent = self.client.create_payment_intent(
+            amount=lesson_plan.amount,
+            currency=lesson_plan.currency,
+            receipt_email=self.user.email,
+            payment_method_types=['card']
+        )
+        self.client.modify_payment_intent(
+            payment_intent.id,
+            payment_method_id=self.payment_method_id
+        )
+        ret = self.client.confirm_payment_intent(
+            payment_intent.id
+        )
+        if ret.status == PAYMENT_SUCCEEDED:
+            self.status.set_status(
+                PaymentStatus.SUCCESS
+            )
 
 
 class RecurringPayment(Payment):
