@@ -1,5 +1,7 @@
 python-dotenv
 stripe
+paypalrestsdk
+pyyaml
 psycopg2
 Pillow
 wagtail
