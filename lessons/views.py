@@ -423,7 +423,14 @@ def card(request):
             lesson_plan_id=lesson_plan_id,
             payment_method_id=payment_method_id
         )
-        payment.pay()
+        payment_intent = payment.pay()
+
+        if payment.requires_action:
+            return render(
+                request,
+                'lessons/payments/3dsec.html',
+                payment.get_3ds_context(payment_intent.id)
+            )
 
     status = payment.status
     context = {

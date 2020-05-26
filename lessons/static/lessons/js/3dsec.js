@@ -12,7 +12,7 @@ function _3dsec(stripe_publishable_key, pi_secret) {
         } else {
           // The payment has succeeded. Display a success message.
           $("#3ds_result").text(
-            "Thank you! It may take 2-3 minutes to process the payment and update your account."
+            "Thank you! It may take 2-3 minutes to process the payment and upgrade your account."
           );
           $("#3ds_result").addClass("text-success");
         }

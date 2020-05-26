@@ -36,7 +36,7 @@ class PaymentStatus:
         REQUIRES_ACTION: 'Requires action (3D secure user auth)',
         NOT_INITIATED: 'Payment process not initiated yet',
         SUCCESS: """Success! Thank You!
-        It may take 2-3 minutes to process the payment and update your account.
+        It may take 2-3 minutes to process the payment and upgrade your account.
         """,
         SUBSCRIPTION_CANCELED_SUCCESS: """
         Subscription canceled :( Thank you for using Django Lessons!
@@ -111,6 +111,10 @@ class Payment:
     def status(self):
         return self._status
 
+    @property
+    def requires_action(self):
+        return self.status == PaymentStatus.REQUIRES_ACTION
+
 
 class OneTimePayment(Payment):
 
@@ -153,10 +157,30 @@ class OneTimePayment(Payment):
         ret = self.client.confirm_payment_intent(
             payment_intent.id
         )
+
         if ret.status == PAYMENT_SUCCEEDED:
             self.status.set_status(
                 PaymentStatus.SUCCESS
             )
+            return payment_intent
+
+        if ret.status == PaymentStatus.REQUIRES_ACTION:
+            self.status.set_status(
+                PaymentStatus.REQUIRES_ACTION
+            )
+            return payment_intent
+
+        return False
+
+    def get_3ds_context(self, payment_intent_id):
+        pi = self.client.retrieve_payment_intent(
+            payment_intent=payment_intent_id
+        )
+        context = {}
+        context['payment_intent_secret'] = pi.client_secret
+        context['STRIPE_PUBLISHABLE_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+
+        return context
 
 
 class RecurringPayment(Payment):
@@ -190,10 +214,6 @@ class RecurringPayment(Payment):
     @property
     def subscription_id(self):
         return self.user.profile.stripe_subscription_id
-
-    @property
-    def requires_action(self):
-        return self.status == PaymentStatus.REQUIRES_ACTION
 
     def get_3ds_context(self, latest_invoice):
         pi = self.client.retrieve_payment_intent(
