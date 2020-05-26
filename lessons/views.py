@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import Http404, HttpResponseBadRequest
+from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
@@ -14,8 +14,10 @@ from taggit.models import Tag
 from .forms import ContactForm, SubscribeForm
 from .models import (PRO, Contact, Course, Lesson, LessonGroup, Subscription,
                      UserProfile)
+from .payments import paypal as my_paypal
 from .payments import plans
 from .payments import stripe as my_stripe
+from .payments.clients.paypal import paypal_client
 from .payments.clients.stripe import stripe_client
 from .payments.utils import login_with_pro, upgrade_with_pro
 
@@ -373,6 +375,27 @@ def checkout(request):
         )
 
     return render(request, 'lessons/upgrade.html')
+
+
+@login_required
+def paypal(request):
+    automatic = request.GET.get('automatic', False)
+    lesson_plan_id = request.GET.get('plan', 'm')
+    lesson_plan = plans.LessonsPlan(
+        plan_id=lesson_plan_id,
+        automatic=automatic
+    )
+    payment = my_paypal.Paypal(
+        client=paypal_client,
+        user=request.user,
+        lesson_plan=lesson_plan
+    )
+    if automatic == 'on':
+        redirect_url = payment.create_subscription()
+    else:
+        redirect_url = payment.create_one_time_order()
+
+    return HttpResponseRedirect(redirect_url)
 
 
 @login_required
