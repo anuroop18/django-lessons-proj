@@ -5,7 +5,7 @@ import paypalrestsdk
 import yaml
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from land.payments.paypal import mode
+from lessons.payments.paypal import mode
 
 PRODUCT = "product"
 PLAN_M = "plan_m"  # monthly plan subscription
