@@ -25,32 +25,31 @@ DATABASES = {
 
 DEBUG = True
 
-
-#LOGGING = {
-#    'version': 1,
-#    'disable_existing_loggers': False,
-#    'handlers': {
-#        'file': {
-#            'class': 'logging.StreamHandler',
-#        },
-#    },
-#    'formatters': {
-#        'with_funcname': {
-#            'format': '[{pathname}:{funcName}:{lineno:d}] {message}',
-#            'style': '{',
-#        },
-#    },
-#    'loggers': {
-#        'django': {
-#            'handlers': ['file'],
-#            'level': 'INFO',
-#        },
-#        'lessons': {
-#            'handlers': ['file'],
-#            'level': 'INFO',
-#        },
-#    },
-#}
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'formatters': {
+        'with_funcname': {
+            'format': '[{pathname}:{funcName}:{lineno:d}] {message}',
+            'style': '{',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+        'lessons': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+    },
+}
 
 
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']

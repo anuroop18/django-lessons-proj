@@ -75,11 +75,11 @@ class Command(BaseCommand):
 
     def list_product(self):
         ret = myapi.get("v1/catalogs/products")
-        logger.debug(ret)
+        logger.info(ret)
 
     def list_plan(self):
         ret = myapi.get("v1/billing/plans")
-        logger.debug(ret)
+        logger.info(ret)
 
     def create(self, what):
         if what == PRODUCT:
