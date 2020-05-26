@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.0] - Work in progress
 
+### Added
+    - payments with stripe (onetime + subscriptions + 3D Secure)
+    - payments with paypal (onetime/order + subscriptions)
+    - feature to cancel subscriptions
+
+### Changed
+    - improved user profile page
+    - improved change password page
 
 ## [1.2.0] - April, 8th, 2020  / 08.04.2020
 
