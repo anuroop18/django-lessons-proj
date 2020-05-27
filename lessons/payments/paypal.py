@@ -138,7 +138,7 @@ def set_paid_until_order(obj):
         logger.error(f"User with order id={ret['id']} not found.")
         return False
 
-    logger.debug(f"ORDER {obj} for user {user.email}")
+    logger.info(f"ORDER {obj} for user {user.email}")
 
     return True
 
