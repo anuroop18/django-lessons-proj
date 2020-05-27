@@ -51,9 +51,16 @@ class Payment:
     def user(self):
         return self._user
 
+    @property
+    def profile(self):
+        return self._user.profile
+
     def create_subscription(self, lesson_plan):
         response = PaymentResponse(
             self.client.create_subscription(lesson_plan)
+        )
+        self.save_subscripion(
+            subs_id=response['id']
         )
         return response
 
@@ -61,4 +68,15 @@ class Payment:
         response = PaymentResponse(
             self.client.create_onetime_order(lesson_plan)
         )
+        self.save_order(
+            order_id=response['id']
+        )
         return response
+
+    def save_subscripion(self, subs_id):
+        self.profile.paypal_subscription_id = subs_id
+        self.profile.save()
+
+    def save_order(self, order_id):
+        self.profile.paypal_order_id = order_id
+        self.profile.save()

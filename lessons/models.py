@@ -62,7 +62,7 @@ class UserProfile(models.Model):
         blank=True,
         null=True
     )
-    # store paypal subscription reference to this user
+    # store paypal subscription reference for this user
     paypal_subscription_id = models.CharField(
         max_length=64,
         blank=True,
