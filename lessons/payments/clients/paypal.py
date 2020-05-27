@@ -98,6 +98,11 @@ class FakeClient(BaseClient):
     def __init__(self, mode):
         pass
 
+    def create_subscription(self, lesson_plan):
+        return {
+            'id': 'fake_id'
+        }
+
 
 def _mode():
     if settings.DEBUG:

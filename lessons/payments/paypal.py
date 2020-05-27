@@ -67,11 +67,14 @@ class Payment:
         return self._user.profile
 
     def create_subscription(self, lesson_plan):
+        """
+        lesson_plan is an instance of lessons.plans.LessonsPlan
+        """
         response = PaymentResponse(
             self.client.create_subscription(lesson_plan)
         )
         self.save_subscripion(
-            subs_id=response['id']
+            subs_id=response.id
         )
         return response
 
@@ -80,7 +83,7 @@ class Payment:
             self.client.create_onetime_order(lesson_plan)
         )
         self.save_order(
-            order_id=response['id']
+            order_id=response.id
         )
         return response
 
