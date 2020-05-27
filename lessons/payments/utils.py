@@ -1,13 +1,56 @@
-from datetime import datetime, timedelta
+import logging
+from datetime import date, datetime, timedelta
 
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
+from lessons.models import UserProfile
+
+logger = logging.getLogger(__name__)
 
 
 def plus_days(count):
     _date = datetime.now()
     return _date + timedelta(days=count)
+
+
+PLUS_ONE_MONTH = plus_days(count=31)
+PLUS_ONE_YEAR = plus_days(count=366)
+
+
+def create_or_update_user_profile(user, timestamp_or_date):
+    #
+    # timestamp_or_date can be instance of
+    #  (1) datetime.date
+    #  (2) timestamp e.g. 122343454 = expressed as integer
+    #  (3) timestamp e.g. 232321133 = expressed as string
+    #
+    #  (2) and (3) input is received from stripe API
+    #  (1) is used in testing, just to make sure it works as expected
+
+    if isinstance(timestamp_or_date, int):
+        some_date = date.fromtimestamp(timestamp_or_date)
+    elif isinstance(timestamp_or_date, str):
+        some_date = date.fromtimestamp(int(timestamp_or_date))
+    else:
+        some_date = timestamp_or_date
+
+    # some_date instance of datetime.date
+
+    if hasattr(user, 'profile'):
+        logger.info(
+            f"user already has a profile; some_date={some_date}"
+        )
+        user.profile.update_pro_enddate(some_date)
+        user.save()
+        logger.info(f"pro_enddate={user.profile.pro_enddate}")
+        logger.info(f"is_pro={user.profile.is_pro_user()}")
+    else:
+        profile = UserProfile(
+            user=user,
+            pro_enddate=some_date
+        )
+        profile.save()
 
 
 def upgrade_with_pro_url(lesson_order):

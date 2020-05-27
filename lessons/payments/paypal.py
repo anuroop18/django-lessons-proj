@@ -2,10 +2,10 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from lessons.payments.utils import plus_days
 
 from .clients.paypal import paypal_client
 from .plans import ANNUAL_AS_STRING, MONTHLY_AS_STRING
+from .utils import PLUS_ONE_MONTH, PLUS_ONE_YEAR, create_or_update_user_profile
 
 SUBSCRIPTION = 'subscription'
 ORDER = 'order'
@@ -118,9 +118,9 @@ def set_paid_until_subscription(obj):
     logger.info(f"SUBSCRIPTION {obj} for user {user.email}")
     amount = obj['amount']['total']
     if amount == MONTHLY_AS_STRING:
-        user.set_paid_until(plus_days(count=31))
+        create_or_update_user_profile(user, PLUS_ONE_MONTH)
     elif amount == ANNUAL_AS_STRING:
-        user.set_paid_until(plus_days(count=366))
+        create_or_update_user_profile(user, PLUS_ONE_YEAR)
     else:
         logger.error(
             f"Paypal subscription with unexpected amount of {amount}"

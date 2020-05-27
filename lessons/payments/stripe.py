@@ -1,14 +1,13 @@
 import logging
-from datetime import date, timedelta
 
 # Stripe SDK original module
 import stripe as orig_stripe
 from django.conf import settings
 from django.contrib.auth.models import User
-from lessons.models import UserProfile
 from lessons.payments import plans
 
 from .plans import ANNUAL_AMOUNT, MONTHLY_AMOUNT
+from .utils import PLUS_ONE_MONTH, PLUS_ONE_YEAR, create_or_update_user_profile
 
 API_KEY = settings.STRIPE_SECRET_KEY
 PLAN_DICT = {
@@ -331,41 +330,6 @@ class Subscription(Payment):
         )
 
 
-def create_or_update_user_profile(user, timestamp_or_date):
-    #
-    # timestamp_or_date can be instance of
-    #  (1) datetime.date
-    #  (2) timestamp e.g. 122343454 = expressed as integer
-    #  (3) timestamp e.g. 232321133 = expressed as string
-    #
-    #  (2) and (3) input is received from stripe API
-    #  (1) is used in testing, just to make sure it works as expected
-
-    if isinstance(timestamp_or_date, int):
-        some_date = date.fromtimestamp(timestamp_or_date)
-    elif isinstance(timestamp_or_date, str):
-        some_date = date.fromtimestamp(int(timestamp_or_date))
-    else:
-        some_date = timestamp_or_date
-
-    # some_date instance of datetime.date
-
-    if hasattr(user, 'profile'):
-        logger.info(
-            f"user already has a profile; some_date={some_date}"
-        )
-        user.profile.update_pro_enddate(some_date)
-        user.save()
-        logger.info(f"pro_enddate={user.profile.pro_enddate}")
-        logger.info(f"is_pro={user.profile.is_pro_user()}")
-    else:
-        profile = UserProfile(
-            user=user,
-            pro_enddate=some_date
-        )
-        profile.save()
-
-
 def create_payment_intent(
     lesson_plan,
     payment_method_type="card"
@@ -380,7 +344,6 @@ def create_payment_intent(
 
 
 def upgrade_customer_from_charge(charge):
-    current_date = date.today()
     email = charge.receipt_email
 
     logger.info(f"email={email}")
@@ -394,9 +357,9 @@ def upgrade_customer_from_charge(charge):
         return False
 
     if charge.amount == MONTHLY_AMOUNT:
-        current_period_end = current_date + timedelta(days=31)
+        current_period_end = PLUS_ONE_MONTH
     elif charge.amount == ANNUAL_AMOUNT:
-        current_period_end = current_date + timedelta(days=365)
+        current_period_end = PLUS_ONE_YEAR
     else:
         logger.error(
             "Unrecognizable amount received"
