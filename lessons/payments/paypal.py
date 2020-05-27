@@ -131,6 +131,9 @@ def set_paid_until_subscription(obj):
 
 def set_paid_until_order(obj):
     url = get_url_from(obj['links'], 'self')
+    logger.info(
+        f"Fetching ORDER details from URL={url}"
+    )
     ret = paypal_client.get_url(url)
     try:
         user = User.objects.get(profile__paypal_order_id=ret['id'])
