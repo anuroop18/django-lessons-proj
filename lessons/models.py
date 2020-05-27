@@ -1,23 +1,19 @@
 import datetime
+
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
-
+from modelcluster.contrib.taggit import ClusterTaggableManager
 # tag related
 from modelcluster.fields import ParentalKey
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase
-
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import (Page, Orderable)
+from taggit.models import Tag, TaggedItemBase
+from wagtail.admin.edit_handlers import (FieldPanel, InlinePanel,
+                                         StreamFieldPanel)
 from wagtail.core import blocks
-from wagtail.core.fields import StreamField
-from wagtail.admin.edit_handlers import StreamFieldPanel
-from wagtail.images.blocks import ImageChooserBlock
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.models import Orderable, Page
 from wagtail.embeds.blocks import EmbedBlock
-from wagtail.admin.edit_handlers import (FieldPanel, InlinePanel)
-
-from taggit.models import Tag
+from wagtail.images.blocks import ImageChooserBlock
 
 FREE = 'free'  # it is always better to use constants instead of strings
 PRO = 'pro'
@@ -58,6 +54,19 @@ class UserProfile(models.Model):
         null=True,
         blank=True,
         max_length=64,
+    )
+
+    # store one time paypal payment reference for this user
+    paypal_order_id = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True
+    )
+    # store paypal subscription reference to this user
+    paypal_subscription_id = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True
     )
 
     @property
