@@ -110,7 +110,7 @@ def set_paid_until_subscription(obj):
         logger.info(
             f"Fetching associated user."
         )
-        user = User.objects.get(paypal_subscription_id=ret['id'])
+        user = User.objects.get(profile__paypal_subscription_id=ret['id'])
     except User.DoesNotExist:
         logger.error(f"User with order id={ret['id']} not found.")
         return False
@@ -133,7 +133,7 @@ def set_paid_until_order(obj):
     url = get_url_from(obj['links'], 'self')
     ret = paypal_client.get(url)
     try:
-        user = User.objects.get(paypal_order_id=ret['id'])
+        user = User.objects.get(profile__paypal_order_id=ret['id'])
     except User.DoesNotExist:
         logger.error(f"User with order id={ret['id']} not found.")
         return False
