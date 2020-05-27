@@ -32,6 +32,12 @@ class BaseClient:
     def create_subscription(self, lesson_plan):
         pass
 
+    def get_subscription(self, billing_agreement_id):
+        pass
+
+    def get_url(self, url):
+        pass
+
     def create_onetime_order(self, lesson_plan):
         pass
 
@@ -52,6 +58,16 @@ class RealClient(BaseClient):
         return self._api.post(
             "v1/billing/subscriptions",
             data
+        )
+
+    def get_subscription(self, billing_agreement_id):
+        return self._api.get(
+            f"v1/billing/subscriptions/{billing_agreement_id}"
+        )
+
+    def get_url(self, url):
+        return self._api.get(
+            url
         )
 
     def get_order(self, lesson_plan):

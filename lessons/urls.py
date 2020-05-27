@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from .feed import LatestLessonsFeed
 from .views import PageView
+from .webhooks.paypal import webhook as paypal_webhook
 from .webhooks.stripe import webhook as stripe_webhook
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     path('card', views.card, name='card'),
     path('thank-you', views.thank_you, name='thank_you'),
     path('stripe-webhooks', stripe_webhook, name='stripe_webhooks'),
+    path('paypal-webhooks', paypal_webhook, name='paypal_webhooks'),
     path('profile', views.user_profile, name='user_profile'),
     path('latest/feed/', LatestLessonsFeed(), name='feed'),
     path('500', views.handler500, name='handler500'),

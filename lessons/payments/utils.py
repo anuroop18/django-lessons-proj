@@ -1,6 +1,13 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
+
+
+def plus_days(count):
+    _date = datetime.now()
+    return _date + timedelta(days=count)
 
 
 def upgrade_with_pro_url(lesson_order):

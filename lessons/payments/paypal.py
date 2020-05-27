@@ -1,4 +1,15 @@
+import logging
+
 from django.conf import settings
+from django.contrib.auth.models import User
+from lessons.payments.utils import plus_days
+
+from .clients.paypal import paypal_client
+
+SUBSCRIPTION = 'subscription'
+ORDER = 'order'
+
+logger = logging.getLogger(__name__)
 
 
 def mode():
@@ -80,3 +91,35 @@ class Payment:
     def save_order(self, order_id):
         self.profile.paypal_order_id = order_id
         self.profile.save()
+
+
+def set_paid_until(obj, from_what):
+
+    if from_what == SUBSCRIPTION:
+        billing_agreement_id = obj['billing_agreement_id']
+        ret = paypal_client.get_subscription(
+            f"v1/billing/subscriptions/{billing_agreement_id}"
+        )
+
+        try:
+            user = User.objects.get(paypal_subscription_id=ret['id'])
+        except User.DoesNotExist:
+            logger.error(f"User with order id={ret['id']} not found.")
+            return False
+
+        logger.debug(f"SUBSCRIPTION {obj} for user {user.email}")
+        if obj['amount']['total'] == '19.99':
+            user.set_paid_until(plus_days(count=31))
+
+    if from_what == ORDER:
+        url = get_url_from(obj['links'], 'self')
+        ret = paypal_client.get(url)
+        try:
+            user = User.objects.get(paypal_order_id=ret['id'])
+        except User.DoesNotExist:
+            logger.error(f"User with order id={ret['id']} not found.")
+            return False
+
+        logger.debug(f"ORDER {obj} for user {user.email}")
+
+    return True
