@@ -1,5 +1,5 @@
-from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
+from django.urls import reverse
 from django.utils.http import urlencode
 
 
@@ -35,3 +35,16 @@ def login_with_pro(lesson_order):
     url = f"{base_url}?{query_string}"
 
     return HttpResponseRedirect(url)
+
+
+def paypal_with_params_url(automatic, lesson_plan_id):
+    base_url = reverse('paypal_view')
+    query_string = urlencode(
+        {
+            'plan': lesson_plan_id,
+            'automatic': automatic
+        }
+    )
+    url = f"{base_url}?{query_string}"
+
+    return url

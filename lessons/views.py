@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import TemplateView
 from taggit.models import Tag
 
@@ -19,7 +19,8 @@ from .payments import plans
 from .payments import stripe as my_stripe
 from .payments.clients.paypal import paypal_client
 from .payments.clients.stripe import stripe_client
-from .payments.utils import login_with_pro, upgrade_with_pro
+from .payments.utils import (login_with_pro, paypal_with_params_url,
+                             upgrade_with_pro)
 
 logger = logging.getLogger(__name__)
 
@@ -347,10 +348,13 @@ def cancel_subscription(request):
 @require_POST
 @login_required
 def checkout(request):
+    lesson_plan_id = request.POST.get(
+        'plan', plans.ID_M
+    )
     payment_method = request.POST.get('payment_method', 'card')
-    automatic = request.POST.get('automatic', False)
+    automatic = request.POST.get('automatic', 'off')
     lesson_plan = plans.LessonsPlan(
-        plan_id=request.POST.get('plan', 'm'),
+        plan_id=lesson_plan_id,
         automatic=automatic
     )
     context = {}
@@ -363,10 +367,11 @@ def checkout(request):
         context['automatic'] = automatic
         return render(request, 'lessons/payments/card.html', context)
     elif payment_method == 'paypal':
-        return render(
-            request,
-            'lessons/payments/paypal.html'
+        url = paypal_with_params_url(
+            automatic=automatic,
+            lesson_plan_id=lesson_plan_id
         )
+        return HttpResponseRedirect(url)
     else:
         messages.add_message(
             request,
@@ -377,25 +382,36 @@ def checkout(request):
     return render(request, 'lessons/upgrade.html')
 
 
+@require_GET
 @login_required
 def paypal(request):
+
     automatic = request.GET.get('automatic', False)
-    lesson_plan_id = request.GET.get('plan', 'm')
+    lesson_plan_id = request.GET.get('lesson_plan_id', plans.ID_M)
+
+    if lesson_plan_id not in (plans.ID_M, plans.ID_A):
+        return HttpResponseBadRequest("Invalid lessons plan id")
+
     lesson_plan = plans.LessonsPlan(
         plan_id=lesson_plan_id,
         automatic=automatic
     )
-    payment = my_paypal.Paypal(
+    payment = my_paypal.Payment(
         client=paypal_client,
-        user=request.user,
-        lesson_plan=lesson_plan
+        user=request.user
     )
     if automatic == 'on':
-        redirect_url = payment.create_subscription()
+        ret = payment.create_subscription(
+            lesson_plan
+        )
     else:
-        redirect_url = payment.create_onetime_order()
+        ret = payment.create_onetime_order(
+            lesson_plan
+        )
 
-    return HttpResponseRedirect(redirect_url)
+    return HttpResponseRedirect(
+        ret.redirect_url('approve')
+    )
 
 
 @login_required

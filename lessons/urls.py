@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .feed import LatestLessonsFeed
 from . import views
-from .webhooks.stripe import webhook as stripe_webhook
+from .feed import LatestLessonsFeed
 from .views import PageView
+from .webhooks.stripe import webhook as stripe_webhook
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -19,6 +19,11 @@ urlpatterns = [
         'cancel-subsription',
         views.cancel_subscription,
         name='cancel_subscription'
+    ),
+    path(
+        'paypal',
+        views.paypal,
+        name='paypal_view'
     ),
     path('checkout', views.checkout, name='checkout'),
     path('card', views.card, name='card'),

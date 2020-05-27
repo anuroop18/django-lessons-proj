@@ -1,5 +1,7 @@
 from django.conf import settings
 
+ID_M = 'm'
+ID_A = 'a'
 MONTH = 'month'
 YEAR = 'year'
 STATUS_PAID = 'paid'
@@ -27,12 +29,12 @@ class LessonsPlan:
         plan_id is either string 'm' (stands for monthly)
         or a string letter 'a' (which stands for annual)
         """
-        if plan_id == 'm':
+        if plan_id == ID_M:
             self.plan = LessonsMonthPlan()
-            self.id = 'm'
-        elif plan_id == 'a':
+            self.id = ID_M
+        elif plan_id == ID_A:
             self.plan = LessonsAnnualPlan()
-            self.id = 'a'
+            self.id = ID_A
         else:
             raise ValueError('Invalid plan_id value')
 
@@ -55,7 +57,7 @@ class LessonsPlan:
     def human_details(self):
         msg = "PRO account "
 
-        if self.automatic in ('True', 'on'):
+        if self.automatic in ('True', 'on', True):
             if isinstance(self.plan, LessonsMonthPlan):
                 msg += "with monthly subscription."
             elif isinstance(self.plan, LessonsAnnualPlan):
