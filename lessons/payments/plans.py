@@ -6,7 +6,11 @@ MONTH = 'month'
 YEAR = 'year'
 STATUS_PAID = 'paid'
 MONTHLY_AMOUNT = 1995
+
 ANNUAL_AMOUNT = 19950
+# IN USD dollars, with dot as dollar/cent delimiter
+MONTHLY_AS_STRING = '19.95'
+ANNUAL_AS_STRING = '199.50'
 
 
 class LessonsMonthPlan:

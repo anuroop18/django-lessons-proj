@@ -1,16 +1,10 @@
-from django.contrib import admin
 from django.conf import settings
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-
+from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import (
-    Subscription,
-    Lesson,
-    Course,
-    LessonGroup,
-    Contact
-)
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+from .models import Contact, Course, Lesson, LessonGroup, Subscription
 
 
 def notify_new_lesson(modeladmin, request, queryset):
@@ -76,11 +70,8 @@ class LessonGroupAdmin(admin.ModelAdmin):
     pass
 
 
-#admin.site.register(User, UserAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(LessonGroup, LessonGroupAdmin)
-
-

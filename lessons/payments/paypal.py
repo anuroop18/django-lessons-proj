@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from lessons.payments.utils import plus_days
 
 from .clients.paypal import paypal_client
+from .plans import ANNUAL_AS_STRING, MONTHLY_AS_STRING
 
 SUBSCRIPTION = 'subscription'
 ORDER = 'order'
@@ -96,33 +97,58 @@ class Payment:
         self.profile.save()
 
 
+def set_paid_until_subscription(obj):
+    billing_agreement_id = obj['billing_agreement_id']
+    logger.info(
+        f"Fetching billing_agreement_id={billing_agreement_id} details."
+    )
+    ret = paypal_client.get_subscription(
+        billing_agreement_id
+    )
+
+    try:
+        logger.info(
+            f"Fetching associated user."
+        )
+        user = User.objects.get(paypal_subscription_id=ret['id'])
+    except User.DoesNotExist:
+        logger.error(f"User with order id={ret['id']} not found.")
+        return False
+
+    logger.info(f"SUBSCRIPTION {obj} for user {user.email}")
+    amount = obj['amount']['total']
+    if amount == MONTHLY_AS_STRING:
+        user.set_paid_until(plus_days(count=31))
+    elif amount == ANNUAL_AS_STRING:
+        user.set_paid_until(plus_days(count=366))
+    else:
+        logger.error(
+            f"Paypal subscription with unexpected amount of {amount}"
+        )
+
+    return True
+
+
+def set_paid_until_order(obj):
+    url = get_url_from(obj['links'], 'self')
+    ret = paypal_client.get(url)
+    try:
+        user = User.objects.get(paypal_order_id=ret['id'])
+    except User.DoesNotExist:
+        logger.error(f"User with order id={ret['id']} not found.")
+        return False
+
+    logger.debug(f"ORDER {obj} for user {user.email}")
+
+    return True
+
+
 def set_paid_until(obj, from_what):
 
     if from_what == SUBSCRIPTION:
-        billing_agreement_id = obj['billing_agreement_id']
-        ret = paypal_client.get_subscription(
-            f"v1/billing/subscriptions/{billing_agreement_id}"
-        )
-
-        try:
-            user = User.objects.get(paypal_subscription_id=ret['id'])
-        except User.DoesNotExist:
-            logger.error(f"User with order id={ret['id']} not found.")
-            return False
-
-        logger.debug(f"SUBSCRIPTION {obj} for user {user.email}")
-        if obj['amount']['total'] == '19.99':
-            user.set_paid_until(plus_days(count=31))
+        return set_paid_until_subscription(obj)
 
     if from_what == ORDER:
-        url = get_url_from(obj['links'], 'self')
-        ret = paypal_client.get(url)
-        try:
-            user = User.objects.get(paypal_order_id=ret['id'])
-        except User.DoesNotExist:
-            logger.error(f"User with order id={ret['id']} not found.")
-            return False
-
-        logger.debug(f"ORDER {obj} for user {user.email}")
+        return set_paid_until_order(obj)
 
     return True
