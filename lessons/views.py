@@ -386,6 +386,8 @@ def checkout(request):
 @login_required
 def paypal(request):
 
+    return render(request, 'lessons/payments/paypal.html')
+
     automatic = request.GET.get('automatic', False)
     lesson_plan_id = request.GET.get('lesson_plan_id', plans.ID_M)
 

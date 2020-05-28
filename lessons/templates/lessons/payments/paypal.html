@@ -1,0 +1,23 @@
+{% extends 'lessons/base.html' %}
+{% load static %}
+
+{% block right_sidebar %} {% endblock %}
+
+{% block central_content %}
+    <div class="row py-3">
+        <div class="col-lg-12 col-md-12">
+           <div class="container">
+            <p>
+              I am really sorry, but paypal is not supported at this moment. I prepared code to include it, but in very last moment I changed my mind and commented out the paypal part.
+            </p>
+            <p>
+              I am evaluating at this moment <b>braintree</b> payments (which is a layer over paypal). If it will pass testing I will include in it in next couple of weeks.
+            </p>
+            <div>
+              <a class="btn btn-success br-0" href="{% url 'upgrade' %}">Back to Upgrade</a>
+            </div>
+
+           </div>
+        </div>
+    </div>  
+{% endblock %}
