@@ -1,4 +1,8 @@
+import logging
+
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import Signal, receiver
 
@@ -9,6 +13,22 @@ checkout_in_progress = Signal()
 checkout_complete_error = Signal()
 checkout_complete_success = Signal()
 checkout_webhook_in_progress = Signal()
+
+logger = logging.getLogger(__name__)
+
+
+def notify(title, text):
+
+    if not settings.get('DJANGO_LESSONS_NOTIFY_EMAIL', False):
+        logger.error("DJANGO_LESSONS_NOTIFY_EMAIL not defined")
+    else:
+        send_mail(
+            title,
+            text,
+            settings.DJANGO_LESSONS_NOTIFY_EMAIL,
+            [settings.DJANGO_LESSONS_NOTIFY_EMAIL],
+            fail_silently=True,
+        )
 
 
 @receiver(post_save, sender=User)
@@ -29,7 +49,23 @@ def checkout_open_handler(sender, **kwargs):
         * user - django.contrib.auth.models.User
         * lesson_plan - lessons.payments.plans.LessonsPlan
     """
-    pass
+    payment_method = kwargs.get('payment_method', False)
+    user = kwargs.get('user', False)
+    lesson_plan = kwargs.get('lesson_plan', False)
+    text = ""
+    if payment_method:
+        text += f" PM={payment_method},"
+
+    if user:
+        text += f" email={user.email},"
+
+    if lesson_plan:
+        text += f" lesson_plan amount={lesson_plan.amount}"
+
+    notify(
+        title=f"[{payment_method}] Checkout Open",
+        text=text
+    )
 
 
 @receiver(checkout_in_progress)
@@ -41,7 +77,23 @@ def checkout_in_progress_handler(sender, **kwargs):
         * user - django.contrib.auth.models.User
         * lesson_plan - lessons.payments.plans.LessonsPlan
     """
-    pass
+    payment_method = kwargs.get('payment_method', False)
+    user = kwargs.get('user', False)
+    lesson_plan = kwargs.get('lesson_plan', False)
+    text = ""
+    if payment_method:
+        text += f" PM={payment_method},"
+
+    if user:
+        text += f" email={user.email},"
+
+    if lesson_plan:
+        text += f" lesson_plan amount={lesson_plan.amount}"
+
+    notify(
+        title=f"[{payment_method}] Checkout In Progress",
+        text=text
+    )
 
 
 @receiver(checkout_complete_error)
