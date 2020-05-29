@@ -346,25 +346,53 @@ def create_payment_intent(
     return payment_intent
 
 
-def upgrade_customer_from_charge(charge):
-    email = charge.receipt_email
+def _notify_error(sender, email, msg):
+
+    logger.error(msg)
+    checkout_complete_error.send(
+        sender=sender,
+        email=email,
+        message=msg
+    )
+
+
+def _notify_progress(sender, email, msg):
 
     logger.info(f"email={email}")
     checkout_webhook_in_progress.send(
+        sender=sender,
+        email=email,
+        message=msg
+    )
+
+
+def _notify_success(sender, email, msg):
+
+    logger.info(msg)
+    checkout_complete_success.send(
+        sender=sender,
+        email=email,
+        message=msg
+    )
+
+
+def upgrade_customer_from_charge(charge):
+    email = charge.receipt_email
+    _notify_progress(
         sender='charge',
-        email=email
+        email=email,
+        msg=f"Received charge from {email}"
     )
 
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        msg = f"User with email {email} not found during upgrade"
-        logger.warning(msg)
-        checkout_complete_error.send(
+        _notify_error(
             sender='charge',
             email=email,
-            message=msg
+            msg=f"User with email {email} not found during upgrade"
         )
+
         return False
 
     if charge.amount == MONTHLY_AMOUNT:
@@ -377,12 +405,10 @@ def upgrade_customer_from_charge(charge):
         )
 
     create_or_update_user_profile(user, current_period_end)
-    msg = f"Profile with {current_period_end} saved for user {email}"
-    logger.info(msg)
-    checkout_complete_success.send(
+    _notify_success(
         sender='charge',
         email=email,
-        message=msg
+        message=f"Profile with {current_period_end} saved for user {email}"
     )
 
 
@@ -395,22 +421,19 @@ def upgrade_customer_from_invoice(invoice):
     # invoice['paid'] = true|false
     # invoice['current_period_end'] # timestamp of end of subscription
     email = invoice['customer_email']
-    logger.info(f"email={email}")
-    checkout_webhook_in_progress.send(
+    _notify_progress(
         sender='invoice',
-        email=email
+        email=email,
+        msg=f"Received invoice from {email}"
     )
+
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        msg = f"User with email {email} not found while during upgrade"
-        logger.warning(
-            msg
-        )
-        checkout_complete_error.send(
+        _notify_error(
             sender='invoice',
             email=email,
-            message=msg
+            msg=f"User with email {email} not found during upgrade"
         )
         return False
 
@@ -426,20 +449,16 @@ def upgrade_customer_from_invoice(invoice):
 
     if invoice['paid']:
         create_or_update_user_profile(user, current_period_end)
-        msg = f"Profile with {current_period_end} saved for user {email}"
-        logger.info(msg)
-        checkout_complete_success.send(
+        _notify_success(
             sender='invoice',
             email=email,
-            message=msg
+            message=f"Profile with {current_period_end} saved for user {email}"
         )
     else:
-        msg = "Invoice is was NOT paid!"
-        logger.info(msg)
-        checkout_complete_error.send(
+        _notify_error(
             sender='invoice',
             email=email,
-            message=msg
+            msg="Invoice is NOT paid."
         )
 
     return True
