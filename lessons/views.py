@@ -220,7 +220,7 @@ def subscribe(request):
                 email=email,
             )
             subscribe.save()
-            new_contact_message.send(
+            new_subscriber.send(
                 'lessons.views.subscribe',
                 email=email,
             )

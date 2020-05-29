@@ -201,7 +201,7 @@ def new_subscriber_handler(sender, **kwargs):
     else:
         text += "Empty email"
 
-    text += f"Total subscriptions count={count}"
+    text += f" Total subscriptions count={count}"
 
     notify(
         title=title,
@@ -211,7 +211,7 @@ def new_subscriber_handler(sender, **kwargs):
 
 @receiver(new_contact_message)
 def new_contact_message_handler(sender, **kwargs):
-    title = "New Subscriber"
+    title = "New Contact Message"
     email = kwargs.get('email', False)
     subject = kwargs.get('subject', False)
     text = f" sender={sender},"
@@ -227,7 +227,7 @@ def new_contact_message_handler(sender, **kwargs):
     else:
         text += "Empty subject"
 
-    text += f"Total Contacts count={count}"
+    text += f" Total Contacts count={count}"
 
     notify(
         title=title,
