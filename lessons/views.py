@@ -21,7 +21,8 @@ from .payments.clients.paypal import paypal_client
 from .payments.clients.stripe import stripe_client
 from .payments.utils import (login_with_pro, paypal_with_params_url,
                              upgrade_with_pro)
-from .signals import checkout_in_progress, checkout_open
+from .signals import (checkout_in_progress, checkout_open, new_contact_message,
+                      new_subscriber)
 
 logger = logging.getLogger(__name__)
 
@@ -214,10 +215,15 @@ def subscribe(request):
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data['email']
             subscribe = Subscription(
-                email=form.cleaned_data['email'],
+                email=email,
             )
             subscribe.save()
+            new_contact_message.send(
+                'lessons.views.subscribe',
+                email=email,
+            )
             return render(request, 'lessons/thankyou.html')
     else:
         form = SubscribeForm()
@@ -236,12 +242,19 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
             contact = Contact(
-                email=form.cleaned_data['email'],
-                subject=form.cleaned_data['subject'],
+                email=email,
+                subject=subject,
                 text=form.cleaned_data['text']
             )
             contact.save()
+            new_contact_message.send(
+                'lessons.views.contact',
+                email=email,
+                subject=subject
+            )
             return render(request, 'lessons/contact_thankyou.html')
     else:
         form = ContactForm()

@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import Signal, receiver
 
-from .models import UserProfile
+from .models import Contact, Subscription, UserProfile
 from .payments.plans import ANNUAL_AMOUNT, MONTHLY_AMOUNT
 
 checkout_open = Signal()
@@ -14,6 +14,8 @@ checkout_in_progress = Signal()
 checkout_complete_error = Signal()
 checkout_complete_success = Signal()
 checkout_webhook_in_progress = Signal()
+new_subscriber = Signal()
+new_contact_message = Signal()
 
 logger = logging.getLogger(__name__)
 
@@ -183,5 +185,51 @@ def checkout_webhook_in_progress_handler(sender, **kwargs):
 
     notify(
         title="[payment in progress]",
+        text=text
+    )
+
+
+@receiver(new_subscriber)
+def new_subscriber_handler(sender, **kwargs):
+    title = "New Subscriber"
+    email = kwargs.get('email', False)
+    text = f" sender={sender},"
+    count = Subscription.objects.count()
+
+    if email:
+        text += f" email={email}"
+    else:
+        text += "Empty email"
+
+    text += f"Total subscriptions count={count}"
+
+    notify(
+        title=title,
+        text=text
+    )
+
+
+@receiver(new_contact_message)
+def new_contact_message_handler(sender, **kwargs):
+    title = "New Subscriber"
+    email = kwargs.get('email', False)
+    subject = kwargs.get('subject', False)
+    text = f" sender={sender},"
+    count = Contact.objects.count()
+
+    if email:
+        text += f" email={email},"
+    else:
+        text += "Empty email"
+
+    if subject:
+        text += f" subject={subject}"
+    else:
+        text += "Empty subject"
+
+    text += f"Total Contacts count={count}"
+
+    notify(
+        title=title,
         text=text
     )
