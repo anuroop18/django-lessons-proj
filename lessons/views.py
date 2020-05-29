@@ -21,6 +21,7 @@ from .payments.clients.paypal import paypal_client
 from .payments.clients.stripe import stripe_client
 from .payments.utils import (login_with_pro, paypal_with_params_url,
                              upgrade_with_pro)
+from .signals import checkout_in_progress, checkout_open
 
 logger = logging.getLogger(__name__)
 
@@ -358,7 +359,12 @@ def checkout(request):
         automatic=automatic
     )
     context = {}
-
+    checkout_open.send(
+        sender='checkout',
+        payment_method=payment_method,
+        user=request.user,
+        lesson_plan=lesson_plan
+    )
     if payment_method == 'card':
         context['lesson_plan'] = lesson_plan
         context['stripe_plan_id'] = lesson_plan.stripe_plan_id
@@ -440,6 +446,17 @@ def card(request):
     stripe_plan_id = request.POST['stripe_plan_id']
     automatic = request.POST['automatic']
     lesson_plan_id = request.POST['lesson_plan_id']
+    lesson_plan = plans.LessonsPlan(
+        plan_id=lesson_plan_id,
+        automatic=automatic
+    )
+
+    checkout_in_progress.send(
+        sender='checkout',
+        payment_method='card',
+        user=request.user,
+        lesson_plan=lesson_plan
+    )
 
     if automatic == 'on':
         payment = my_stripe.RecurringPayment(

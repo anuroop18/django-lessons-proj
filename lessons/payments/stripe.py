@@ -5,6 +5,9 @@ import stripe as orig_stripe
 from django.conf import settings
 from django.contrib.auth.models import User
 from lessons.payments import plans
+from lessons.signals import (checkout_complete_error,
+                             checkout_complete_success,
+                             checkout_webhook_in_progress)
 
 from .plans import ANNUAL_AMOUNT, MONTHLY_AMOUNT
 from .utils import PLUS_ONE_MONTH, PLUS_ONE_YEAR, create_or_update_user_profile
@@ -347,12 +350,20 @@ def upgrade_customer_from_charge(charge):
     email = charge.receipt_email
 
     logger.info(f"email={email}")
+    checkout_webhook_in_progress.send(
+        sender='charge',
+        email=email
+    )
 
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        logger.warning(
-            f"User with email {email} not found while trying to upgrade to PRO"
+        msg = f"User with email {email} not found during upgrade"
+        logger.warning(msg)
+        checkout_complete_error.send(
+            sender='charge',
+            email=email,
+            message=msg
         )
         return False
 
@@ -366,6 +377,13 @@ def upgrade_customer_from_charge(charge):
         )
 
     create_or_update_user_profile(user, current_period_end)
+    msg = f"Profile with {current_period_end} saved for user {email}"
+    logger.info(msg)
+    checkout_complete_success.send(
+        sender='charge',
+        email=email,
+        message=msg
+    )
 
 
 def upgrade_customer_from_invoice(invoice):
@@ -378,11 +396,21 @@ def upgrade_customer_from_invoice(invoice):
     # invoice['current_period_end'] # timestamp of end of subscription
     email = invoice['customer_email']
     logger.info(f"email={email}")
+    checkout_webhook_in_progress.send(
+        sender='invoice',
+        email=email
+    )
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
+        msg = f"User with email {email} not found while during upgrade"
         logger.warning(
-            f"User with email {email} not found while trying to upgrade to PRO"
+            msg
+        )
+        checkout_complete_error.send(
+            sender='invoice',
+            email=email,
+            message=msg
         )
         return False
 
@@ -398,10 +426,20 @@ def upgrade_customer_from_invoice(invoice):
 
     if invoice['paid']:
         create_or_update_user_profile(user, current_period_end)
-        logger.info(
-            f"Profile with {current_period_end} saved for user {email}"
+        msg = f"Profile with {current_period_end} saved for user {email}"
+        logger.info(msg)
+        checkout_complete_success.send(
+            sender='invoice',
+            email=email,
+            message=msg
         )
     else:
-        logger.info("Invoice is was NOT paid!")
+        msg = "Invoice is was NOT paid!"
+        logger.info(msg)
+        checkout_complete_error.send(
+            sender='invoice',
+            email=email,
+            message=msg
+        )
 
     return True
