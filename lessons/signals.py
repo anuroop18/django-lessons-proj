@@ -58,15 +58,24 @@ def checkout_open_handler(sender, **kwargs):
     text = ""
     if payment_method:
         text += f" PM={payment_method},"
+    else:
+        text += "Empty PM"
 
     if user:
         text += f" email={user.email},"
+    else:
+        text += "Empty email"
 
     if lesson_plan:
         if lesson_plan.amount == MONTHLY_AMOUNT:
             text += " lesson_plan amount=19.95 USD"
         elif lesson_plan.amount == ANNUAL_AMOUNT:
             text += " lesson_plan amount=199.50 USD"
+        else:
+            text += f" Strange amount={lesson_plan.amount}"
+    else:
+        text += "Empty lesson_plan"
+
     notify(
         title=f"[{payment_method}] Checkout Open",
         text=text
@@ -88,12 +97,23 @@ def checkout_in_progress_handler(sender, **kwargs):
     text = ""
     if payment_method:
         text += f" PM={payment_method},"
+    else:
+        text += "Empty PM"
 
     if user:
         text += f" email={user.email},"
+    else:
+        text += "Empty email"
 
     if lesson_plan:
-        text += f" lesson_plan amount={lesson_plan.amount}"
+        if lesson_plan.amount == MONTHLY_AMOUNT:
+            text += " lesson_plan amount=19.95 USD"
+        elif lesson_plan.amount == ANNUAL_AMOUNT:
+            text += " lesson_plan amount=199.50 USD"
+        else:
+            text += f" Strange amount={lesson_plan.amount}"
+    else:
+        text += "Empty lesson_plan"
 
     notify(
         title=f"[{payment_method}] Checkout In Progress",
@@ -109,8 +129,13 @@ def checkout_complete_error_handler(sender, **kwargs):
 
     if email:
         text += f" email={email},"
+    else:
+        text += "Empty email"
+
     if message:
         text += f" message={message}"
+    else:
+        text += "Empty message"
 
     notify(
         title="[PAYMENT ERROR]",
@@ -126,8 +151,13 @@ def checkout_complete_success_handler(sender, **kwargs):
 
     if email:
         text += f" email={email},"
+    else:
+        text += "Empty email"
+
     if message:
         text += f" message={message}"
+    else:
+        text += "Empty message"
 
     notify(
         title="[PAYMENT SUCCESS]",
@@ -143,8 +173,13 @@ def checkout_webhook_in_progress_handler(sender, **kwargs):
 
     if email:
         text += f" email={email},"
+    else:
+        text += "Empty email"
+
     if message:
         text += f" message={message}"
+    else:
+        text += "Empty message"
 
     notify(
         title="[payment in progress]",
