@@ -65,7 +65,7 @@ def checkout_open_handler(sender, **kwargs):
     if lesson_plan:
         if lesson_plan.amount == MONTHLY_AMOUNT:
             text += " lesson_plan amount=19.95 USD"
-        else:
+        elif lesson_plan.amount == ANNUAL_AMOUNT:
             text += " lesson_plan amount=199.50 USD"
     notify(
         title=f"[{payment_method}] Checkout Open",
@@ -103,14 +103,50 @@ def checkout_in_progress_handler(sender, **kwargs):
 
 @receiver(checkout_complete_error)
 def checkout_complete_error_handler(sender, **kwargs):
-    pass
+    email = kwargs.get('email', False)
+    message = kwargs.get('message', False)
+    text = f"sender={sender},"
+
+    if email:
+        text += f" email={email},"
+    if message:
+        text += f" message={message}"
+
+    notify(
+        title="[PAYMENT ERROR]",
+        text=text
+    )
 
 
 @receiver(checkout_complete_success)
 def checkout_complete_success_handler(sender, **kwargs):
-    pass
+    email = kwargs.get('email', False)
+    message = kwargs.get('message', False)
+    text = f"sender={sender},"
+
+    if email:
+        text += f" email={email},"
+    if message:
+        text += f" message={message}"
+
+    notify(
+        title="[PAYMENT SUCCESS]",
+        text=text
+    )
 
 
 @receiver(checkout_webhook_in_progress)
 def checkout_webhook_in_progress_handler(sender, **kwargs):
-    pass
+    email = kwargs.get('email', False)
+    message = kwargs.get('message', False)
+    text = f"sender={sender},"
+
+    if email:
+        text += f" email={email},"
+    if message:
+        text += f" message={message}"
+
+    notify(
+        title="[payment in progress]",
+        text=text
+    )
