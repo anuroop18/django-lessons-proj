@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import Signal, receiver
 
 from .models import UserProfile
+from .payments.plans import ANNUAL_AMOUNT, MONTHLY_AMOUNT
 
 checkout_open = Signal()
 checkout_in_progress = Signal()
@@ -16,11 +17,13 @@ checkout_webhook_in_progress = Signal()
 
 logger = logging.getLogger(__name__)
 
+DJANGO_LESSONS_NOTIFY_EMAIL = 'DJANGO_LESSONS_NOTIFY_EMAIL'
+
 
 def notify(title, text):
 
-    if not settings.get('DJANGO_LESSONS_NOTIFY_EMAIL', False):
-        logger.error("DJANGO_LESSONS_NOTIFY_EMAIL not defined")
+    if not hasattr(settings, DJANGO_LESSONS_NOTIFY_EMAIL):
+        logger.error(f"{DJANGO_LESSONS_NOTIFY_EMAIL} not defined")
     else:
         send_mail(
             title,
@@ -60,8 +63,10 @@ def checkout_open_handler(sender, **kwargs):
         text += f" email={user.email},"
 
     if lesson_plan:
-        text += f" lesson_plan amount={lesson_plan.amount}"
-
+        if lesson_plan.amount == MONTHLY_AMOUNT:
+            text += " lesson_plan amount=19.95 USD"
+        else:
+            text += " lesson_plan amount=199.50 USD"
     notify(
         title=f"[{payment_method}] Checkout Open",
         text=text

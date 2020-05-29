@@ -346,33 +346,33 @@ def create_payment_intent(
     return payment_intent
 
 
-def _notify_error(sender, email, msg):
+def _notify_error(sender, email, message):
 
-    logger.error(msg)
+    logger.error(message)
     checkout_complete_error.send(
         sender=sender,
         email=email,
-        message=msg
+        message=message
     )
 
 
-def _notify_progress(sender, email, msg):
+def _notify_progress(sender, email, message):
 
     logger.info(f"email={email}")
     checkout_webhook_in_progress.send(
         sender=sender,
         email=email,
-        message=msg
+        message=message
     )
 
 
-def _notify_success(sender, email, msg):
+def _notify_success(sender, email, message):
 
-    logger.info(msg)
+    logger.info(message)
     checkout_complete_success.send(
         sender=sender,
         email=email,
-        message=msg
+        message=message
     )
 
 
@@ -381,7 +381,7 @@ def upgrade_customer_from_charge(charge):
     _notify_progress(
         sender='charge',
         email=email,
-        msg=f"Received charge from {email}"
+        message=f"Received charge from {email}"
     )
 
     try:
@@ -390,7 +390,7 @@ def upgrade_customer_from_charge(charge):
         _notify_error(
             sender='charge',
             email=email,
-            msg=f"User with email {email} not found during upgrade"
+            message=f"User with email {email} not found during upgrade"
         )
 
         return False
@@ -424,7 +424,7 @@ def upgrade_customer_from_invoice(invoice):
     _notify_progress(
         sender='invoice',
         email=email,
-        msg=f"Received invoice from {email}"
+        message=f"Received invoice from {email}"
     )
 
     try:
@@ -433,7 +433,7 @@ def upgrade_customer_from_invoice(invoice):
         _notify_error(
             sender='invoice',
             email=email,
-            msg=f"User with email {email} not found during upgrade"
+            message=f"User with email {email} not found during upgrade"
         )
         return False
 
@@ -458,7 +458,7 @@ def upgrade_customer_from_invoice(invoice):
         _notify_error(
             sender='invoice',
             email=email,
-            msg="Invoice is NOT paid."
+            message="Invoice is NOT paid."
         )
 
     return True
