@@ -64,7 +64,7 @@ THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 EMAIL_FROM = 'eugen@django-lessons.com'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/home/eugen/django_emails/'
-
+DJANGO_LESSONS_NOTIFY_EMAIL = os.environ['DJANGO_LESSONS_NOTIFY_EMAIL']
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
