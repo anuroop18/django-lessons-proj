@@ -1,10 +1,9 @@
 from datetime import date, datetime, timedelta
 
-from django.test import TestCase
-from django.test import Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
-from .models import (Lesson, User)
+from .models import Lesson, User
 from .payments.stripe import create_or_update_user_profile
 
 
@@ -13,7 +12,6 @@ class UserProfileTest(TestCase):
         self.user = User(
             email="user1@mail.com",
             username="user1",
-            password="abcxyz123"
         )
         self.user.save()
 
@@ -27,6 +25,25 @@ class UserProfileTest(TestCase):
         )
 
         self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_initial_user_with_temporary_discount(self):
+        """
+        Initial user (not PRO) with temporary discount will be able to
+        watch PRO screencasts
+        """
+        # without discount user is not a PRO
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        today = date.today()
+        _15_days = timedelta(days=15)
+        # with discount create (15 days in future)
+        self.user.profile.discount_enddate = today + _15_days
+        self.user.profile.save()
+        # user is now PRO (he didn't pay, he has a temporary discount)
+        self.assertTrue(
             self.user.profile.is_pro_user()
         )
 
@@ -144,4 +161,3 @@ class PageViewTests(TestCase):
         self.assertEqual(
             resp.status_code, 200
         )
-
