@@ -1,5 +1,7 @@
 import logging
 
+from allauth.account import signals as allauth_signals
+from allauth.socialaccount import signals as allauth_social_signals
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -231,5 +233,56 @@ def new_contact_message_handler(sender, **kwargs):
 
     notify(
         title=title,
+        text=text
+    )
+
+
+@receiver(allauth_signals.user_signed_up)
+def user_signed_up_handler(sender, **kwargs):
+
+    email = kwargs.get('email', False)
+    text = f" email={email}, "
+    count = User.objects.count()
+    text += f" Total User count={count}"
+
+    notify(
+        title="New Sign Up",
+        text=text
+    )
+
+
+@receiver(allauth_signals.password_reset)
+def password_reset_handler(sender, **kwargs):
+
+    email = kwargs.get('email', False)
+    text = f" email={email}, "
+
+    notify(
+        title="Password Reset triggered",
+        text=text
+    )
+
+
+@receiver(allauth_signals.password_changed)
+def password_changed_handler(sender, **kwargs):
+
+    email = kwargs.get('email', False)
+    text = f" email={email}, "
+
+    notify(
+        title="Password Changed triggered",
+        text=text
+    )
+
+
+@receiver(allauth_social_signals.pre_social_login)
+def pre_social_login_handler(sender, **kwargs):
+
+    text = " "
+    count = User.objects.count()
+    text += f" Total User count={count}"
+
+    notify(
+        title="New Social account activity",
         text=text
     )
