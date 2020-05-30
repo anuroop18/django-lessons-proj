@@ -71,7 +71,10 @@ class CustomUserAdmin(UserAdmin):
         'username',
         'email',
         'is_pro',
+        'pro_enddate',
         'has_discount',
+        'discount_enddate',
+        'last_login',
         'is_staff',
         'first_name',
         'last_name',
@@ -86,6 +89,12 @@ class CustomUserAdmin(UserAdmin):
 
     def is_pro(self, obj):
         return obj.profile.is_pro_user()
+
+    def pro_enddate(self, obj):
+        return obj.profile.pro_enddate
+
+    def discount_enddate(self, obj):
+        return obj.profile.discount_enddate
 
     is_pro.boolean = True
 
