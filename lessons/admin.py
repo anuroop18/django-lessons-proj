@@ -11,7 +11,12 @@ from .models import (Contact, Course, Lesson, LessonGroup, Subscription,
 
 class ProfileInline(admin.StackedInline):
     model = UserProfile
-    fields = ('discount_enddate', )
+    fields = (
+        'discount_enddate',
+        'pro_enddate',
+        'stripe_subscription_id',
+        'stripe_customer_id'
+    )
 
 
 class IsPROListFilter(admin.SimpleListFilter):
@@ -74,10 +79,10 @@ class CustomUserAdmin(UserAdmin):
         'pro_enddate',
         'has_discount',
         'discount_enddate',
+        'customer_id',
+        'subscription_id',
         'last_login',
         'is_staff',
-        'first_name',
-        'last_name',
     )
     inlines = [
         ProfileInline,
@@ -95,6 +100,12 @@ class CustomUserAdmin(UserAdmin):
 
     def discount_enddate(self, obj):
         return obj.profile.discount_enddate
+
+    def customer_id(self, obj):
+        return obj.profile.stripe_customer_id
+
+    def subscription_id(self, obj):
+        return obj.profile.stripe_subscription_id
 
     is_pro.boolean = True
 
