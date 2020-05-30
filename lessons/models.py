@@ -79,6 +79,9 @@ class UserProfile(models.Model):
         null=True
     )
 
+    def __str__(self):
+        return f"UserProfile(username={self.user.username})"
+
     @property
     def is_with_automatic_renew(self):
         if not self.stripe_subscription_id:

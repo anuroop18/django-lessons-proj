@@ -5,7 +5,13 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
-from .models import Contact, Course, Lesson, LessonGroup, Subscription
+from .models import (Contact, Course, Lesson, LessonGroup, Subscription,
+                     UserProfile)
+
+
+class ProfileInline(admin.StackedInline):
+    model = UserProfile
+    fields = ('discount_enddate', )
 
 
 class IsPROListFilter(admin.SimpleListFilter):
@@ -40,21 +46,53 @@ class IsPROListFilter(admin.SimpleListFilter):
             return queryset.filter(profile__pro_enddate__lte=_today)
 
 
+class HasDiscountListFilter(admin.SimpleListFilter):
+    title = _('Has discount')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'discount'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', _('Yes')),
+            ('no', _('No')),
+        )
+
+    def queryset(self, request, queryset):
+        _today = date.today()
+        if self.value() == 'yes':
+            return queryset.filter(profile__discount_enddate__gte=_today)
+        if self.value() == 'no':
+            return queryset.filter(profile__discount_enddate__lte=_today)
+
+
 class CustomUserAdmin(UserAdmin):
     list_display = (
         'username',
         'email',
         'is_pro',
+        'has_discount',
         'is_staff',
         'first_name',
         'last_name',
     )
-    list_filter = UserAdmin.list_filter + (IsPROListFilter,)
+    inlines = [
+        ProfileInline,
+    ]
+    list_filter = UserAdmin.list_filter + (
+        IsPROListFilter,
+        HasDiscountListFilter,
+    )
 
     def is_pro(self, obj):
         return obj.profile.is_pro_user()
 
     is_pro.boolean = True
+
+    def has_discount(self, obj):
+        return obj.profile.discount
+
+    has_discount.boolean = True
 
 
 class ContactAdmin(admin.ModelAdmin):
