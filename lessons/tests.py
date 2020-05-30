@@ -9,10 +9,7 @@ from .payments.stripe import create_or_update_user_profile
 
 class UserProfileTest(TestCase):
     def setUp(self):
-        self.user = User(
-            email="user1@mail.com",
-            username="user1",
-        )
+        self.user = User(username="user1")
         self.user.save()
 
     def test_user_model_has_profile(self):
