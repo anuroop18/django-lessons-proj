@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from .models import Lesson, User
 from .payments.stripe import create_or_update_user_profile
+from .payments.utils import PLUS_ONE_MONTH, PLUS_ONE_YEAR
 
 
 class UserProfileTest(TestCase):
@@ -118,6 +119,37 @@ class UserProfileTest(TestCase):
         create_or_update_user_profile(
             self.user,
             timestamp_in_future
+        )
+        self.assertTrue(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_create_or_update_user_profile_plus_one_month(self):
+        """
+        use PLUS_ONE_MONTH constant to update
+        user profile.
+        """
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        create_or_update_user_profile(
+            self.user,
+            PLUS_ONE_MONTH
+        )
+        self.assertTrue(
+            self.user.profile.is_pro_user()
+        )
+
+    def test_create_or_update_user_profile_plus_one_year(self):
+        """
+        use PLUS_ONE_YEAR constant to update user profile.
+        """
+        self.assertFalse(
+            self.user.profile.is_pro_user()
+        )
+        create_or_update_user_profile(
+            self.user,
+            PLUS_ONE_YEAR
         )
         self.assertTrue(
             self.user.profile.is_pro_user()

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def plus_days(count):
-    _date = datetime.now()
+    _date = date.today()
     return _date + timedelta(days=count)
 
 
